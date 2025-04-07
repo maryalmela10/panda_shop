@@ -1,3 +1,16 @@
+### Pasos para correr el programa por primera vez
+## 1. Clonar el repositorio
+## 2. Instalar las dependencias de Composer
+<p>composer install</p>
+## 3. Copiar el archivo .env.example y crear el archivo .env
+<p>cp .env.example .env</p>
+## 4. Generar la clave de la aplicación
+<p>php artisan key:generate</p>
+## 5. Instalar las dependencias de Node.js
+<p>npm install</p>
+## 6. Ejecutar las migraciones de la base de datos
+<p>php artisan migrate</p>
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
