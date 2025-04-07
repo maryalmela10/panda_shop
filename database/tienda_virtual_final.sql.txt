@@ -1,0 +1,126 @@
+
+-- Tabla de usuarios
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    correo VARCHAR(100) UNIQUE,
+    contraseña VARCHAR(255),
+    telefono VARCHAR(20),
+    direccion TEXT,
+    rol ENUM('cliente', 'admin') DEFAULT 'cliente',
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla de categorías
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) UNIQUE
+);
+
+-- Tabla de productos
+CREATE TABLE productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    descripcion TEXT,
+    precio DECIMAL(10,2),
+    imagen_url VARCHAR(255),
+    disponible BOOLEAN DEFAULT TRUE,
+    stock INT DEFAULT 0,
+    categoria_id INT,
+    num_ventas INT DEFAULT 0,
+    fecha_reposicion DATE,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+);
+
+-- Tabla de reviews
+CREATE TABLE reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    producto_id INT,
+    usuario_id INT,
+    estrellas TINYINT CHECK (estrellas BETWEEN 1 AND 5),
+    comentario TEXT,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (producto_id) REFERENCES productos(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+-- Tabla de carrito
+CREATE TABLE carrito (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    producto_id INT,
+    cantidad INT DEFAULT 1,
+    fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (producto_id) REFERENCES productos(id)
+);
+
+-- Tabla de órdenes
+CREATE TABLE ordenes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    total DECIMAL(10,2),
+    metodo_envio ENUM('recogida', 'envio'),
+    costo_envio DECIMAL(10,2),
+    direccion_envio TEXT,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+-- Tabla de detalles de orden
+CREATE TABLE orden_detalles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    orden_id INT,
+    producto_id INT,
+    cantidad INT,
+    precio_unitario DECIMAL(10,2),
+    FOREIGN KEY (orden_id) REFERENCES ordenes(id),
+    FOREIGN KEY (producto_id) REFERENCES productos(id)
+);
+
+-- Tabla de notificaciones de stock
+CREATE TABLE notificaciones_stock (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    producto_id INT,
+    enviado BOOLEAN DEFAULT FALSE,
+    fecha_suscripcion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (producto_id) REFERENCES productos(id)
+);
+
+-- Insertar categorías
+INSERT INTO categorias (nombre) VALUES 
+('Harinas'),
+('Chocolates'),
+('Esencias'),
+('Colorantes'),
+('Decoraciones');
+
+-- Insertar usuarios
+INSERT INTO usuarios (nombre, correo, contraseña, telefono, direccion, rol) VALUES
+('Mary Almela', 'admin@tienda.com', SHA2('admin123', 256), '600000001', 'Calle Central 123, Valencia', 'admin'),
+('Carlos Rivera', 'cliente@tienda.com', SHA2('cliente123', 256), '600000002', 'Av. Siempre Viva 742, Madrid', 'cliente');
+
+-- Insertar productos (20 de ejemplo)
+INSERT INTO productos (nombre, descripcion, precio, imagen_url, disponible, stock, categoria_id, fecha_reposicion) VALUES
+('Harina de Trigo', 'Harina blanca todo uso', 1.50, 'img/harina_trigo.jpg', TRUE, 50, 1, '2025-04-10'),
+('Harina Integral', 'Harina saludable de grano entero', 1.80, 'img/harina_integral.jpg', TRUE, 30, 1, '2025-04-15'),
+('Harina de Avena', 'Ideal para postres fitness', 2.00, 'img/harina_avena.jpg', TRUE, 20, 1, '2025-04-20'),
+('Chocolate Negro 70%', 'Chocolate para repostería', 3.20, 'img/chocolate_negro.jpg', TRUE, 40, 2, '2025-04-08'),
+('Chocolate con Leche', 'Sabor suave para coberturas', 2.80, 'img/chocolate_leche.jpg', TRUE, 35, 2, '2025-04-10'),
+('Chispas de Chocolate', 'Mini chispas para decorar', 1.90, 'img/chispas_choco.jpg', TRUE, 60, 2, '2025-04-12'),
+('Esencia de Vainilla', 'Esencia natural para repostería', 2.00, 'img/vainilla.jpg', TRUE, 45, 3, '2025-04-05'),
+('Esencia de Almendra', 'Saborizante intenso de almendra', 2.10, 'img/almendra.jpg', TRUE, 20, 3, '2025-04-09'),
+('Colorante Rojo', 'Color comestible concentrado', 1.30, 'img/colorante_rojo.jpg', TRUE, 15, 4, '2025-04-06'),
+('Colorante Azul', 'Colorante en gel para fondant', 1.30, 'img/colorante_azul.jpg', TRUE, 10, 4, '2025-04-08'),
+('Colorante Verde', 'Pigmento alimentario verde', 1.30, 'img/colorante_verde.jpg', TRUE, 12, 4, '2025-04-11'),
+('Sprinkles Arcoiris', 'Decoración dulce para cupcakes', 2.50, 'img/sprinkles.jpg', TRUE, 100, 5, '2025-04-20'),
+('Perlas de Azúcar', 'Perlas comestibles', 2.70, 'img/perlas.jpg', TRUE, 75, 5, '2025-04-18'),
+('Figuras de Chocolate', 'Decoraciones en forma de corazón', 3.10, 'img/figuras_choco.jpg', TRUE, 40, 5, '2025-04-17'),
+('Fondant Blanco', 'Masa comestible para cubrir pasteles', 2.90, 'img/fondant.jpg', TRUE, 25, 5, '2025-04-16'),
+('Glaseado Real', 'Ideal para decorar galletas', 1.80, 'img/glaseado.jpg', TRUE, 50, 5, '2025-04-14'),
+('Harina de Coco', 'Harina sin gluten', 2.30, 'img/harina_coco.jpg', TRUE, 22, 1, '2025-04-12'),
+('Chocolate Blanco', 'Cobertura dulce cremosa', 3.00, 'img/choco_blanco.jpg', TRUE, 30, 2, '2025-04-13'),
+('Esencia de Menta', 'Ideal para galletas navideñas', 1.90, 'img/menta.jpg', TRUE, 18, 3, '2025-04-07'),
+('Colorante Amarillo', 'Color brillante en gel', 1.30, 'img/colorante_amarillo.jpg', TRUE, 10, 4, '2025-04-09');
