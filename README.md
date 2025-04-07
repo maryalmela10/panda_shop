@@ -8,6 +8,7 @@
 <p>php artisan key:generate</p>
 ## 5. Instalar las dependencias de Node.js
 <p>npm install</p>
+<p>npm run dev</p>
 ## 6. Ejecutar las migraciones de la base de datos
 <p>php artisan migrate</p>
 
