@@ -9,4 +9,14 @@ class Carrito extends Model
 {
     use HasFactory;
     protected $table = 'carrito';
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'usuario_id');
+    }
+
+    public function producto()
+    {
+        return $this->belongsTo(Product::class, 'producto_id');
+    }
 }
