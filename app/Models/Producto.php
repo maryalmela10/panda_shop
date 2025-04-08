@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Categoria;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Producto extends Model
 {
     use HasFactory;
-    protected $table = 'products';
+    protected $table = 'productos';
 
     public function categoria()
     {
