@@ -16,7 +16,7 @@ return new class extends Migration
             $table->usuario_id();
             $table->total();
             $table->string('metodo_envio');
-            $table->costo_envio();
+            $table->coste_envio();
             $table->string('direccion_envio');
             $table->timestamp('fecha');
         });
