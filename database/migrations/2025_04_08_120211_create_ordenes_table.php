@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('ordenes', function (Blueprint $table) {
             $table->id();
-            $table->usuario_id();
-            $table->total();
+            $table->unsignedBigInteger('usuario_id');
+            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
+            $table->decimal('total', 10, 2);
             $table->string('metodo_envio');
-            $table->coste_envio();
+            $table->decimal('coste_envio', 10, 2);
             $table->string('direccion_envio');
             $table->timestamp('fecha');
         });
