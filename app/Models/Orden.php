@@ -10,6 +10,8 @@ class Orden extends Model
     use HasFactory;
     protected $table = 'ordenes';
 
+    public $timestamps = false;
+
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id');
