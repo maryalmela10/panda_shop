@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('estrellas');
             $table->string('comentario');
-            $table->timestamp('fecha');
+            $table->timestamp('fecha')->useCurrent();
         });
     }
 

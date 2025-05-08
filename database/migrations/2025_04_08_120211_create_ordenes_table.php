@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('usuario_id');
             $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
-            $table->decimal('total', 10, 2);
-            $table->string('metodo_envio');
+            $table->string('metodo_pago');
             $table->decimal('coste_envio', 10, 2);
             $table->string('direccion_envio');
-            $table->timestamp('fecha');
+            $table->timestamp('fecha_pedido')->useCurrent();
         });
     }
 
