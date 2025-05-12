@@ -11,8 +11,16 @@ class Producto extends Model
     use HasFactory;
     protected $table = 'productos';
 
+    public $timestamps = false;
+
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'categoria_id');
+    }
+
+    public function ordenes()
+    {
+        return $this->belongsToMany(Orden::class, 'orden_producto')
+                    ->withPivot('cantidad', 'precio');
     }
 }

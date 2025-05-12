@@ -18,8 +18,6 @@ class User extends Authenticatable
         'password',
         'phone',
         'address',
-        'Created_at'
+        'rol',
     ];
-
-    public $timestamps = false;
 }
