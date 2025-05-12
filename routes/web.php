@@ -17,9 +17,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::view('/shop', 'shop')->name('shop');
-Route::view('/shop/product', 'shop-single')->name('shop.product');
-Route::view('/about', 'about')->name('about');
-Route::view('/contact', 'contact')->name('contact');
+Route::view('/shop', 'customerViews.shop')->name('shop');
+Route::view('/shop/product', 'customerViews.shop-single')->name('shop.product');
+Route::view('/about', 'customerViews.about')->name('about');
+Route::view('/contact', 'customerViews.contact')->name('contact');
 
 require __DIR__.'/auth.php';
