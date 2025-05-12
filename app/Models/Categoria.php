@@ -9,4 +9,11 @@ class Categoria extends Model
 {
     use HasFactory;
     protected $table = 'categorias';
+
+    public $timestamps = false;
+
+    public function productos()
+    {
+        return $this->hasMany(Producto::class, 'categoria_id');
+    }
 }

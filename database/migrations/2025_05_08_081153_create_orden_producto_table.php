@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carrito', function (Blueprint $table) {
+        Schema::create('orden_producto', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('usuario_id');
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('orden_id');
             $table->unsignedBigInteger('producto_id');
+            $table->integer('cantidad'); // si deseas registrar cuántos de cada producto
+
+            $table->foreign('orden_id')->references('id')->on('ordenes')->onDelete('cascade');
             $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
-            $table->integer('cantidad');
-            $table->timestamp('fecha_agregado');
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('carrito');
+        Schema::dropIfExists('orden_producto');
     }
 };

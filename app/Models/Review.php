@@ -10,6 +10,8 @@ class Review extends Model
     use HasFactory;
     protected $table = 'reviews';
 
+    public $timestamps = false;
+
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id');
