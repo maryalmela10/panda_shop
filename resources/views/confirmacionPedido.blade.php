@@ -15,12 +15,13 @@
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2">Productos</h4>
                         <ul class="list-disc pl-6">
-                            @foreach(session('cart', []) as $item)
-                                <li>{{ $item['name'] }} - {{ $item['quantity'] }} x ${{ $item['price'] }}</li>
+                            @foreach($order->productos as $producto)
+                                <li>{{ $producto->nombre }} - {{ $producto->pivot->cantidad }} x ${{ $producto->pivot->precio }}</li>
                             @endforeach
                         </ul>
+
                         <p class="mt-2 font-semibold">
-                            Total productos: ${{ number_format(collect(session('cart'))->sum(fn($item) => $item['price'] * $item['quantity']), 2) }}
+                            Total productos: ${{ number_format($totalProductos, 2) }}
                         </p>
                     </div>
 
@@ -38,7 +39,7 @@
 
                     <!-- Mostrar total cost -->
                     <p class="mt-2 font-semibold">
-                        Total del pedido: ${{ number_format(session('totalCost') + $order->coste_envio, 2) }}
+                        Total del pedido: ${{ number_format($totalProductos + $order->coste_envio, 2) }}
                     </p>
                 </div>
             </div>
