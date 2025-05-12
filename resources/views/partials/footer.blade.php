@@ -2,11 +2,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 pt-5">
-                <h2 class="h2 text-success border-bottom pb-3 border-light logo">Zay Shop</h2>
+                <h2 class="h2 text-success border-bottom pb-3 border-light logo">Panda shop</h2>
                 <ul class="list-unstyled text-light footer-link-list">
-                    <li><i class="fas fa-map-marker-alt fa-fw"></i> 123 Consectetur at ligula 10660</li>
-                    <li><i class="fa fa-phone fa-fw"></i> <a class="text-decoration-none" href="tel:010-020-0340">010-020-0340</a></li>
-                    <li><i class="fa fa-envelope fa-fw"></i> <a class="text-decoration-none" href="mailto:info@company.com">info@company.com</a></li>
+                    <li><i class="fas fa-map-marker-alt fa-fw"></i> C/ del Padre Claret, 8, Chamartín, 28002 Madrid</li>
+                    <li><i class="fa fa-phone fa-fw"></i> <a class="text-decoration-none" href="tel:010-020-0340">722-204-388</a></li>
+                    <li><i class="fa fa-envelope fa-fw"></i> <a class="text-decoration-none" href="mailto:info@company.com">info@panda.com</a></li>
                 </ul>
             </div>
             <div class="col-md-4 pt-5">
@@ -62,7 +62,7 @@
     <div class="w-100 bg-black py-3">
         <div class="container text-light text-left">
             <p class="mb-0">Copyright &copy;
-                {{ date('Y') }} Company Name | Designed by <a href="https://templatemo.com" class="text-decoration-none text-success" target="_blank">TemplateMo</a>
+                {{ date('Y') }}
             </p>
         </div>
     </div>

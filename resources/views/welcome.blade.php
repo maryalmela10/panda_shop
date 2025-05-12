@@ -35,15 +35,14 @@
     <div class="container py-5">
         <div class="row text-center py-3">
             <div class="col-lg-6 m-auto">
-                <h1 class="h1">Featured Product</h1>
-                <p>Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <h1 class="h1">Productos más vendidos</h1>
             </div>
         </div>
         <div class="row">
             @foreach([
-                ['img' => 'feature_prod_01.jpg', 'title' => 'Gym Weight', 'price' => 240, 'reviews' => 24],
-                ['img' => 'feature_prod_02.jpg', 'title' => 'Cloud Nike Shoes', 'price' => 480, 'reviews' => 48],
-                ['img' => 'feature_prod_03.jpg', 'title' => 'Summer Addides Shoes', 'price' => 360, 'reviews' => 74],
+                ['img' => 'choco_blanco_nestle.jpg', 'title' => 'Chocolate blanco', 'price' => 240, 'reviews' => 24],
+                ['img' => 'levadura_royal.jpg', 'title' => 'Levadura', 'price' => 480, 'reviews' => 48],
+                ['img' => 'lapices_pasteleros.jpg', 'title' => 'Colorante', 'price' => 360, 'reviews' => 74],
             ] as $product)
             <div class="col-12 col-md-4 mb-4">
                 <div class="card h-100">

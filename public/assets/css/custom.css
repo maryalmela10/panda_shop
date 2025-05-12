@@ -1,3 +1,59 @@
-/*
-Custom Css
-*/
+/* COLORES PERSONALIZADOS */
+
+/* Botón principal */
+  
+  .btn-success:hover {
+    background-color: #c7747d !important;
+    border-color: #c7747d !important;
+  }
+  
+  /* Textos */
+  .text-success {
+    color: #E18D96 !important;
+  }
+
+  
+  /* Fondos */
+  .bg-success {
+    background-color: #E18D96 !important;
+  }
+  .bg-light {
+    background-color: #F3DDB3 !important;
+  }
+  .bg-dark {
+    background-color: #C8B4BA !important;
+  }
+  .bg-black {
+    background-color: #909090 !important;
+  }
+  
+  /* Links y hover */
+  a.text-success:hover,
+  a.text-success:focus {
+    color: #c7747d !important;
+  }
+  
+  /* Footer icons hover */
+  #tempaltemo_footer ul.footer-icons li:hover {
+    background-color: #E18D96 !important;
+  }
+  #tempaltemo_footer ul.footer-icons li:hover i {
+    color: #ffffff !important;
+  }
+
+  .text-light {
+    color: #212529 !important; /* negro Bootstrap clásico */
+  }
+
+  #tempaltemo_footer a {
+    color: #212529 !important;
+  }
+  
+  #tempaltemo_footer a:hover {
+    color: #E18D96 !important;
+  }
+
+  .text-success {
+    color: #b55a63 !important; /* versión más oscura del #E18D96 */
+  }
+  

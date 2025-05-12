@@ -13,9 +13,9 @@
             <div class="flex-fill">
                 <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                     <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Sobre nosotros</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Comprar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">Sobre nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('shop') }}">Comprar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contacto</a></li>
                 </ul>
             </div>
             <div class="navbar align-self-center d-flex">
