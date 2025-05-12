@@ -65,13 +65,14 @@ class OrderController extends Controller
     // Mostrar la confirmación del pedido
     public function confirmation($orderId)
     {
-        // Obtén el pedido de la base de datos
-        $order = Orden::findOrFail($orderId);
+        $order = Orden::with('productos')->findOrFail($orderId);
 
-        // Suma el total de los productos en el carrito
-        $totalCost = collect(session('cart'))->sum(fn($item) => $item['price'] * $item['quantity']);
+        // Calcular total productos desde la relación en BD
+        $totalProductos = $order->productos->sum(function ($producto) {
+            return $producto->pivot->precio * $producto->pivot->cantidad;
+        });
 
-        // Redirigir a la vista de confirmación del pedido con el pedido y el costo total
-        return view('confirmacionPedido', compact('order', 'totalCost'));
+        return view('confirmacionPedido', compact('order', 'totalProductos'));
     }
+
 }
