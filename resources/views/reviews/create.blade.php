@@ -15,7 +15,7 @@
             <label class="block mb-2">Comentario</label>
             <textarea name="comentario" rows="4" class="border p-2 w-full mb-4" required></textarea>
 
-            <button type="submit" class="bg-blue-500 px-4 py-2 rounded">Enviar reseña</button>
+            <button type="submit" style="color: #2563eb !important; text-decoration: underline;" class="text-sm">Enviar reseña</button>
         </form>
     </div>
 </x-app-layout>
