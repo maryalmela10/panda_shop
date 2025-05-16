@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
             $table->unsignedBigInteger('usuario_id');
             $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('estrellas');
+            $table->integer('estrellas')->check('estrellas >= 0 AND estrellas <= 5');
             $table->string('comentario');
             $table->timestamp('fecha')->useCurrent();
         });

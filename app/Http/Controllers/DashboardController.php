@@ -15,7 +15,7 @@ class DashboardController extends Controller {
 
         $products = Producto::when($selectedCategory, function ($query, $categoriaId) {
             return $query->where('categoria_id', $categoriaId);
-        })->get();
+        })->withAvg('reviews', 'estrellas')->get();
 
         return view('dashboard', compact('products', 'categories', 'selectedCategory'));
     }
