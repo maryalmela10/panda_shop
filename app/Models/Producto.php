@@ -23,4 +23,15 @@ class Producto extends Model
         return $this->belongsToMany(Orden::class, 'orden_producto')
                     ->withPivot('cantidad', 'precio');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'producto_id');
+    }
+
+    // Accesor para el promedio
+    public function getReviewPromedio()
+    {
+        return round($this->reviews()->avg('estrellas'), 1);
+    }
 }
