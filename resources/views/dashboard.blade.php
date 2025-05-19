@@ -1,58 +1,65 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Dashboard') }}
-            </h2>
+@extends('layouts.app')
 
-            <!-- Carrito -->
-            <a href="{{ route('cart.index') }}" class="text-gray-500 hover:text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M4 7h16M5 11h14M6 15h12M7 19h10" />
-                </svg>
-                <span class="ml-2">Carrito</span>
-            </a>
+@section('title', 'Mi cuenta')
+
+@section('content')
+<div class="container py-5">
+    <h2 class="h2 mb-4">Panel de cliente</h2>
+
+    {{-- Resumen visual del usuario --}}
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <h4>Pedidos</h4>
+                <p>12 pedidos activos</p>
+                <a href="{{ route('dashboard.orders') }}" class="btn btn-success btn-sm mt-2">Ver pedidos</a>
+            </div>
         </div>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-
-                    <hr class="my-4">
-
-                    <h2 class="text-lg font-semibold mb-4">Filtrar productos por categoría</h2>
-
-                    <form method="GET" action="{{ route('dashboard') }}">
-                        <select name="categoria_id" onchange="this.form.submit()" class="border rounded p-2">
-                            <option value="">-- Todas las categorías --</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ (isset($selectedCategory) && $selectedCategory == $category->id) ? 'selected' : '' }}>
-                                    {{ $category->nombre }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </form>
-
-                    <hr class="my-4">
-
-                    <h3 class="text-md font-semibold mb-2">Productos</h3>
-                    <ul class="list-disc pl-6">
-                        @foreach($products as $product)
-                            <div>
-                                <h4>{{ $product->nombre }}</h4>
-                                <p>${{ $product->precio }}</p>
-                                <a href="{{ route('cart.add', $product->id) }}" class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-700" style="color: #3182ce;">
-                                    Agregar al carrito
-                                </a>
-                            </div>
-                            <br>
-                        @endforeach
-                    </ul>
-                </div>
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <h4>Perfil</h4>
+                <p>{{ Auth::user()->name }}</p>
+                <a href="{{ route('dashboard.profile') }}" class="btn btn-success btn-sm mt-2">Editar perfil</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <h4>Carrito</h4>
+                <p>{{ $carritoCantidad ?? 0 }} productos</p>
+                <a href="{{ route('cart.index') }}" class="btn btn-success btn-sm mt-2">Ir al carrito</a>
             </div>
         </div>
     </div>
-</x-app-layout>
+
+    {{-- Tabla de historial de pedidos recientes --}}
+    <div class="row mt-4">
+        <div class="col-12">
+            <h5>Historial de pedidos recientes</h5>
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>00123</td>
+                        <td>10/05/2025</td>
+                        <td>Pendiente</td>
+                        <td>$150.00</td>
+                    </tr>
+                    <tr>
+                        <td>00122</td>
+                        <td>05/05/2025</td>
+                        <td>Completado</td>
+                        <td>$89.99</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection

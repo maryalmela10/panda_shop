@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="utf-8">
     <title>@yield('title', 'Panda')</title>
@@ -8,12 +9,22 @@
     <link rel="apple-touch-icon" href="{{ asset('assets/img/apple-icon.png') }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/logo.ico') }}">
 
+    <!-- Framework base -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/templatemo.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+
+    <!-- Librerías externas -->
     <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/slick.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/slick-theme.min.css') }}">
+
+    <!-- Plantilla base (templatemo) -->
+    <link rel="stylesheet" href="{{ asset('assets/css/templatemo.min.css') }}">
+
+    <!-- Tus estilos personalizados -->
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/shop.css') }}">
 </head>
+
 <body>
 
     {{-- Top Navbar --}}
@@ -22,8 +33,10 @@
     {{-- Header Navbar --}}
     @include('partials.navbar')
 
-    {{-- Content --}}
-    @yield('content')
+    {{-- Main Content --}}
+    <main>
+        @yield('content')
+    </main>
 
     {{-- Footer --}}
     @include('partials.footer')
@@ -36,4 +49,5 @@
     <script src="{{ asset('assets/js/custom.js') }}"></script>
 
 </body>
+
 </html>

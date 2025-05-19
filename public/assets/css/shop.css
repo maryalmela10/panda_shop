@@ -1,0 +1,134 @@
+/* ==========================================================================
+   4. SIDEBAR CATEGORÍAS
+   ========================================================================== */
+.templatemo-accordion {
+  padding: 1rem;
+}
+
+.templatemo-accordion-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-texto);
+  border-bottom: 1px solid var(--color-fondo-secundario);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.templatemo-accordion form button {
+  background-color: transparent;
+  border: none;
+  color: var(--color-texto);
+  font-size: 1rem;
+  padding: 0.4rem 0;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.templatemo-accordion form button:hover,
+.templatemo-accordion form button.active-category {
+  color: var(--color-principal);
+  font-weight: 600;
+}
+
+.templatemo-accordion form button i {
+  color: var(--color-interactivo);
+  font-size: 0.9rem;
+}
+
+.templatemo-accordion form button.all-categories {
+  background-color: #FFF;
+  color: var(--color-neutro);
+  transition: all 0.2s ease;
+}
+.templatemo-accordion form button.all-categories:hover {
+  background-color: var(--color-fondo-secundario);
+  color: white;
+}
+
+
+/* ==========================================================================
+   5. PAGINACIÓN
+   ========================================================================== */
+
+ul.pagination li.page-item.active span.page-link {
+  background-color: var(--color-principal) !important;
+  border-color: var(--color-principal) !important;
+  color: white !important;
+}
+
+ul.pagination li.page-item a.page-link {
+  background-color: white;
+  color: var(--color-destacado);
+  border-color: var(--color-principal);
+  transition: all 0.3s ease;
+}
+
+ul.pagination li.page-item a.page-link:hover {
+  background-color: var(--color-secundario);
+  border-color: var(--color-destacado);
+  color: #696969;
+}
+
+
+/* ==========================================================================
+   6. CARRUSEL HERO
+   ========================================================================== */
+
+#panda-carousel .carousel-inner {
+  background-color: var(--color-secundario);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#panda-carousel .carousel-item {
+  padding: 3rem 1.5rem;
+  color: var(--color-destacado);
+}
+
+#panda-carousel .carousel-item h1,
+#panda-carousel .carousel-item h3 {
+  color: var(--color-principal);
+}
+
+#panda-carousel .carousel-indicators li {
+  background-color: var(--color-fondo-secundario);
+}
+
+#panda-carousel .carousel-indicators .active {
+  background-color: var(--color-principal);
+}
+
+#panda-carousel .carousel-control-prev i,
+#panda-carousel .carousel-control-next i {
+  color: var(--color-destacado);
+}
+
+#panda-carousel .carousel-control-prev i:hover,
+#panda-carousel .carousel-control-next i:hover {
+  color: var(--color-principal-hover);
+}
+
+
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
+
+#tempaltemo_footer ul.footer-icons li:hover {
+  background-color: var(--color-principal) !important;
+}
+
+#tempaltemo_footer ul.footer-icons li:hover i {
+  color: #ffffff !important;
+}
+
+#tempaltemo_footer a {
+  color: var(--color-texto) !important;
+}
+
+#tempaltemo_footer a:hover {
+  color: var(--color-principal) !important;
+}

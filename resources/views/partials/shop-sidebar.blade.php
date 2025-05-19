@@ -1,33 +1,27 @@
 <div class="col-lg-3">
-    <h1 class="h2 pb-4">Categories</h1>
+    <h1 class="h2 templatemo-accordion-title">Categorías</h1>
     <ul class="list-unstyled templatemo-accordion">
+        <!-- Botón para mostrar todos los productos -->
         <li class="pb-3">
-            <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">Gender
-                <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
-            </a>
-            <ul class="collapse show list-unstyled pl-3">
-                <li><a class="text-decoration-none" href="#">Men</a></li>
-                <li><a class="text-decoration-none" href="#">Women</a></li>
-            </ul>
+            <form action="{{ route('shop') }}" method="GET">
+                <button type="submit" class="collapsed d-flex justify-content-between h3 text-decoration-none all-categories">
+                    Todas las categorías
+                    <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                </button>
+            </form>
         </li>
-        <li class="pb-3">
-            <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">Sale
-                <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
-            </a>
-            <ul class="collapse list-unstyled pl-3">
-                <li><a class="text-decoration-none" href="#">Sport</a></li>
-                <li><a class="text-decoration-none" href="#">Luxury</a></li>
-            </ul>
-        </li>
-        <li class="pb-3">
-            <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">Product
-                <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
-            </a>
-            <ul class="collapse list-unstyled pl-3">
-                <li><a class="text-decoration-none" href="#">Bag</a></li>
-                <li><a class="text-decoration-none" href="#">Sweather</a></li>
-                <li><a class="text-decoration-none" href="#">Sunglass</a></li>
-            </ul>
-        </li>
+        <!-- Categorías -->
+        @foreach ($categories as $category)
+            <li class="pb-3">
+                <form action="{{ route('shop') }}" method="GET">
+                    <input type="hidden" name="categoria_id" value="{{ $category->id }}">
+                    <button type="submit" class="collapsed d-flex justify-content-between h3 text-decoration-none {{ $category->id == $selectedCategory ? 'active-category' : '' }}">
+                        {{ $category->nombre }}
+                        <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                    </button>
+                </form>
+            </li>
+        @endforeach
     </ul>
 </div>
+

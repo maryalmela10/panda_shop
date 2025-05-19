@@ -1,59 +1,45 @@
-/* COLORES PERSONALIZADOS */
+/* ==========================================================================
+   1. VARIABLES DE COLOR
+   ========================================================================== */
 
-/* Botón principal */
-  
-  .btn-success:hover {
-    background-color: #c7747d !important;
-    border-color: #c7747d !important;
-  }
-  
-  /* Textos */
-  .text-success {
-    color: #E18D96 !important;
-  }
+/* Colores base (puedes usarlos como referencia visual) */
+:root {
+  --color-principal: #E18D96;
+  --color-principal-hover: #c7747d;
+  --color-secundario: #F3DDB3;
+  --color-destacado: #AF6E4E;
+  --color-fondo-secundario: #C8B4BA;
+  --color-neutro: #909090;
+  --color-texto: #212529;
+  --color-interactivo: #C1CD97;
+}
 
-  
-  /* Fondos */
-  .bg-success {
-    background-color: #E18D96 !important;
-  }
-  .bg-light {
-    background-color: #F3DDB3 !important;
-  }
-  .bg-dark {
-    background-color: #C8B4BA !important;
-  }
-  .bg-black {
-    background-color: #909090 !important;
-  }
-  
-  /* Links y hover */
-  a.text-success:hover,
-  a.text-success:focus {
-    color: #c7747d !important;
-  }
-  
-  /* Footer icons hover */
-  #tempaltemo_footer ul.footer-icons li:hover {
-    background-color: #E18D96 !important;
-  }
-  #tempaltemo_footer ul.footer-icons li:hover i {
-    color: #ffffff !important;
-  }
 
-  .text-light {
-    color: #212529 !important; /* negro Bootstrap clásico */
-  }
+/* ==========================================================================
+   2. UTILIDADES GENERALES
+   ========================================================================== */
 
-  #tempaltemo_footer a {
-    color: #212529 !important;
-  }
-  
-  #tempaltemo_footer a:hover {
-    color: #E18D96 !important;
-  }
+.bg-success       { background-color: var(--color-principal) !important; }
+.bg-light         { background-color: var(--color-secundario) !important; }
+.bg-dark          { background-color: var(--color-fondo-secundario) !important; }
+.bg-black         { background-color: var(--color-neutro) !important; }
 
-  .text-success {
-    color: #b55a63 !important; /* versión más oscura del #E18D96 */
-  }
-  
+.text-success     { color: var(--color-destacado) !important; }
+.text-light       { color: var(--color-texto) !important; }
+
+a.text-success:hover,
+a.text-success:focus {
+  color: var(--color-principal-hover) !important;
+}
+
+
+/* ==========================================================================
+   3. BOTONES PERSONALIZADOS
+   ========================================================================== */
+
+.btn-success:hover {
+  background-color: var(--color-principal-hover) !important;
+  border-color: var(--color-principal-hover) !important;
+}
+
+

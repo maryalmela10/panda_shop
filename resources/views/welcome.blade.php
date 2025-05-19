@@ -25,7 +25,8 @@
         <div class="col-12 col-md-4 p-5 mt-3 text-center">
             <a href="#"><img src="{{ asset('assets/img/' . $category['img']) }}" class="rounded-circle img-fluid border"></a>
             <h5 class="mt-3 mb-3">{{ $category['title'] }}</h5>
-            <p><a class="btn btn-success">Go Shop</a></p>
+            {{-- Mandar a shop con la categoría especifica del boton que cliclearon --}}
+            <p><a href="{{ route('shop') }}" class="btn btn-success">Go Shop</a></p>
         </div>
         @endforeach
     </div>
