@@ -12,6 +12,13 @@ class Review extends Model
 
     public $timestamps = false;
 
+    protected $fillable = [
+        'producto_id',
+        'usuario_id',
+        'estrellas',
+        'comentario',
+    ];
+
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id');
