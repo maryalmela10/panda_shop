@@ -1,47 +1,45 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Carrito de Compras') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <h3 class="text-lg font-semibold mb-4">Productos en el carrito</h3>
+@section('title', 'Carrito de Compras')
 
-                    <ul class="list-disc pl-6">
-                        @forelse($cart as $item)
-                            <li class="mb-2">
-                                {{ $item['name'] }} - {{ $item['quantity'] }} x ${{ $item['price'] }}
+@section('content')
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
 
-                                <!-- Enlace para eliminar una unidad -->
-                                <a href="{{ route('cart.remove', $item['id']) }}"
-                                   class="ml-4 text-red-600 hover:underline">
-                                    Eliminar
-                                </a>
-                            </li>
-                        @empty
-                            <li>No hay productos en el carrito.</li>
-                        @endforelse
-                    </ul>
+      <h3 class="mb-4 text-center text-success">Productos en el carrito</h3>
 
-                    <hr class="my-4">
-
-                    <p class="font-semibold">Total: ${{ number_format($totalCost, 2) }}</p>
-
-                    <hr class="my-4">
-
-                    <!-- Enlace para ir al formulario de pedido -->
-                    @if(count($cart) > 0)
-                        <a href="{{ route('order.create') }}"
-                           class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-700" style="color: #3182ce;">
-                            Realizar Pedido
-                        </a>
-                    @endif
-                </div>
+      @if (count($cart) > 0)
+        <div class="list-group mb-4">
+          @foreach ($cart as $item)
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <h5 class="mb-1">{{ $item['name'] }}</h5>
+                <small>Cantidad: {{ $item['quantity'] }} x ${{ number_format($item['price'], 2) }}</small>
+              </div>
+              <div>
+                <a href="{{ route('cart.remove', $item['id']) }}" class="btn btn-sm btn-outline-danger">
+                  <i class="fa fa-trash"></i> Eliminar
+                </a>
+              </div>
             </div>
+          @endforeach
         </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4>Total: <span class="text-success">${{ number_format($totalCost, 2) }}</span></h4>
+          <a href="{{ route('order.create') }}" class="btn btn-success">
+            Realizar Pedido
+          </a>
+        </div>
+
+      @else
+        <div class="alert alert-warning text-center" role="alert">
+          No hay productos en el carrito.
+        </div>
+      @endif
+
     </div>
-</x-app-layout>
+  </div>
+</section>
+@endsection
