@@ -6,8 +6,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProductoController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Support\Facades\Route;
+
 
 // Página de inicio pública
 Route::get('/', function () {
@@ -19,6 +21,18 @@ Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::view('/shop/product', 'customerViews.shop-single')->name('shop.product');
 Route::view('/about', 'customerViews.about')->name('about');
 Route::view('/contact', 'customerViews.contact')->name('contact');
+
+// Rutas de autenticación (si no estás usando laravel/ui o breeze/jetstream)
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
+// Rutas para la verificación de correo electrónico
+Route::get('/email/verify', [RegisterController::class, 'showVerificationNotice'])
+    ->name('verification.notice');
+Route::get('/verify-email/{token}', [RegisterController::class, 'verify'])
+    ->name('verification.verify');
+Route::post('/email/verification-notification', [RegisterController::class, 'resendVerificationEmail'])
+    ->name('verification.resend');
 
 // Carrito y pedidos (requieren login)
 Route::middleware(['auth'])->group(function () {
@@ -34,9 +48,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/productos/{producto}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
     Route::get('/productos/{producto}', [ProductoController::class, 'show'])->name('productos.show');
-    });
+});
 
-// Panel del cliente (área protegida)
+// Panel del cliente (área protegida que requiere verificación de correo)
 Route::middleware(['auth', 'verified'])
     ->prefix('dashboard')
     ->name('dashboard.')
