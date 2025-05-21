@@ -1,48 +1,51 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Confirmación del Pedido') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <h3 class="text-lg font-semibold mb-4">Resumen de su pedido</h3>
+@section('title', 'Confirmación del Pedido')
 
-                    <!-- Mostrar resumen del carrito -->
-                    <div class="mb-6">
-                        <h4 class="text-md font-semibold mb-2">Productos</h4>
-                        <ul class="list-disc pl-6">
-                            @foreach($order->productos as $producto)
-                                <li>{{ $producto->nombre }} - {{ $producto->pivot->cantidad }} x ${{ $producto->pivot->precio }}</li>
-                            @endforeach
-                        </ul>
+@section('content')
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
 
-                        <p class="mt-2 font-semibold">
-                            Total productos: ${{ number_format($totalProductos, 2) }}
-                        </p>
-                    </div>
+      <h3 class="mb-4 text-success text-center">Resumen de su pedido</h3>
 
-                    <!-- Mostrar dirección de envío -->
-                    <div class="mb-6">
-                        <h4 class="text-md font-semibold mb-2">Dirección de Envío</h4>
-                        <p>{{ $order->direccion_envio }}</p>
-                    </div>
+      <!-- Productos -->
+      <div class="mb-4">
+        <h4 class="mb-3">Productos</h4>
+        <ul class="list-group">
+          @foreach($order->productos as $producto)
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>{{ $producto->nombre }} (x{{ $producto->pivot->cantidad }})</div>
+              <div>${{ number_format($producto->pivot->precio * $producto->pivot->cantidad, 2) }}</div>
+            </li>
+          @endforeach
+        </ul>
+        <p class="mt-3 fw-semibold fs-5 text-end">Total productos: ${{ number_format($totalProductos, 2) }}</p>
+      </div>
 
-                    <!-- Mostrar coste de envío -->
-                    <div class="mb-6">
-                        <h4 class="text-md font-semibold mb-2">Coste de Envío</h4>
-                        <p>${{ number_format($order->coste_envio, 2) }}</p>
-                    </div>
+      <!-- Dirección de envío -->
+      <div class="mb-4">
+        <h4 class="mb-3">Dirección de Envío</h4>
+        <p>{{ $order->direccion_envio }}</p>
+      </div>
 
-                    <!-- Mostrar total cost -->
-                    <p class="mt-2 font-semibold">
-                        Total del pedido: ${{ number_format($totalProductos + $order->coste_envio, 2) }}
-                    </p>
-                </div>
-            </div>
-        </div>
+      <!-- Coste de envío -->
+      <div class="mb-4">
+        <h4 class="mb-3">Coste de Envío</h4>
+        <p>${{ number_format($order->coste_envio, 2) }}</p>
+      </div>
+
+      <!-- Total del pedido -->
+      <div class="mb-4 d-flex justify-content-between align-items-center">
+        <h4>Total del pedido:</h4>
+        <h4 class="text-success">${{ number_format($totalProductos + $order->coste_envio, 2) }}</h4>
+      </div>
+
+      <div class="text-center">
+        <a href="{{ route('shop') }}" class="btn btn-primary">Seguir Comprando</a>
+      </div>
+
     </div>
-</x-app-layout>
+  </div>
+</section>
+@endsection

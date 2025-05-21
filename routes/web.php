@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ProductoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
 
@@ -27,7 +29,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/order/create', [OrderController::class, 'create'])->name('order.create');
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
     Route::get('/order/{orderId}/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
-});
+
+    Route::get('/productos/{producto}/review', [ReviewController::class, 'create'])->name('reviews.create');
+    Route::post('/productos/{producto}/review', [ReviewController::class, 'store'])->name('reviews.store');
+
+    Route::get('/productos/{producto}', [ProductoController::class, 'show'])->name('productos.show');
+    });
 
 // Panel del cliente (área protegida)
 Route::middleware(['auth', 'verified'])
