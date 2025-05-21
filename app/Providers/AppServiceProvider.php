@@ -20,10 +20,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-           // Inyectar cantidad del carrito a todas las vistas
-           View::composer('*', function ($view) {
-            $carrito = session('carrito', []);
-            $view->with('carritoCantidad', count($carrito));
+        // Inyectar cantidad del carrito a todas las vistas
+        View::composer('*', function ($view) {
+            $cart = session('cart', []);
+            $cantidad = array_sum(array_column($cart, 'quantity'));
+            $view->with('carritoCantidad', $cantidad);
         });
     }
 }

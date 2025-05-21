@@ -132,3 +132,48 @@ ul.pagination li.page-item a.page-link:hover {
 #tempaltemo_footer a:hover {
   color: var(--color-principal) !important;
 }
+
+/* ==========================================================================
+   8. CATEGORÍAS EN LA PÁGINA PRINCIPAL
+   ========================================================================== */
+
+.category-card {
+    position: relative;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    transition: transform 0.3s ease;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.category-card:hover {
+    transform: scale(1.02);
+}
+
+.category-card-overlay {
+    background: linear-gradient(to top, rgba(200, 180, 186, 0.9), rgba(200, 180, 186, 0.4) 50%, transparent 100%);
+    color: white;
+    padding: 1.5rem;
+    width: 100%;
+    backdrop-filter: blur(2px);
+}
+
+.category-card-overlay h5 {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.category-card-overlay p {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.category-card .btn {
+    font-size: 0.85rem;
+    font-weight: 500;
+}

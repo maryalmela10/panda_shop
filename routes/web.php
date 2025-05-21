@@ -16,7 +16,7 @@ Route::get('/', function () {
 
 // Página pública de la tienda
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
-Route::view('/shop/product', 'customerViews.shop-single')->name('shop.product');
+Route::get('/shop/product/{producto}', [ProductoController::class, 'publicShow'])->name('shop.product');
 Route::view('/about', 'customerViews.about')->name('about');
 Route::view('/contact', 'customerViews.contact')->name('contact');
 
@@ -33,7 +33,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/productos/{producto}/review', [ReviewController::class, 'create'])->name('reviews.create');
     Route::post('/productos/{producto}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
-    Route::get('/productos/{producto}', [ProductoController::class, 'show'])->name('productos.show');
     });
 
 // Panel del cliente (área protegida)

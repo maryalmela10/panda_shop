@@ -32,8 +32,8 @@
                                 <img class="card-img rounded-0 img-fluid" src="{{ $product->imagen_url }}" alt="{{ $product->nombre }}">
                                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                     <ul class="list-unstyled">
-                                        <li><a class="btn btn-success text-white" href="{{ route('shop.product', $product->id) }}"><i class="far fa-heart"></i></a></li>
-                                        <li><a class="btn btn-success text-white mt-2" href="{{ route('shop.product', $product->id) }}"><i class="far fa-eye"></i></a></li>
+                                        <li><a class="btn btn-success text-white" href="{{ route('shop.product', ['producto' => $product->id]) }}"><i class="far fa-heart"></i></a></li>
+                                        <li><a class="btn btn-success text-white mt-2" href="{{ route('shop.product', ['producto' => $product->id]) }}"><i class="far fa-eye"></i></a></li>
                                         <li><a class="btn btn-success text-white mt-2" href="{{ route('cart.add', $product->id) }}"><i class="fas fa-cart-plus"></i></a></li>
                                     </ul>
                                 </div>

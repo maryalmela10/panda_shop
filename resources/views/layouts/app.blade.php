@@ -23,6 +23,7 @@
     <!-- Tus estilos personalizados -->
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/shop.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
 </head>
 
 <body>
