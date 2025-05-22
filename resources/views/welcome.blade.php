@@ -17,18 +17,21 @@
     </div>
     <div class="row">
         {{-- sacar las 3 categorías con más ventas --}} 
-        @foreach ([
-            ['img' => 'categ_harinas.jpg', 'title' => 'Harinas'],
-            ['img' => 'categ_chocolates_coberturas.jpg', 'title' => 'Chocolates'],
-            ['img' => 'categ_esencias_aromas.jpg', 'title' => 'Esencias y colorantes'],
-        ] as $category)
-        <div class="col-12 col-md-4 p-5 mt-3 text-center">
-            <a href="#"><img src="{{ asset('assets/img/' . $category['img']) }}" class="rounded-circle img-fluid border"></a>
-            <h5 class="mt-3 mb-3">{{ $category['title'] }}</h5>
-            {{-- Mandar a shop con la categoría especifica del boton que cliclearon --}}
-            <p><a href="{{ route('shop') }}" class="btn btn-success">Go Shop</a></p>
+       @foreach ([
+    ['img' => 'categ_harinas.jpg', 'title' => 'Harinas', 'desc' => 'Harinas artesanales y frescas.'],
+    ['img' => 'categ_chocolates_coberturas.jpg', 'title' => 'Chocolates', 'desc' => 'Coberturas premium para tus postres.'],
+    ['img' => 'categ_esencias_aromas.jpg', 'title' => 'Esencias y colorantes', 'desc' => 'Colores y aromas naturales.'],
+] as $category)
+<div class="col-12 col-md-4 mb-4">
+    <div class="category-card" style="background-image: url('{{ asset('assets/img/' . $category['img']) }}')">
+        <div class="category-card-overlay">
+            <h5>{{ $category['title'] }}</h5>
+            <p>{{ $category['desc'] }}</p>
+            <a href="{{ route('shop') }}" class="btn btn-light btn-sm">Explorar</a>
         </div>
-        @endforeach
+    </div>
+</div>
+@endforeach
     </div>
 </section>
 

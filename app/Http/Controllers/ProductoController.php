@@ -8,11 +8,20 @@ use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
-    public function show(Producto $producto)
+    public function publicShow(Producto $producto)
     {
-        // Cargamos también las reviews y el usuario que escribió cada una
-        $producto->load(['reviews.usuario']);
+        $producto->load(['reviews.usuario', 'categoria']);
 
-        return view('productos.show', compact('producto'));
+        $promedio = $producto->getReviewPromedio();
+        $disponible = $producto->disponible && $producto->stock > 0;
+
+        // Productos relacionados: misma categoría, distintos del actual
+        $relacionados = Producto::where('categoria_id', $producto->categoria_id)
+            ->where('id', '!=', $producto->id)
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+
+        return view('customerViews.shop-single', compact('producto', 'promedio', 'disponible', 'relacionados'));
     }
 }
