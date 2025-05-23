@@ -177,3 +177,21 @@ ul.pagination li.page-item a.page-link:hover {
     font-size: 0.85rem;
     font-weight: 500;
 }
+
+/* ==========================================================================
+   2.1. MENÚ PRINCIPAL MEJORADO
+   ========================================================================== */
+
+.nav-menu-destacado .nav-link {
+  font-size: 1.25rem; 
+  font-weight: 500;
+  color: var(--color-texto);
+  padding: 1rem 1.5rem; 
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.nav-menu-destacado .nav-link:hover,
+.nav-menu-destacado .nav-link:focus {
+  color: var(--color-destacado);
+  border-bottom: 3px solid var(--color-destacado); 
+}

@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
 
 // Página de inicio pública
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Página pública de la tienda
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');

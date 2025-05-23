@@ -10,22 +10,34 @@ class ShopController extends Controller
 {
     public function index(Request $request)
     {
-        // Obtenemos todas las categorías
         $categories = Categoria::all();
-    
-        // Obtenemos el id de la categoría seleccionada desde la URL (si existe)
-        $selectedCategory = $request->input('categoria_id');  
-    
-        // Si se pasa un categoria_id, filtramos los productos por categoría
+        $selectedCategory = $request->input('categoria_id');
+        $sortOption = $request->input('sort');
+
+        $query = Producto::query();
+
         if ($selectedCategory) {
-            // Filtramos los productos de esa categoría
-            $products = Producto::where('categoria_id', $selectedCategory)->paginate(9);
-        } else {
-            // Si no se pasa categoria_id, mostramos todos los productos
-            $products = Producto::paginate(9);
+            $query->where('categoria_id', $selectedCategory);
         }
-    
-        // Pasamos los datos a la vista
+
+        // Ordenamiento
+        switch ($sortOption) {
+            case 'price_asc':
+                $query->orderBy('precio', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('precio', 'desc');
+                break;
+            case 'bestsellers':
+                $query->orderBy('num_ventas', 'desc'); 
+                break;
+            default:
+                $query->latest(); // Orden por defecto (por fecha de creación)
+                break;
+        }
+
+        $products = $query->paginate(9)->appends($request->query());
+
         return view('customerViews.shop', compact('products', 'categories', 'selectedCategory'));
     }
     

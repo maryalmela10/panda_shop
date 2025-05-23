@@ -12,7 +12,7 @@
 
         <div class="collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
             <div class="flex-fill">
-                <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                <ul class="nav navbar-nav d-flex gap-1 justify-content-center mx-lg-auto align-items-center nav-menu-destacado">
                     <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">Sobre nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('shop') }}">Comprar</a></li>

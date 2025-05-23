@@ -2,17 +2,184 @@
 
 namespace Database\Seeders;
 
-use App\Models\Producto;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ProductosSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        Producto::factory()->count(10)->create();
+        DB::table('productos')->insert([
+            [
+                'nombre' => 'Harina de trigo especial repostería',
+                'descripcion' => 'Harina blanca suave ideal para bizcochos y galletas.',
+                'precio' => 2.50,
+                'imagen_url' => 'harina_trigo.jpg',
+                'disponible' => 1,
+                'stock' => 83,
+                'categoria_id' => 1,
+                'num_ventas' => 12,
+            ],
+            [
+                'nombre' => 'Harina integral ecológica',
+                'descripcion' => 'Harina de trigo integral con certificación ecológica.',
+                'precio' => 3.20,
+                'imagen_url' => 'harina_integral.jpg',
+                'disponible' => 1,
+                'stock' => 69,
+                'categoria_id' => 1,
+                'num_ventas' => 24,
+            ],
+            [
+                'nombre' => 'Chocolate blanco Nestlé',
+                'descripcion' => 'Chocolate blanco ideal para fundir y bañar postres.',
+                'precio' => 4.60,
+                'imagen_url' => 'choco_blanco_nestle.jpg',
+                'disponible' => 1,
+                'stock' => 54,
+                'categoria_id' => 2,
+                'num_ventas' => 36,
+            ],
+            [
+                'nombre' => 'Colorante rojo en gel',
+                'descripcion' => 'Colorante alimentario concentrado para masas y cremas.',
+                'precio' => 2.30,
+                'imagen_url' => 'colorante_rojo.jpg',
+                'disponible' => 1,
+                'stock' => 74,
+                'categoria_id' => 3,
+                'num_ventas' => 45,
+            ],
+            [
+                'nombre' => 'Perlitas de chocolate blanco Dr. Oetker',
+                'descripcion' => 'Decoración dulce chocolate blanco.',
+                'precio' => 1.80,
+                'imagen_url' => 'perlitas.jpg',
+                'disponible' => 1,
+                'stock' => 86,
+                'categoria_id' => 5,
+                'num_ventas' => 19,
+            ],
+            [
+                'nombre' => 'Levadura Royal',
+                'descripcion' => 'Polvo para hornear de uso común en repostería.',
+                'precio' => 1.50,
+                'imagen_url' => 'levadura_royal.jpg',
+                'disponible' => 1,
+                'stock' => 76,
+                'categoria_id' => 6,
+                'num_ventas' => 32,
+            ],
+            [
+                'nombre' => 'Preparado de tortitas americanas Mary Lee',
+                'descripcion' => 'Mezcla lista para preparar tortitas esponjosas al estilo americano. Bolsa de 156g.',
+                'precio' => 1.75,
+                'imagen_url' => 'tortitas_mary_lee.jpg',
+                'disponible' => 1,
+                'stock' => 42,
+                'categoria_id' => 7,
+                'num_ventas' => 15,
+            ],
+            [
+                'nombre' => 'Sirope de chocolate Delimagic',
+                'descripcion' => 'Sirope de chocolate sin gluten ni lactosa, ideal para postres. Botella de 295g.',
+                'precio' => 1.65,
+                'imagen_url' => 'sirope_chocolate.jpg',
+                'disponible' => 0,
+                'stock' => 0,
+                'categoria_id' => 5,
+                'num_ventas' => 27,
+            ],
+            [
+                'nombre' => 'Perlitas de chocolate Dr. Oetker',
+                'descripcion' => 'Perlitas ideales para mezclar en masas o decorar. Bolsa de 100g.',
+                'precio' => 3.59,
+                'imagen_url' => 'perlitas_chocolate.jpg',
+                'disponible' => 1,
+                'stock' => 38,
+                'categoria_id' => 5,
+                'num_ventas' => 34,
+            ],
+            [
+                'nombre' => 'Caramelo líquido Delimagic',
+                'descripcion' => 'Sirope de caramelo para flanes y postres. Botella de 400g.',
+                'precio' => 2.29,
+                'imagen_url' => 'caramelo_liquido.jpg',
+                'disponible' => 1,
+                'stock' => 25,
+                'categoria_id' => 5,
+                'num_ventas' => 19,
+            ],
+            [
+                'nombre' => 'Sirope de fresa Delimagic',
+                'descripcion' => 'Sirope de fresa sin gluten ni lactosa. Botella de 295g.',
+                'precio' => 1.65,
+                'imagen_url' => 'sirope_fresa.jpg',
+                'disponible' => 1,
+                'stock' => 31,
+                'categoria_id' => 5,
+                'num_ventas' => 22,
+            ],
+            [
+                'nombre' => 'Preparado para flanes y natillas Flanin',
+                'descripcion' => 'Caja con preparado para hacer flanes o natillas. 192g.',
+                'precio' => 1.99,
+                'imagen_url' => 'flanin_maizena.jpg',
+                'disponible' => 1,
+                'stock' => 50,
+                'categoria_id' => 7,
+                'num_ventas' => 28,
+            ],
+            [
+                'nombre' => 'Preparado para crepes Delimagic',
+                'descripcion' => 'Mezcla líquida para hacer crepes fácilmente. Frasco de 200g.',
+                'precio' => 1.99,
+                'imagen_url' => 'crepes_delimagic.jpg',
+                'disponible' => 1,
+                'stock' => 18,
+                'categoria_id' => 7,
+                'num_ventas' => 17,
+            ],
+            [
+                'nombre' => 'Preparado para natillas caseras Royal',
+                'descripcion' => 'Caja con mezcla para preparar natillas. 100g.',
+                'precio' => 1.50,
+                'imagen_url' => 'natillas_royal.jpg',
+                'disponible' => 1,
+                'stock' => 60,
+                'categoria_id' => 7,
+                'num_ventas' => 33,
+            ],
+            [
+                'nombre' => 'Preparado para pastel fresco limón Royal',
+                'descripcion' => 'Caja para preparar pastel fresco sabor limón. 103g.',
+                'precio' => 1.60,
+                'imagen_url' => 'pastel_limon_royal.jpg',
+                'disponible' => 1,
+                'stock' => 29,
+                'categoria_id' => 7,
+                'num_ventas' => 26,
+            ],
+            [
+                'nombre' => 'Preparado para tarta de Oreo Royal',
+                'descripcion' => 'Mezcla para preparar una tarta estilo Oreo. Caja de 215g.',
+                'precio' => 3.99,
+                'imagen_url' => 'tarta_oreo_royal.jpg',
+                'disponible' => 1,
+                'stock' => 36,
+                'categoria_id' => 7,
+                'num_ventas' => 41,
+            ],
+            [
+                'nombre' => 'Aroma de vainilla',
+                'descripcion' => 'Preparados para postres Aroma de vainilla Dr. Oetker blister 8 g. Pack de 4 frascos monodosis de 2ml cada uno.',
+                'precio' => 2.89,
+                'imagen_url' => 'aroma_vainilla.jpg',
+                'disponible' => 1,
+                'stock' => 36,
+                'categoria_id' => 3,
+                'num_ventas' => 25,
+            ],
+        ]);
     }
 }

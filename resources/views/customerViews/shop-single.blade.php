@@ -9,7 +9,7 @@
             <!-- Imagen del producto -->
             <div class="col-lg-5 mt-5">
                 <div class="card mb-3">
-                    <img class="card-img img-fluid" src="{{ $producto->imagen_url }}" alt="{{ $producto->nombre }}"
+                    <img class="card-img img-fluid" src="{{ asset('assets/img/' . $producto->imagen_url) }}" alt="{{ $producto->nombre }}"
                         id="product-detail">
                 </div>
             </div>
@@ -32,8 +32,7 @@
                         <p>{{ $producto->descripcion }}</p>
 
                         <p><strong>Categoría:</strong> {{ $producto->categoria->nombre ?? 'Sin categoría' }}</p>
-                        <p><strong>Ventas:</strong> {{ $producto->num_ventas }}</p>
-                        <p><strong>Stock:</strong> {{ $producto->stock }}</p>
+                        <p><strong>Ventas:</strong> {{ $producto->num_ventas }}+</p>
 
                         @if ($disponible)
                             <form action="{{ route('cart.add', $producto->id) }}" method="GET">
@@ -68,7 +67,7 @@
                     <div class="col-12 col-md-3 mb-4">
                         <div class="card h-100">
                             <a href="{{ route('shop.product', ['producto' => $rel->id]) }}">
-                                <img src="{{ $rel->imagen_url }}" class="card-img-top" alt="{{ $rel->nombre }}">
+                                <img src="{{ asset('assets/img/' . $rel->imagen_url) }}" class="card-img-top" alt="{{ $rel->nombre }}">
                             </a>
                             <div class="card-body">
                                 <ul class="list-unstyled d-flex justify-content-between">
