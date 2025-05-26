@@ -2,17 +2,49 @@
 
 namespace Database\Seeders;
 
-use App\Models\Categoria;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CategoriasSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        Categoria::factory()->count(5)->create();
+        DB::table('categorias')->insert([
+            [
+                'nombre' => 'Harinas',
+                'descripcion' => 'Harinas artesanales, integrales y de repostería.',
+                'imagen' => 'categ_harinas.jpg', // 👉 pon esta imagen en /public/assets/img/
+            ],
+            [
+                'nombre' => 'Chocolates y Coberturas',
+                'descripcion' => 'Coberturas de chocolate blanco, negro y con leche.',
+                'imagen' => 'categ_chocolates.jpg',
+            ],
+            [
+                'nombre' => 'Colorantes y Esencias',
+                'descripcion' => 'Colores y aromas para repostería natural y sintética.',
+                'imagen' => 'categ_colorantes.jpg',
+            ],
+            [
+                'nombre' => 'Frutos secos',
+                'descripcion' => 'Almendras, nueces, pistachos, avellanas y más.',
+                'imagen' => 'categ_frutos_secos.jpg',
+            ],
+            [
+                'nombre' => 'Decoraciones y toppings',
+                'descripcion' => 'Perlitas, confites, sprinkles y decoraciones comestibles.',
+                'imagen' => 'categ_toppings.jpg',
+            ],
+            [
+                'nombre' => 'Fermentos y polvos',
+                'descripcion' => 'Levaduras, polvos para hornear y estabilizantes.',
+                'imagen' => 'categ_fermentos.jpg',
+            ],
+            [
+                'nombre' => 'Preparados para postres',
+                'descripcion' => 'Mezclas listas para hacer tortitas, crepes, flanes, natillas y más.',
+                'imagen' => 'categ_preparados.jpg',
+            ],
+        ]);
     }
 }

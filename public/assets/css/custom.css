@@ -32,6 +32,9 @@ a.text-success:focus {
   color: var(--color-principal-hover) !important;
 }
 
+.color-destacado {
+  color: var(--color-destacado);
+}
 
 /* ==========================================================================
    3. BOTONES PERSONALIZADOS
