@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\CategoriaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
 
@@ -32,6 +33,23 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/productos/{producto}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
     });
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Productos
+    Route::get('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
+    Route::post('/productos', [ProductoController::class, 'store'])->name('productos.store');
+    Route::get('/productos/{producto}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
+    Route::put('/productos/{producto}/update', [ProductoController::class, 'update'])->name('productos.update');
+    Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+
+    // Categorías
+    Route::get('/categorias/create', [CategoriaController::class, 'create'])->name('categorias.create');
+    Route::post('/categorias', [CategoriaController::class, 'store'])->name('categorias.store');
+    Route::get('/categorias/{categoria}/edit', [CategoriaController::class, 'edit'])->name('categorias.edit');
+    Route::put('/categorias/{categoria}/update', [CategoriaController::class, 'update'])->name('categorias.update');
+    Route::delete('/categorias/{categoria}', [CategoriaController::class, 'destroy'])->name('categorias.destroy');
+});
+
 
 // Panel del cliente (área protegida)
 Route::middleware(['auth', 'verified'])

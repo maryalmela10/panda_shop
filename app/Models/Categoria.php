@@ -12,6 +12,12 @@ class Categoria extends Model
 
     public $timestamps = false;
 
+    protected $fillable = [
+        'nombre',
+        'descripcion',
+        'imagen' // o 'imagen_url' según el nombre de tu campo
+    ];
+
     public function productos()
     {
         return $this->hasMany(Producto::class, 'categoria_id');
