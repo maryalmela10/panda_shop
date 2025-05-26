@@ -40,9 +40,9 @@ class CarritoController extends Controller
         }
 
         session()->put('cart', $cart);
-        
+
         // Redirigir al carrito con un mensaje
-        return redirect()->route('cart.index')->with('success', 'Producto agregado al carrito.');
+        return redirect()->route('shop')->with('success', 'Producto agregado al carrito.');
     }
 
     /**

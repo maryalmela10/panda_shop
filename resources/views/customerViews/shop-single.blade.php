@@ -3,6 +3,11 @@
 @section('title', 'Detalle de Producto')
 
 @section('content')
+    <div class="container py-2">
+        <a href="{{ route('shop') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Volver a la tienda
+        </a>
+    </div>
     <!-- Product Details -->
     <div class="container py-5">
         <div class="row">
@@ -45,6 +50,25 @@
                         @else
                             <div class="alert alert-danger mt-3" role="alert">
                                 Producto agotado
+                            </div>
+                        @endif
+                        <!-- Botón Editar y Eliminar (solo para admins) -->
+                        @if(Auth::check() && Auth::user()->rol == 1)
+                            <div class="row pb-3">
+                                <div class="col d-grid mb-2">
+                                    <a href="{{ route('admin.productos.edit', $producto->id) }}"
+                                    class="btn btn-warning btn-lg text-white mb-2">
+                                        <i class="fas fa-edit"></i> Editar producto
+                                    </a>
+                                    <form action="{{ route('admin.productos.destroy', $producto->id) }}" method="POST"
+                                        onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-lg">
+                                            <i class="fas fa-trash"></i> Eliminar producto
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         @endif
                     </div>

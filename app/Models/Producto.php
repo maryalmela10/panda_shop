@@ -13,6 +13,17 @@ class Producto extends Model
 
     public $timestamps = false;
 
+    protected $fillable = [
+        'nombre',
+        'descripcion',
+        'precio',
+        'imagen_url', // o 'imagen' si subes archivos
+        'disponible',
+        'stock',
+        'categoria_id',
+        'fecha_reposicion'
+    ];
+
     public function categoria()
     {
         return $this->belongsTo(Categoria::class, 'categoria_id');

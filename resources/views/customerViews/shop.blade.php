@@ -10,6 +10,18 @@
 
             {{-- Productos --}}
             <div class="col-lg-9">
+                {{-- Botones de administración --}}
+                @if(Auth::check() && Auth::user()->rol == 1)
+                    <div class="d-flex justify-content-end mb-4 gap-2">
+                        <a href="{{ route('admin.productos.create') }}" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Añadir producto
+                        </a>
+                        <a href="{{ route('admin.categorias.create') }}" class="btn btn-success">
+                            <i class="fas fa-folder-plus"></i> Añadir categoría
+                        </a>
+                    </div>
+                @endif
+
                 {{-- Filtros de navegación --}}
                 <div class="row">
                     <div class="col-md-6 pb-4">

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
-use App\Models\Review;
+use App\Models\Categoria;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
@@ -24,4 +25,104 @@ class ProductoController extends Controller
 
         return view('customerViews.shop-single', compact('producto', 'promedio', 'disponible', 'relacionados'));
     }
+
+    public function create()
+    {
+        if (!Auth::check() || Auth::user()->rol !== 1) {
+            abort(403);
+        }
+
+        $categorias = Categoria::all();
+        return view('productos.create', compact('categorias'));
+    }
+
+    public function edit($id)
+    {
+        // Busca el producto por ID
+        $producto = Producto::findOrFail($id);
+
+        // Obtén todas las categorías para el select
+        $categorias = Categoria::all();
+
+        // Retorna la vista de edición, pasando el producto y las categorías
+        return view('productos.edit', compact('producto', 'categorias'));
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        // Validación
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'precio' => 'required|numeric|min:0',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'disponible' => 'required|boolean',
+            'stock' => 'required|integer|min:0',
+            'categoria_id' => 'required|exists:categorias,id',
+            'fecha_reposicion' => 'nullable|date',
+        ]);
+
+        // Buscar producto por ID
+        $producto = Producto::findOrFail($id);
+        $producto->fill($request->except('imagen'));
+
+        // Actualizar imagen (si se incluye)
+        if ($request->hasFile('imagen')) {
+            $path = $request->file('imagen')->store('public/productos');
+            $producto->imagen_url = basename($path);
+        }
+
+        $producto->save();
+
+        return redirect()->route('shop')
+            ->with('success', 'Producto actualizado correctamente.');
+    }
+
+    public function store(Request $request)
+    {
+        // Validación
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'precio' => 'required|numeric|min:0',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Si subes imágenes
+            'disponible' => 'required|boolean',
+            'stock' => 'required|integer|min:0',
+            'categoria_id' => 'required|exists:categorias,id',
+            'fecha_reposicion' => 'nullable|date',
+        ]);
+
+        // Crear producto (sin ID)
+        $producto = new Producto();
+        $producto->fill($request->except('imagen'));
+
+        // Subir imagen (si se incluye)
+        if ($request->hasFile('imagen')) {
+            $path = $request->file('imagen')->store('public/productos');
+            $producto->imagen_url = basename($path); // Asignar nombre del archivo
+        }
+
+        $producto->save();
+
+        return redirect()->route('shop')
+            ->with('success', 'Producto creado correctamente.');
+    }
+
+    public function destroy(Producto $producto)
+    {
+        if (!auth()->check() || auth()->user()->rol !== 1) {
+            abort(403, 'No tienes permiso para eliminar productos.');
+        }
+
+        // Si quieres eliminar también la imagen física en storage:
+        if ($producto->imagen_url) {
+            \Storage::delete('public/productos/' . $producto->imagen_url);
+        }
+
+        $producto->delete();
+
+        return redirect()->route('shop')->with('success', 'Producto eliminado correctamente.');
+    }
+
 }

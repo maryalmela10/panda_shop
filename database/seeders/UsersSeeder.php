@@ -20,7 +20,7 @@ class UsersSeeder extends Seeder
             'password' => bcrypt('1234'),
             'phone' => '987654321',
             'address' => 'Calle admin',
-            'rol' => '1',
+            'rol' => 1,
         ]);
 
         User::factory()->count(5)->create();
