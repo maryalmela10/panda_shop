@@ -48,7 +48,7 @@
                         @forelse($pedidos as $pedido)
                             <tr>
                                 <td>{{ str_pad($pedido->id, 5, '0', STR_PAD_LEFT) }}</td>
-                                
+
                                 <td>{{ ucfirst($pedido->estado ?? 'Pendiente') }}</td>
                                 <td>${{ number_format($pedido->productos->sum(fn($p) => $p->pivot->precio * $p->pivot->cantidad), 2) }}
                                 </td>

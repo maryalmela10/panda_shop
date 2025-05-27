@@ -10,7 +10,6 @@ class CategoriaController extends Controller
 {
     public function create()
     {
-        // Verifica si el usuario tiene rol de administrador
         if (!Auth::check() || Auth::user()->rol !== 1) {
             abort(403, 'No tienes permiso para acceder a esta sección.');
         }
@@ -20,26 +19,38 @@ class CategoriaController extends Controller
 
     public function edit($id)
     {
-        // Busca la categoría por ID
         $categoria = Categoria::findOrFail($id);
-
-        // Retorna la vista de edición, pasando la categoría
         return view('categorias.edit', compact('categoria'));
     }
 
     public function update(Request $request, $id)
     {
-        // Validar los datos del formulario
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'imagen' => 'nullable|url',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // validar imagen subida
         ]);
 
         $categoria = Categoria::findOrFail($id);
 
-        // Actualizar los campos permitidos
-        $categoria->update($request->only(['nombre', 'descripcion', 'imagen']));
+        // Actualizar campos excepto imagen (la manejamos aparte)
+        $categoria->nombre = $request->nombre;
+        $categoria->descripcion = $request->descripcion;
+
+        if ($request->hasFile('imagen')) {
+            // Borrar imagen anterior si existe
+            if ($categoria->imagen && file_exists(public_path($categoria->imagen))) {
+                unlink(public_path($categoria->imagen));
+            }
+
+            $imagen = $request->file('imagen');
+            $nombreArchivo = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('categorias'), $nombreArchivo);
+
+            $categoria->imagen = 'categorias/' . $nombreArchivo;
+        }
+
+        $categoria->save();
 
         return redirect()->route('shop')
             ->with('success', 'Categoría actualizada correctamente.');
@@ -47,17 +58,27 @@ class CategoriaController extends Controller
 
     public function store(Request $request)
     {
-        // Validación y lógica para crear la categoría
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'imagen' => 'nullable|url'
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        Categoria::create($request->all());
+        $categoria = new Categoria();
+        $categoria->nombre = $request->nombre;
+        $categoria->descripcion = $request->descripcion;
+
+        if ($request->hasFile('imagen')) {
+            $imagen = $request->file('imagen');
+            $nombreArchivo = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('categorias'), $nombreArchivo);
+            $categoria->imagen = 'categorias/' . $nombreArchivo;
+        }
+
+        $categoria->save();
 
         return redirect()->route('shop')
-            ->with('success', 'Categoría creada correctamente');
+            ->with('success', 'Categoría creada correctamente.');
     }
 
     public function destroy(Categoria $categoria)
@@ -66,14 +87,12 @@ class CategoriaController extends Controller
             abort(403, 'No tienes permiso para eliminar categorías.');
         }
 
-        // Si quieres eliminar la imagen física también:
-        if ($categoria->imagen) {
-            \Storage::delete('public/categorias/' . $categoria->imagen);
+        if ($categoria->imagen && file_exists(public_path($categoria->imagen))) {
+            unlink(public_path($categoria->imagen));
         }
 
         $categoria->delete();
 
         return redirect()->route('shop')->with('success', 'Categoría eliminada correctamente.');
     }
-
 }

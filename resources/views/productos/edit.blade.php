@@ -8,7 +8,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="dashboard-card">
-                    <form action="{{ route('admin.productos.update', $producto->id) }}" method="POST" autocomplete="off">
+                    <form action="{{ route('admin.productos.update', $producto->id) }}" method="POST" autocomplete="off" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="row g-4">
@@ -40,9 +40,13 @@
                                 @error('categoria_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="imagen_url" class="form-label color-destacado">URL de imagen</label>
-                                <input type="url" name="imagen_url" id="imagen_url" class="form-control @error('imagen_url') is-invalid @enderror" value="{{ old('imagen_url', $producto->imagen_url) }}">
-                                @error('imagen_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                <label for="imagen" class="form-label color-destacado">Imagen</label>
+                                <input type="file" name="imagen" id="imagen"
+                                    class="form-control @error('imagen') is-invalid @enderror"
+                                    accept="image/*">
+                                @error('imagen')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-4">
                                 <label for="disponible" class="form-label color-destacado">Disponible</label>

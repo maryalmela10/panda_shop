@@ -49,9 +49,8 @@ class ProductoController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+public function update(Request $request, $id)
     {
-        // Validación
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string',
@@ -63,14 +62,19 @@ class ProductoController extends Controller
             'fecha_reposicion' => 'nullable|date',
         ]);
 
-        // Buscar producto por ID
         $producto = Producto::findOrFail($id);
         $producto->fill($request->except('imagen'));
 
-        // Actualizar imagen (si se incluye)
         if ($request->hasFile('imagen')) {
-            $path = $request->file('imagen')->store('public/productos');
-            $producto->imagen_url = basename($path);
+            // Eliminar imagen anterior si existe
+            if ($producto->imagen_url && file_exists(public_path($producto->imagen_url))) {
+                unlink(public_path($producto->imagen_url));
+            }
+
+            $imagen = $request->file('imagen');
+            $nombreArchivo = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('productos'), $nombreArchivo);
+            $producto->imagen_url = 'productos/' . $nombreArchivo;
         }
 
         $producto->save();
@@ -81,26 +85,25 @@ class ProductoController extends Controller
 
     public function store(Request $request)
     {
-        // Validación
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'precio' => 'required|numeric|min:0',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Si subes imágenes
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'disponible' => 'required|boolean',
             'stock' => 'required|integer|min:0',
             'categoria_id' => 'required|exists:categorias,id',
             'fecha_reposicion' => 'nullable|date',
         ]);
 
-        // Crear producto (sin ID)
         $producto = new Producto();
         $producto->fill($request->except('imagen'));
 
-        // Subir imagen (si se incluye)
         if ($request->hasFile('imagen')) {
-            $path = $request->file('imagen')->store('public/productos');
-            $producto->imagen_url = basename($path); // Asignar nombre del archivo
+            $imagen = $request->file('imagen');
+            $nombreArchivo = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('productos'), $nombreArchivo);
+            $producto->imagen_url = 'productos/' . $nombreArchivo;
         }
 
         $producto->save();
@@ -115,14 +118,13 @@ class ProductoController extends Controller
             abort(403, 'No tienes permiso para eliminar productos.');
         }
 
-        // Si quieres eliminar también la imagen física en storage:
-        if ($producto->imagen_url) {
-            \Storage::delete('public/productos/' . $producto->imagen_url);
+        // Eliminar imagen física si existe
+        if ($producto->imagen_url && file_exists(public_path($producto->imagen_url))) {
+            unlink(public_path($producto->imagen_url));
         }
 
         $producto->delete();
 
         return redirect()->route('shop')->with('success', 'Producto eliminado correctamente.');
     }
-
 }
