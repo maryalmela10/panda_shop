@@ -28,6 +28,20 @@
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
 
+                            <!-- Teléfono -->
+                            <div class="mb-3">
+                                <x-input-label for="phone" :value="__('Teléfono')" />
+                                <x-text-input id="phone" class="form-control" type="text" name="phone" :value="old('phone')" required autocomplete="tel" />
+                                <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+                            </div>
+
+                            <!-- Dirección -->
+                            <div class="mb-3">
+                                <x-input-label for="address" :value="__('Dirección')" />
+                                <x-text-input id="address" class="form-control" type="text" name="address" :value="old('address')" required autocomplete="street-address" />
+                                <x-input-error :messages="$errors->get('address')" class="mt-2" />
+                            </div>
+
                             <!-- Password -->
                             <div class="mb-3">
                                 <x-input-label for="password" :value="__('Contraseña')" />

@@ -24,14 +24,20 @@
                     @if(Auth::user()->rol != 1)
                         <a class="nav-icon position-relative text-decoration-none" href="{{ route('cart.index') }}">
                             <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                            <span
-                                class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+                            <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
                                 {{ $carritoCantidad }}</span>
                         </a>
                     @endif
                 @endauth
 
-                <div class="dropdown">
+                {{-- Botón "Iniciar sesión" solo para invitados --}}
+                @guest
+                    <a href="{{ route('login', ['redirect' => url()->current()]) }}" class="btn btn-success ms-3">
+                        <i class="fa fa-sign-in-alt me-1"></i> Iniciar sesión
+                    </a>
+                @endguest
+
+                <div class="dropdown ms-2">
                     <a class="nav-icon position-relative text-decoration-none dropdown-toggle" href="#"
                         role="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-fw fa-user text-dark mr-3"></i>
@@ -39,7 +45,9 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                         @auth
                             <li><a class="dropdown-item" href="{{ route('dashboard.home') }}">Mi cuenta</a></li>
-                            <li><a class="dropdown-item" href="{{ route('pedidos.index') }}">Mis pedidos</a></li>
+                            @if(Auth::user()->rol != 1)
+                                <li><a class="dropdown-item" href="{{ route('pedidos.index') }}">Mis pedidos</a></li>
+                            @endif
                             <li><a class="dropdown-item" href="{{ route('dashboard.profile') }}">Editar perfil</a></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
