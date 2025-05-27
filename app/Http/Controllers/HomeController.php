@@ -13,7 +13,7 @@ class HomeController extends Controller
     public function index()
     {
         // Productos más vendidos según la columna num_ventas
-        $productosMasVendidos = Producto::select('id', 'nombre', 'precio', 'imagen_url')
+        $productosMasVendidos = Producto::select('id', 'nombre', 'precio', 'imagen')
             ->orderByDesc('num_ventas')
             ->take(5)
             ->get();

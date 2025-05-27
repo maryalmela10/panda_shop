@@ -16,11 +16,12 @@ class ProductoFactory extends Factory
      */
     public function definition(): array
     {
+        $imagePath = $this->faker->image(public_path('productos'), 640, 480, 'products', false);
         return [
             'nombre' => $this->faker->words(2, true),
             'descripcion' => $this->faker->sentence(10),
             'precio' => $this->faker->randomFloat(2, 1, 100),
-            'imagen_url' => $this->faker->imageUrl(640, 480, 'products', true),
+            'imagen' => 'productos/' . $imagePath,
             'disponible' => $this->faker->boolean(90), // 90% probabilidad de estar disponible
             'stock' => $this->faker->numberBetween(0, 100),
             'categoria_id' => $this->faker->numberBetween(1, 5), // ajusta al número de categorías reales

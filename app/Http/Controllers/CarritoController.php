@@ -26,6 +26,10 @@ class CarritoController extends Controller
     {
         $product = Producto::findOrFail($productId);
 
+        if (!$product->disponible || $product->stock <= 0) {
+            return redirect()->route('shop')->with('error', 'Este producto no está disponible');
+        }
+
         $cart = session()->get('cart', []);
 
         if (isset($cart[$productId])) {

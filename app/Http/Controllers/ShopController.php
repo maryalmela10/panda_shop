@@ -29,10 +29,10 @@ class ShopController extends Controller
                 $query->orderBy('precio', 'desc');
                 break;
             case 'bestsellers':
-                $query->orderBy('num_ventas', 'desc'); 
+                $query->orderBy('num_ventas', 'desc');
                 break;
             default:
-                $query->latest(); // Orden por defecto (por fecha de creación)
+                $query->latest();
                 break;
         }
 
@@ -40,5 +40,5 @@ class ShopController extends Controller
 
         return view('customerViews.shop', compact('products', 'categories', 'selectedCategory'));
     }
-    
+
 }

@@ -11,14 +11,14 @@ return new class extends Migration
      */
    public function up()
 {
-    Schema::table('ordenes', function (Blueprint $table) {
-        $table->timestamps(); // Añade created_at y updated_at
+    Schema::table('pedidos', function (Blueprint $table) {
+        $table->timestamps();
     });
 }
 
 public function down()
 {
-    Schema::table('ordenes', function (Blueprint $table) {
+    Schema::table('pedidos', function (Blueprint $table) {
         $table->dropTimestamps();
     });
 }

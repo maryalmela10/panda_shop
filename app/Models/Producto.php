@@ -17,7 +17,7 @@ class Producto extends Model
         'nombre',
         'descripcion',
         'precio',
-        'imagen_url', // o 'imagen' si subes archivos
+        'imagen',
         'disponible',
         'stock',
         'categoria_id',
@@ -29,9 +29,9 @@ class Producto extends Model
         return $this->belongsTo(Categoria::class, 'categoria_id');
     }
 
-    public function ordenes()
+    public function pedidos()
     {
-        return $this->belongsToMany(Orden::class, 'orden_producto')
+        return $this->belongsToMany(Pedido::class, 'pedido_producto')
                     ->withPivot('cantidad', 'precio');
     }
 

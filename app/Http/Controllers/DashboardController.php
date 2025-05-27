@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Orden;
+use App\Models\Pedido;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Producto;
@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         // Obtener pedidos del usuario ordenados por fecha descendente, por ejemplo últimos 5
-        $pedidos = Orden::where('usuario_id', $user->id)
+        $pedidos = Pedido::where('usuario_id', $user->id)
             ->orderBy('fecha_pedido', 'desc')
             ->take(5)
             ->get();

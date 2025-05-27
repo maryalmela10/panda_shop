@@ -20,12 +20,14 @@
                 </ul>
             </div>
             <div class="navbar align-self-center d-flex">
-                <a class="nav-icon position-relative text-decoration-none" href="{{ route('cart.index') }}">
-                    <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                    <span
-                        class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
-                        {{ $carritoCantidad }}</span>
-                </a>
+                @if(!(Auth::check() && Auth::user()->rol == 1))
+                    <a class="nav-icon position-relative text-decoration-none" href="{{ route('cart.index') }}">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                        <span
+                            class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+                            {{ $carritoCantidad }}</span>
+                    </a>
+                @endif
 
                 <div class="dropdown">
                     <a class="nav-icon position-relative text-decoration-none dropdown-toggle" href="#"
@@ -35,7 +37,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                         @auth
                             <li><a class="dropdown-item" href="{{ route('dashboard.home') }}">Mi cuenta</a></li>
-                            <li><a class="dropdown-item" href="{{ route('dashboard.orders') }}">Mis pedidos</a></li>
+                            <li><a class="dropdown-item" href="{{ route('pedidos.index') }}">Mis pedidos</a></li>
                             <li><a class="dropdown-item" href="{{ route('dashboard.profile') }}">Editar perfil</a></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">

@@ -12,7 +12,7 @@
                 <div class="dashboard-card">
                     <h4>Pedidos</h4>
                     <p>12 pedidos activos</p>
-                    <a href="{{ route('dashboard.orders') }}" class="btn btn-success btn-sm mt-2">Ver pedidos</a>
+                    <a href="{{ route('pedidos.index') }}" class="btn btn-success btn-sm mt-2">Ver pedidos</a>
                 </div>
             </div>
             <div class="col-md-4">

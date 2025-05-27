@@ -6,11 +6,11 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class OrdenesSeeder extends Seeder
+class PedidosSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('ordenes')->insert([
+        DB::table('pedidos')->insert([
             [
                 'usuario_id' => 1,
                 'metodo_pago' => 'tarjeta',
