@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     {{-- Formulario de edición --}}
-                    <form action="{{ route('admin.categorias.update', $categoria->id) }}" method="POST" autocomplete="off">
+                    <form action="{{ route('admin.categorias.update', $categoria->id) }}" method="POST" autocomplete="off" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="row g-4">
@@ -37,9 +37,13 @@
                                 @error('nombre')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="imagen" class="form-label color-destacado">URL de imagen</label>
-                                <input type="url" name="imagen" id="imagen" class="form-control @error('imagen') is-invalid @enderror" value="{{ old('imagen', $categoria->imagen) }}">
-                                @error('imagen')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                <label for="imagen" class="form-label color-destacado">Imagen</label>
+                                <input type="file" name="imagen" id="imagen"
+                                    class="form-control @error('imagen') is-invalid @enderror"
+                                    accept="image/*">
+                                @error('imagen')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-12">
                                 <label for="descripcion" class="form-label color-destacado">Descripción</label>

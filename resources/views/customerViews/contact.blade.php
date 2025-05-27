@@ -13,8 +13,8 @@
     </div>
 </div>
 
-<!-- Mapa -->
-<div id="mapid" style="width: 100%; height: 300px;"></div>
+{{-- <!-- Mapa -->
+<div id="mapid" style="width: 100%; height: 300px;"></div> --}}
 
 @push('scripts')
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"

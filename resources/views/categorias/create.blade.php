@@ -9,7 +9,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="dashboard-card">
-                    <form action="{{ route('admin.categorias.store') }}" method="POST" autocomplete="off">
+                    <form action="{{ route('admin.categorias.store') }}" method="POST" autocomplete="off" enctype="multipart/form-data">
                         @csrf
                         <div class="row g-4">
                             <!-- Nombre -->
@@ -20,10 +20,12 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <!-- Imagen -->
+                            <!-- Imagen local -->
                             <div class="col-md-6">
-                                <label for="imagen" class="form-label color-destacado">URL de imagen</label>
-                                <input type="url" name="imagen" id="imagen" class="form-control @error('imagen') is-invalid @enderror" value="{{ old('imagen') }}">
+                                <label for="imagen" class="form-label color-destacado">Imagen</label>
+                                <input type="file" name="imagen" id="imagen"
+                                    class="form-control @error('imagen') is-invalid @enderror"
+                                    accept="image/*">
                                 @error('imagen')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

@@ -9,6 +9,8 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\Auth\PasswordController;
+
 
 // Página de inicio pública
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -31,7 +33,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/productos/{producto}/review', [ReviewController::class, 'create'])->name('reviews.create');
     Route::post('/productos/{producto}/review', [ReviewController::class, 'store'])->name('reviews.store');
-
     });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -59,7 +60,9 @@ Route::middleware(['auth', 'verified'])
         Route::get('/panel', [DashboardController::class, 'index'])->name('home');
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
-        Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::put('/password/update', [PasswordController::class, 'update'])->name('password.update');
     });
 
 Route::get('/dashboard', function () {

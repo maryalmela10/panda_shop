@@ -22,11 +22,11 @@
             <div class="col-md-4 pt-5">
                 <h2 class="h2 text-light border-bottom pb-3 border-light">Más información</h2>
                 <ul class="list-unstyled text-light footer-link-list">
-                    <li><a class="text-decoration-none" href="#">Inicio</a></li>
-                    <li><a class="text-decoration-none" href="#">Sobre nosotros</a></li>
+                    <li><a class="text-decoration-none" href="/">Inicio</a></li>
+                    <li><a class="text-decoration-none" href="/about">Sobre nosotros</a></li>
                     <li><a class="text-decoration-none" href="#">Shop Locations</a></li>
                     <li><a class="text-decoration-none" href="#">FAQs</a></li>
-                    <li><a class="text-decoration-none" href="#">Contact</a></li>
+                    <li><a class="text-decoration-none" href="/contact">Contact</a></li>
                 </ul>
             </div>
         </div>

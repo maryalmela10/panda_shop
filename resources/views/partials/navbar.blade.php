@@ -15,15 +15,11 @@
                 <ul class="nav navbar-nav d-flex gap-1 justify-content-center mx-lg-auto align-items-center nav-menu-destacado">
                     <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">Sobre nosotros</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('shop') }}">Comprar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('shop') }}">Tienda</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contacto</a></li>
                 </ul>
             </div>
             <div class="navbar align-self-center d-flex">
-                <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal"
-                    data-bs-target="#templatemo_search">
-                    <i class="fa fa-fw fa-search text-dark mr-2"></i>
-                </a>
                 <a class="nav-icon position-relative text-decoration-none" href="{{ route('cart.index') }}">
                     <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
                     <span
