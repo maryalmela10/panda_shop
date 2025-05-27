@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table('ordenes', function (Blueprint $table) {
+        Schema::table('pedidos', function (Blueprint $table) {
             $table->dropColumn(['created_at', 'updated_at']);
         });
     }
 
     public function down()
     {
-        Schema::table('ordenes', function (Blueprint $table) {
+        Schema::table('pedidos', function (Blueprint $table) {
             $table->timestamps();
         });
     }

@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orden_producto', function (Blueprint $table) {
+        Schema::create('pedido_producto', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('orden_id');
+            $table->unsignedBigInteger('pedido_id');
             $table->unsignedBigInteger('producto_id');
             $table->integer('cantidad'); // si deseas registrar cuántos de cada producto
 
-            $table->foreign('orden_id')->references('id')->on('ordenes')->onDelete('cascade');
+            $table->foreign('pedido_id')->references('id')->on('pedidos')->onDelete('cascade');
             $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orden_producto');
+        Schema::dropIfExists('pedido_producto');
     }
 };

@@ -47,7 +47,7 @@ class CategoriaController extends Controller
             $nombreArchivo = time() . '_' . $imagen->getClientOriginalName();
             $imagen->move(public_path('categorias'), $nombreArchivo);
 
-            $categoria->imagen = 'categorias/' . $nombreArchivo;
+            $categoria->imagen = $nombreArchivo;
         }
 
         $categoria->save();
@@ -72,7 +72,7 @@ class CategoriaController extends Controller
             $imagen = $request->file('imagen');
             $nombreArchivo = time() . '_' . $imagen->getClientOriginalName();
             $imagen->move(public_path('categorias'), $nombreArchivo);
-            $categoria->imagen = 'categorias/' . $nombreArchivo;
+            $categoria->imagen = $nombreArchivo;
         }
 
         $categoria->save();

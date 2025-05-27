@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->text('descripcion');
             $table->decimal('precio', 10, 2); // mejor que string para precios
-            $table->string('imagen_url')->nullable(); // por si no suben imagen
+            $table->string('imagen')->nullable(); // por si no suben imagen
             $table->boolean('disponible')->default(true);
             $table->integer('stock')->default(0);
             $table->unsignedBigInteger('categoria_id');

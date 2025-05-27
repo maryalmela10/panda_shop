@@ -63,7 +63,7 @@
                         <div class="col-md-4">
                             <div class="card mb-4 product-wap rounded-0">
                                 <div class="card rounded-0">
-                                    <img class="card-img rounded-0 img-fluid" src="{{ asset('assets/img/' . $product->imagen_url) }}"
+                                    <img class="card-img rounded-0 img-fluid" src="{{ asset('productos/' . $product->imagen) }}"
                                         alt="{{ $product->nombre }}">
                                     <div
                                         class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
@@ -74,9 +74,15 @@
                                             <li><a class="btn btn-success text-white mt-2"
                                                     href="{{ route('shop.product', ['producto' => $product->id]) }}"><i
                                                         class="far fa-eye"></i></a></li>
-                                            <li><a class="btn btn-success text-white mt-2"
-                                                    href="{{ route('cart.add', $product->id) }}"><i
-                                                        class="fas fa-cart-plus"></i></a></li>
+                                            @unless(Auth::check() && Auth::user()->rol == 1)
+                                                <li>
+                                                    <a class="btn btn-success text-white mt-2"
+                                                        href="{{ route('cart.add', $product->id) }}">
+                                                        <i class="fas fa-cart-plus"></i>
+                                                    </a>
+                                                </li>
+                                            @endunless
+
                                         </ul>
                                     </div>
                                 </div>

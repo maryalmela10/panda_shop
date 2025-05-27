@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrdenProducto extends Model
+class PedidoProducto extends Model
 {
     use HasFactory;
-    protected $table = 'orden_producto';
+    protected $table = 'pedido_producto';
 
     public $timestamps = false;
 
-    public function orden()
+    public function pedido()
     {
-        return $this->belongsTo(Orden::class, 'orden_id');
+        return $this->belongsTo(Pedido::class, 'pedido_id');
     }
 
     public function producto()

@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up()
 {
-    Schema::table('orden_producto', function (Blueprint $table) {
-        $table->decimal('precio', 8, 2); // Asegúrate de usar el tipo correcto de dato
+    Schema::table('pedido_producto', function (Blueprint $table) {
+        $table->decimal('precio', 8, 2);
     });
 }
 
 public function down()
 {
-    Schema::table('orden_producto', function (Blueprint $table) {
+    Schema::table('pedido_producto', function (Blueprint $table) {
         $table->dropColumn('precio');
     });
 }

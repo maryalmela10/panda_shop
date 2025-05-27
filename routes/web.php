@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ReviewController;
@@ -27,9 +27,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cart/add/{productId}', [CarritoController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart/remove/{productId}', [CarritoController::class, 'removeFromCart'])->name('cart.remove');
 
-    Route::get('/order/create', [OrderController::class, 'create'])->name('order.create');
-    Route::post('/order', [OrderController::class, 'store'])->name('order.store');
-    Route::get('/order/{orderId}/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
+    Route::get('/pedidos/create', [PedidoController::class, 'create'])->name('pedidos.create');
+    Route::get('/mis-pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+    Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
+    Route::get('/pedidos/{orderId}/resume', [PedidoController::class, 'resume'])->name('pedidos.resume');
 
     Route::get('/productos/{producto}/review', [ReviewController::class, 'create'])->name('reviews.create');
     Route::post('/productos/{producto}/review', [ReviewController::class, 'store'])->name('reviews.store');
@@ -58,7 +59,6 @@ Route::middleware(['auth', 'verified'])
     ->name('dashboard.')
     ->group(function () {
         Route::get('/panel', [DashboardController::class, 'index'])->name('home');
-        Route::get('/orders', [OrderController::class, 'index'])->name('orders');
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

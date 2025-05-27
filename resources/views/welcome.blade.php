@@ -22,7 +22,7 @@
             @foreach ($categoriasMasVendidas as $category)
                 <div class="col-12 col-md-4 mb-4">
                     <div class="category-card"
-                        style="background-image: url('{{ asset('assets/img/' . $category->imagen) }}')">
+                        style="background-image: url('{{ asset('categorias/' . $category->imagen) }}')">
                         <div class="category-card-overlay">
                             <h5>{{ $category->nombre }}</h5>
                             <p>{{ $category->descripcion }}</p>
@@ -47,7 +47,7 @@
                 @foreach ($productosMasVendidos as $product)
                     <div class="card" style="min-width: 220px; max-width: 220px;">
                         <a href="{{ route('shop.product', $product->id) }}">
-                            <img src="{{ asset('assets/img/' . $product->imagen_url) }}" class="card-img-top"
+                            <img src="{{ asset('productos/' . $product->imagen) }}" class="card-img-top"
                                 alt="{{ $product->nombre }}">
                         </a>
                         <div class="card-body">

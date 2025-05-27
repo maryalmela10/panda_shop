@@ -67,14 +67,14 @@ public function update(Request $request, $id)
 
         if ($request->hasFile('imagen')) {
             // Eliminar imagen anterior si existe
-            if ($producto->imagen_url && file_exists(public_path($producto->imagen_url))) {
-                unlink(public_path($producto->imagen_url));
+            if ($producto->imagen && file_exists(public_path($producto->imagen))) {
+                unlink(public_path($producto->imagen));
             }
 
             $imagen = $request->file('imagen');
             $nombreArchivo = time() . '_' . $imagen->getClientOriginalName();
             $imagen->move(public_path('productos'), $nombreArchivo);
-            $producto->imagen_url = 'productos/' . $nombreArchivo;
+            $producto->imagen = $nombreArchivo;
         }
 
         $producto->save();
@@ -103,7 +103,7 @@ public function update(Request $request, $id)
             $imagen = $request->file('imagen');
             $nombreArchivo = time() . '_' . $imagen->getClientOriginalName();
             $imagen->move(public_path('productos'), $nombreArchivo);
-            $producto->imagen_url = 'productos/' . $nombreArchivo;
+            $producto->imagen = $nombreArchivo;
         }
 
         $producto->save();
@@ -119,8 +119,8 @@ public function update(Request $request, $id)
         }
 
         // Eliminar imagen física si existe
-        if ($producto->imagen_url && file_exists(public_path($producto->imagen_url))) {
-            unlink(public_path($producto->imagen_url));
+        if ($producto->imagen && file_exists(public_path($producto->imagen))) {
+            unlink(public_path($producto->imagen));
         }
 
         $producto->delete();

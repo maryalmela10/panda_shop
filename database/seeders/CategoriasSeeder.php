@@ -13,7 +13,7 @@ class CategoriasSeeder extends Seeder
             [
                 'nombre' => 'Harinas',
                 'descripcion' => 'Harinas artesanales, integrales y de repostería.',
-                'imagen' => 'categ_harinas.jpg', // 👉 pon esta imagen en /public/assets/img/
+                'imagen' => 'categ_harinas.jpg',
             ],
             [
                 'nombre' => 'Chocolates y Coberturas',

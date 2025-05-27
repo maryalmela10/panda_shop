@@ -14,7 +14,7 @@
             <!-- Imagen del producto -->
             <div class="col-lg-5 mt-5">
                 <div class="card mb-3">
-                    <img class="card-img img-fluid" src="{{ asset('assets/img/' . $producto->imagen_url) }}" alt="{{ $producto->nombre }}"
+                    <img class="card-img img-fluid" src="{{ asset('productos/' . $producto->imagen) }}" alt="{{ $producto->nombre }}"
                         id="product-detail">
                 </div>
             </div>
@@ -40,18 +40,22 @@
                         <p><strong>Ventas:</strong> {{ $producto->num_ventas }}+</p>
 
                         @if ($disponible)
-                            <form action="{{ route('cart.add', $producto->id) }}" method="GET">
-                                <div class="row pb-3">
-                                    <div class="col d-grid">
-                                        <button type="submit" class="btn btn-success btn-lg">Agregar al carrito</button>
+                            <span class="fw-bold">Stock actual: {{ $producto->stock ?? 0 }}</span>
+                            @unless(Auth::check() && Auth::user()->rol == 1)
+                                <form action="{{ route('cart.add', $producto->id) }}" method="GET">
+                                    <div class="row pb-3">
+                                        <div class="col d-grid">
+                                            <button type="submit" class="btn btn-success btn-lg">Agregar al carrito</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            @endunless
                         @else
                             <div class="alert alert-danger mt-3" role="alert">
                                 Producto agotado
                             </div>
                         @endif
+
                         <!-- Botón Editar y Eliminar (solo para admins) -->
                         @if(Auth::check() && Auth::user()->rol == 1)
                             <div class="row pb-3">
@@ -91,7 +95,7 @@
                     <div class="col-12 col-md-3 mb-4">
                         <div class="card h-100">
                             <a href="{{ route('shop.product', ['producto' => $rel->id]) }}">
-                                <img src="{{ asset('assets/img/' . $rel->imagen_url) }}" class="card-img-top" alt="{{ $rel->nombre }}">
+                                <img src="{{ asset('productos/' . $rel->imagen) }}" class="card-img-top" alt="{{ $rel->nombre }}">
                             </a>
                             <div class="card-body">
                                 <ul class="list-unstyled d-flex justify-content-between">
