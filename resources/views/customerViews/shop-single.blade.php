@@ -41,7 +41,7 @@
 
                         @if ($disponible)
                             <span class="fw-bold">Stock actual: {{ $producto->stock ?? 0 }}</span>
-                            @unless(Auth::check() && Auth::user()->rol == 1)
+                            @if(Auth::check() && Auth::user()->rol != 1)
                                 <form action="{{ route('cart.add', $producto->id) }}" method="GET">
                                     <div class="row pb-3">
                                         <div class="col d-grid">
@@ -49,12 +49,13 @@
                                         </div>
                                     </div>
                                 </form>
-                            @endunless
+                            @endif
                         @else
                             <div class="alert alert-danger mt-3" role="alert">
                                 Producto agotado
                             </div>
                         @endif
+
 
                         <!-- Botón Editar y Eliminar (solo para admins) -->
                         @if(Auth::check() && Auth::user()->rol == 1)

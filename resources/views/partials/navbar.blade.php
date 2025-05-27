@@ -20,14 +20,16 @@
                 </ul>
             </div>
             <div class="navbar align-self-center d-flex">
-                @if(!(Auth::check() && Auth::user()->rol == 1))
-                    <a class="nav-icon position-relative text-decoration-none" href="{{ route('cart.index') }}">
-                        <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                        <span
-                            class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
-                            {{ $carritoCantidad }}</span>
-                    </a>
-                @endif
+                @auth
+                    @if(Auth::user()->rol != 1)
+                        <a class="nav-icon position-relative text-decoration-none" href="{{ route('cart.index') }}">
+                            <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                            <span
+                                class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+                                {{ $carritoCantidad }}</span>
+                        </a>
+                    @endif
+                @endauth
 
                 <div class="dropdown">
                     <a class="nav-icon position-relative text-decoration-none dropdown-toggle" href="#"

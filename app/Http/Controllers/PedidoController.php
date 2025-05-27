@@ -64,7 +64,7 @@ class PedidoController extends Controller
         $order->fecha_pedido = now();
         $order->save();
 
-        // Relacionar los productos con la orden y actualizar stock
+        // Relacionar los productos con la orden y actualizar stock/ventas
         foreach ($cart as $item) {
             // Asociar el producto al pedido
             $order->productos()->attach($item['id'], [
@@ -72,21 +72,25 @@ class PedidoController extends Controller
                 'precio' => $item['price'],
             ]);
 
-            // Actualizar el stock del producto
+            // Actualizar el stock y aumentar las ventas del producto
             $producto = Producto::find($item['id']);
             if ($producto) {
-                $producto->stock = max(0, $producto->stock - $item['quantity']); // Evita negativos
+                // Reducir stock
+                $producto->stock = max(0, $producto->stock - $item['quantity']);
+
+                // Aumentar número de ventas
+                $producto->num_ventas += $item['quantity'];
+
                 $producto->save();
             }
         }
 
-
         session()->forget('cart');
 
-        // Redirigir a la confirmación con el total del pedido
         return redirect()->route('pedidos.resume', ['orderId' => $order->id])
                         ->with('totalCost', $totalCost);
     }
+
 
     // Mostrar la confirmación del pedido
     public function resume($orderId)

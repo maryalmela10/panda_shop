@@ -65,24 +65,37 @@
                                 <div class="card rounded-0">
                                     <img class="card-img rounded-0 img-fluid" src="{{ asset('productos/' . $product->imagen) }}"
                                         alt="{{ $product->nombre }}">
-                                    <div
-                                        class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                         <ul class="list-unstyled">
-                                            <li><a class="btn btn-success text-white"
-                                                    href="{{ route('shop.product', ['producto' => $product->id]) }}"><i
-                                                        class="far fa-heart"></i></a></li>
-                                            <li><a class="btn btn-success text-white mt-2"
-                                                    href="{{ route('shop.product', ['producto' => $product->id]) }}"><i
-                                                        class="far fa-eye"></i></a></li>
-                                            @unless(Auth::check() && Auth::user()->rol == 1)
+                                            @if(!Auth::check() || (Auth::check() && Auth::user()->rol == 1))
+                                                {{-- Solo mostrar el icono de ver producto --}}
+                                                <li>
+                                                    <a class="btn btn-success text-white mt-2"
+                                                        href="{{ route('shop.product', ['producto' => $product->id]) }}">
+                                                        <i class="far fa-eye"></i>
+                                                    </a>
+                                                </li>
+                                            @else
+                                                {{-- Usuario logueado y no admin: mostrar todos los iconos --}}
+                                                <li>
+                                                    <a class="btn btn-success text-white"
+                                                        href="{{ route('shop.product', ['producto' => $product->id]) }}">
+                                                        <i class="far fa-heart"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="btn btn-success text-white mt-2"
+                                                        href="{{ route('shop.product', ['producto' => $product->id]) }}">
+                                                        <i class="far fa-eye"></i>
+                                                    </a>
+                                                </li>
                                                 <li>
                                                     <a class="btn btn-success text-white mt-2"
                                                         href="{{ route('cart.add', $product->id) }}">
                                                         <i class="fas fa-cart-plus"></i>
                                                     </a>
                                                 </li>
-                                            @endunless
-
+                                            @endif
                                         </ul>
                                     </div>
                                 </div>
