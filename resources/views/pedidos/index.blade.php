@@ -11,6 +11,9 @@
     @forelse ($pedidos as $pedido)
         @php
             $totalPedido = 0;
+            foreach ($pedido->productos as $producto) {
+                $totalPedido += $producto->precio * $producto->pivot->cantidad;
+            }
         @endphp
         <div class="dashboard-card mb-4 shadow-sm border-0">
             <div class="card-header bg-light d-flex flex-wrap justify-content-between align-items-center rounded-top" style="border-radius: 10px 10px 0 0;">
@@ -24,10 +27,6 @@
             <div class="card-body bg-white">
                 <ul class="list-unstyled mb-0">
                     @foreach ($pedido->productos as $producto)
-                        @php
-                            $subtotal = $producto->precio * $producto->pivot->cantidad;
-                            $totalPedido += $subtotal;
-                        @endphp
                         <li class="mb-3 border-bottom pb-2 d-flex flex-column flex-md-row align-items-md-center">
                             <span class="fw-bold text-success d-block flex-grow-1">
                                 <i class="fas fa-cube me-1"></i>{{ $producto->nombre }}
@@ -35,28 +34,31 @@
                             </span>
                             <span class="color-destacado fw-bold ms-md-auto mt-2 mt-md-0 text-end">
                                 {{ $producto->pivot->cantidad }} x ${{ number_format($producto->precio, 2) }}
-                                = <strong>${{ number_format($subtotal, 2) }}</strong>
+                                = <strong>${{ number_format($producto->precio * $producto->pivot->cantidad, 2) }}</strong>
                             </span>
                         </li>
                     @endforeach
                 </ul>
-                {{-- Coste de envío --}}
-                <div class="d-flex justify-content-end align-items-center pt-2">
-                    <div class="bg-light px-4 py-2 rounded" style="display: inline-block;">
+                {{-- Bloque de totales igual que el carrito --}}
+                <div class="mb-3 d-flex flex-column align-items-end">
+                    <div class="bg-light px-4 py-2 rounded mb-2" style="display: inline-block;">
                         <span class="fw-bold color-destacado">
-                            <i class="fas fa-truck"></i>
-                            Coste de envío: ${{ number_format($pedido->coste_envio, 2) }}
+                            <i class="fas fa-truck me-1"></i>
+                            Precio de envío: <span class="fw-bold">${{ number_format($pedido->coste_envio, 2) }}</span>
+                        </span>
+                    </div>
+                    <div class="bg-light px-4 py-2 rounded mb-2" style="display: inline-block;">
+                        <span class="fw-bold color-destacado">
+                            <i class="fas fa-box me-1"></i>
+                            Total productos: ${{ number_format($totalPedido, 2) }}
                         </span>
                     </div>
                 </div>
-                {{-- Total del pedido (productos + envío) --}}
-                <div class="d-flex justify-content-end align-items-center pt-3">
-                    <div class="bg-light px-4 py-2 rounded" style="display: inline-block;">
-                        <span class="fw-bold color-destacado">
-                            <i class="fas fa-dollar-sign"></i>
-                            Total del pedido: ${{ number_format($totalPedido + $pedido->coste_envio, 2) }}
-                        </span>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="color-destacado fw-bold mb-0">
+                        Total con envío:
+                        <span>${{ number_format($totalPedido + $pedido->coste_envio, 2) }}</span>
+                    </h4>
                 </div>
             </div>
         </div>

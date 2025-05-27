@@ -8,13 +8,15 @@
 
         {{-- Resumen visual del usuario --}}
         <div class="row mb-4 justify-content-center">
-            <div class="col-md-4">
-                <div class="dashboard-card">
-                    <h4>Pedidos</h4>
-                    <p>{{ count($pedidos) }} pedidos activos</p>
-                    <a href="{{ route('pedidos.index') }}" class="btn btn-success btn-sm mt-2">Ver pedidos</a>
+            @if(!(Auth::check() && Auth::user()->rol == 1))
+                <div class="col-md-4">
+                    <div class="dashboard-card">
+                        <h4>Pedidos</h4>
+                        <p>{{ count($pedidos) }} pedidos activos</p>
+                        <a href="{{ route('pedidos.index') }}" class="btn btn-success btn-sm mt-2">Ver pedidos</a>
+                    </div>
                 </div>
-            </div>
+            @endif
             <div class="col-md-4">
                 <div class="dashboard-card">
                     <h4>Perfil</h4>
@@ -23,17 +25,18 @@
                 </div>
             </div>
             @if(!(Auth::check() && Auth::user()->rol == 1))
-            <div class="col-md-4">
-                <div class="dashboard-card">
-                    <h4>Carrito</h4>
-                    <p>{{ $carritoCantidad ?? 0 }} productos</p>
-                    <a href="{{ route('cart.index') }}" class="btn btn-success btn-sm mt-2">Ir al carrito</a>
+                <div class="col-md-4">
+                    <div class="dashboard-card">
+                        <h4>Carrito</h4>
+                        <p>{{ $carritoCantidad ?? 0 }} productos</p>
+                        <a href="{{ route('cart.index') }}" class="btn btn-success btn-sm mt-2">Ir al carrito</a>
+                    </div>
                 </div>
-            </div>
             @endif
         </div>
 
         {{-- Tabla de historial de pedidos recientes --}}
+        @if(!(Auth::check() && Auth::user()->rol == 1))
         <div class="row mt-4">
             <div class="col-12">
                 <h5>Historial de pedidos recientes</h5>
@@ -64,5 +67,6 @@
                 </table>
             </div>
         </div>
+        @endif
     </div>
 @endsection
