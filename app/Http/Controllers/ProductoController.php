@@ -79,7 +79,7 @@ public function update(Request $request, $id)
 
         $producto->save();
 
-        return redirect()->route('shop')
+        return redirect()->route('shop.product', $producto)
             ->with('success', 'Producto actualizado correctamente.');
     }
 
@@ -119,8 +119,8 @@ public function update(Request $request, $id)
         }
 
         // Eliminar imagen física si existe
-        if ($producto->imagen && file_exists(public_path($producto->imagen))) {
-            unlink(public_path($producto->imagen));
+        if ($producto->imagen && file_exists(public_path('productos/' . $producto->imagen))) {
+            unlink(public_path('productos/' . $producto->imagen));
         }
 
         $producto->delete();

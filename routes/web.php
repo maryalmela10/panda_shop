@@ -10,6 +10,7 @@ use App\Http\Controllers\CategoriaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\ContactController;
 
 
 // Página de inicio pública
@@ -20,6 +21,7 @@ Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/shop/product/{producto}', [ProductoController::class, 'publicShow'])->name('shop.product');
 Route::view('/about', 'customerViews.about')->name('about');
 Route::view('/contact', 'customerViews.contact')->name('contact');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 // Carrito y pedidos (requieren login)
 Route::middleware(['auth', 'verified.custom'])->group(function () {

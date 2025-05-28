@@ -66,3 +66,10 @@
         </div>
     </div>
 </nav>
+@if (Route::currentRouteName() !== 'home')
+    <div class="container">
+        <a href="{{ url()->previous() }}" class="btn btn-outline-secondary my-3">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+@endif

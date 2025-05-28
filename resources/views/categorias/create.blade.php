@@ -43,9 +43,6 @@
                             <button type="submit" class="btn btn-success px-4">
                                 <i class="fas fa-save"></i> Guardar categoría
                             </button>
-                            <a href="{{ route('shop') }}" class="btn btn-outline-secondary ms-2">
-                                <i class="fas fa-arrow-left"></i> Volver
-                            </a>
                         </div>
                     </form>
                 </div>

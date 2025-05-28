@@ -71,9 +71,6 @@
                             <button type="submit" class="btn btn-success px-4">
                                 <i class="fas fa-save"></i> Guardar cambios
                             </button>
-                            <a href="{{ route('shop.product', ['producto' => $producto->id]) }}" class="btn btn-outline-secondary ms-2">
-                                <i class="fas fa-arrow-left"></i> Volver
-                            </a>
                         </div>
                     </form>
                 </div>

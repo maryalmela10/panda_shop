@@ -45,8 +45,8 @@
 
 <!-- Formulario de contacto -->
 <div class="container py-5">
-    <form class="col-md-9 m-auto" method="POST" action="#">
-        {{-- @csrf si lo usas en back-end --}}
+    <form class="col-md-9 m-auto" method="POST" action="{{ route('contact.send') }}">
+        @csrf
         <div class="row">
             <div class="form-group col-md-6 mb-3">
                 <label for="name">Nombre</label>

@@ -87,8 +87,8 @@ class CategoriaController extends Controller
             abort(403, 'No tienes permiso para eliminar categorías.');
         }
 
-        if ($categoria->imagen && file_exists(public_path($categoria->imagen))) {
-            unlink(public_path($categoria->imagen));
+        if ($categoria->imagen && file_exists(public_path('categorias/' . $categoria->imagen))) {
+            unlink(public_path('categorias/' . $categoria->imagen));
         }
 
         $categoria->delete();
