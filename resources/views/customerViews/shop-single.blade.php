@@ -50,7 +50,7 @@
                         <p><strong>Ventas:</strong> {{ $producto->num_ventas }}+</p>
 
                         @if ($disponible)
-                            <span class="fw-bold">Stock actual: {{ $producto->stock ?? 0 }}</span>
+                            <span class="fw-bold" style="color: green;">En stock</span>
                             @if(Auth::check() && Auth::user()->rol != 1)
                                 <form action="{{ route('cart.add', $producto->id) }}" method="GET">
                                     <div class="row pb-3">
