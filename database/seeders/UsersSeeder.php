@@ -21,6 +21,7 @@ class UsersSeeder extends Seeder
             'phone' => '987654321',
             'address' => 'Calle admin',
             'rol' => 1,
+            'email_verified_at' => '2025-05-28 08:11:09',
         ]);
 
         User::factory()->count(5)->create();

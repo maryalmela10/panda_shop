@@ -101,8 +101,20 @@
                                 </div>
                                 <div class="card-body">
                                     <a href="{{ route('shop.product', $product->id) }}"
-                                        class="h3 text-decoration-none">{{ $product->nombre }}</a>
-                                    <p class="text-center mb-0">${{ number_format($product->precio, 2) }}</p>
+                                        class="h3 text-decoration-none text-center">{{ $product->nombre }}</a>
+                                    <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
+                                        <span class="fw-bold">${{ number_format($product->precio, 2) }}</span>
+                                        <span>
+                                            @php
+                                                $promedio = round($product->getReviewPromedio());
+                                            @endphp
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <i class="fa{{ $i <= $promedio ? 's' : 'r' }} fa-star text-warning"></i>
+                                            @endfor
+                                            <span class="text-muted small ms-1">({{ $product->reviews->count() }})</span>
+                                        </span>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
