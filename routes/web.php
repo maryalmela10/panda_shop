@@ -22,7 +22,7 @@ Route::view('/about', 'customerViews.about')->name('about');
 Route::view('/contact', 'customerViews.contact')->name('contact');
 
 // Carrito y pedidos (requieren login)
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified.custom'])->group(function () {
     Route::get('/cart', [CarritoController::class, 'index'])->name('cart.index');
     Route::get('/cart/add/{productId}', [CarritoController::class, 'addToCart'])->name('cart.add');
     Route::get('/cart/remove/{productId}', [CarritoController::class, 'removeFromCart'])->name('cart.remove');
@@ -36,7 +36,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/productos/{producto}/review', [ReviewController::class, 'store'])->name('reviews.store');
     });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified.custom', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // Productos
     Route::get('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
     Route::post('/productos', [ProductoController::class, 'store'])->name('productos.store');
@@ -54,19 +54,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 
 // Panel del cliente (área protegida)
-Route::middleware(['auth', 'verified'])
+Route::middleware(['auth'])
     ->prefix('dashboard')
     ->name('dashboard.')
     ->group(function () {
-        Route::get('/panel', [DashboardController::class, 'index'])->name('home');
+        Route::get('/panel', [DashboardController::class, 'index'])->name('index');
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::put('/password/update', [PasswordController::class, 'update'])->name('password.update');
     });
-
-Route::get('/dashboard', function () {
-    return redirect()->route('dashboard.home');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__ . '/auth.php';

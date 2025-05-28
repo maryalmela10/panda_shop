@@ -49,6 +49,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('home', absolute: false));
+        return redirect(route('dashboard.index', absolute: false))->with('success', 'Se te ha enviado un correo de verificación a tu email');;
+
     }
 }

@@ -7,6 +7,8 @@ use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Mail\PedidoResumenMail;
+use Illuminate\Support\Facades\Mail;
 
 class PedidoController extends Controller
 {
@@ -85,10 +87,16 @@ class PedidoController extends Controller
             }
         }
 
+        Mail::to(auth()->user()->email)->send(new PedidoResumenMail($order, $cart, $totalCost));
+
         session()->forget('cart');
 
         return redirect()->route('pedidos.resume', ['orderId' => $order->id])
-                        ->with('totalCost', $totalCost);
+        ->with([
+            'totalCost' => $totalCost,
+            'success' => 'Se te ha enviado un resumen del pedido a tu correo'
+        ]);
+
     }
 
 

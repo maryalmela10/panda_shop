@@ -26,6 +26,6 @@ class DashboardController extends Controller
         $carrito = session()->get('cart', []);
         $carritoCantidad = array_sum(array_column($carrito, 'quantity'));
 
-        return view('dashboard.home', compact('pedidos', 'carritoCantidad'));
+        return view('dashboard.index', compact('pedidos', 'carritoCantidad'));
     }
 }
