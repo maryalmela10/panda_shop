@@ -20,10 +20,6 @@
                                     <i class="fas fa-trash"></i> Eliminar
                                 </button>
                             </form>
-                            {{-- Botón volver a la tienda (derecha) --}}
-                            <a href="{{ route('shop') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-arrow-left"></i> Volver
-                            </a>
                         </div>
                     </div>
                     {{-- Formulario de edición --}}
