@@ -3,7 +3,6 @@
 @section('title', 'Mi cuenta')
 
 @section('content')
-
     <div class="container py-5">
         {{-- Resumen visual del usuario --}}
         <div class="row mb-4">
