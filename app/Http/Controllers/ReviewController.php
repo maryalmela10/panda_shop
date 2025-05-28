@@ -18,7 +18,7 @@ class ReviewController extends Controller
         $yaExiste = Review::where('producto_id', $producto->id)
         ->where('usuario_id', auth()->id())->exists();
         if ($yaExiste) {
-            return redirect()->route('dashboard')->with('error', 'Ya has dejado una reseña para este producto.');
+            return redirect()->route('dashboard.index')->with('error', 'Ya has dejado una reseña para este producto.');
         }
         $request->validate([
             'estrellas' => 'required|integer|min:0|max:5',
@@ -32,6 +32,6 @@ class ReviewController extends Controller
             'comentario' => $request->comentario,
         ]);
 
-        return redirect()->route('dashboard')->with('success', '¡Gracias por tu reseña!');
+        return redirect()->route('dashboard.index')->with('success', '¡Gracias por tu reseña!');
     }
 }

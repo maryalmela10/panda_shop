@@ -44,7 +44,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                         @auth
-                            <li><a class="dropdown-item" href="{{ route('dashboard.home') }}">Mi cuenta</a></li>
+                            <li><a class="dropdown-item" href="{{ route('dashboard.index') }}">Mi cuenta</a></li>
                             @if(Auth::user()->rol != 1)
                                 <li><a class="dropdown-item" href="{{ route('pedidos.index') }}">Mis pedidos</a></li>
                             @endif
