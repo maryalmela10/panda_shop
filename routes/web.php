@@ -36,7 +36,9 @@ Route::middleware(['auth', 'verified.custom'])->group(function () {
 
     Route::get('/productos/{producto}/review', [ReviewController::class, 'create'])->name('reviews.create');
     Route::post('/productos/{producto}/review', [ReviewController::class, 'store'])->name('reviews.store');
-    });
+    Route::post('/productos/{producto}/reviews/{review}/responder', [ReviewController::class, 'responder'])
+    ->name('reviews.responder');
+});
 
 Route::middleware(['auth', 'verified.custom', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // Productos
