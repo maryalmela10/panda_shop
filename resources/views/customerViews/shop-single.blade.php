@@ -37,6 +37,9 @@
                         <p class="h3 py-2">${{ number_format($producto->precio, 2) }}</p>
 
                         <p class="py-2">
+                            @php
+                                $promedio = round($producto->getReviewPromedio());
+                            @endphp
                             @for ($i = 1; $i <= 5; $i++)
                                 <i class="fa{{ $i <= $promedio ? 's' : 'r' }} fa-star text-warning"></i>
                             @endfor
@@ -92,90 +95,107 @@
         </div>
     </div>
 
-    <!-- Bloque de reseñas -->
-    <div class="container py-4">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h3 class="h4 mb-4"><i class="fas fa-star text-warning"></i> Reseñas de clientes</h3>
-
-                        {{-- Formulario para nueva reseña --}}
-                        @auth
-                            @if(auth()->user()->hasVerifiedEmail() && auth()->user()->rol != 1)
-                                @unless($producto->reviews->contains('usuario_id', auth()->id()))
-                                    <div class="border p-4 mb-4 rounded bg-light">
-                                        <h5 class="mb-3">¡Deja tu reseña!</h5>
-                                        <form action="{{ route('reviews.store', $producto) }}" method="POST">
-                                            @csrf
-                                            <div class="mb-3">
-                                                <label class="form-label">Puntuación:</label>
-                                                <select name="estrellas" class="form-select" required>
-                                                    <option value="">Selecciona una puntuación</option>
-                                                    @for($i = 1; $i <= 5; $i++)
-                                                        <option value="{{ $i }}">{{ $i }} estrella{{ $i > 1 ? 's' : '' }}</option>
-                                                    @endfor
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Comentario:</label>
-                                                <textarea name="comentario" class="form-control" rows="3" placeholder="¿Qué te pareció el producto?" required></textarea>
-                                            </div>
-                                            <button type="submit" class="btn btn-success">Enviar reseña</button>
-                                        </form>
+    @auth
+        @if(auth()->user()->hasVerifiedEmail())
+            @if(auth()->user()->rol != 1)
+                @unless($producto->reviews->contains('usuario_id', auth()->id()))
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 col-lg-7 col-xl-6">
+                            <div class="border p-4 mb-4 rounded bg-light">
+                                <h5 class="mb-3">¡Deja tu reseña!</h5>
+                                <form action="{{ route('reviews.store', $producto) }}" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label class="form-label">Puntuación:</label>
+                                        <select name="estrellas" class="form-select" required>
+                                            <option value="">Selecciona una puntuación</option>
+                                            @for($i = 1; $i <= 5; $i++)
+                                                <option value="{{ $i }}">{{ $i }} estrella{{ $i > 1 ? 's' : '' }}</option>
+                                            @endfor
+                                        </select>
                                     </div>
-                                @else
-                                    <div class="alert alert-info mb-4">
-                                        Ya has dejado tu reseña para este producto.
+                                    <div class="mb-3">
+                                        <label class="form-label">Comentario:</label>
+                                        <textarea name="comentario" class="form-control" rows="3" placeholder="¿Qué te pareció el producto?" required></textarea>
                                     </div>
-                                @endunless
-                            @endif
-                        @else
-                            <div class="alert alert-warning mb-4">
-                                <a href="{{ route('login') }}" class="alert-link">Inicia sesión</a> y verifica tu correo para dejar una reseña.
+                                    <button type="submit" class="btn btn-success">Enviar reseña</button>
+                                </form>
                             </div>
-                        @endauth
-
-                        {{-- Listado de reseñas existentes --}}
-                        @if($producto->reviews->count() > 0)
-                            <div class="mt-4">
-                                @foreach($producto->reviews as $review)
-                                    <div class="card mb-3 border-0 bg-light">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center mb-2 flex-wrap">
-                                                <i class="fas fa-user-circle text-secondary me-2"></i>
-                                                <span class="fw-bold me-2">{{ $review->usuario->name ?? 'Usuario' }}</span>
-                                                {{-- Estrellas --}}
-                                                <span class="me-2">
-                                                    @for($i = 1; $i <= 5; $i++)
-                                                        <i class="fa{{ $i <= $review->estrellas ? 's' : 'r' }} fa-star text-warning"></i>
-                                                    @endfor
-                                                </span>
-                                                <small class="text-muted">
-                                                    • {{ \Carbon\Carbon::parse($review->fecha)->format('d/m/Y H:i') }}
-                                                </small>
-                                            </div>
-                                            <p class="mb-0">{{ $review->comentario }}</p>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            @if (auth()->user()->rol != 1)
-                                <div class="alert alert-secondary mt-4">
-                                    Este producto aún no tiene reseñas. ¡Sé el primero en opinar!
-                                </div>
-                            @else
-                                <div class="alert alert-secondary mt-4">
-                                    Este producto aún no tiene reseñas.
-                                </div>
-                            @endif
-                        @endif
+                        </div>
                     </div>
+                @else
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-lg-5 col-xl-4">
+                            <div class="alert alert-info mb-4">
+                                Ya has dejado tu reseña para este producto.
+                            </div>
+                        </div>
+                    </div>
+                @endunless
+            @endif
+        @endif
+    @else
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5 col-xl-4">
+                <div class="alert alert-warning mb-4">
+                    <a href="{{ route('login') }}" class="alert-link">Inicia sesión</a> y verifica tu correo para dejar una reseña.
                 </div>
             </div>
         </div>
-    </div>
+    @endauth
+
+    @if($producto->reviews->isNotEmpty())
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8 col-lg-7 col-xl-6">
+                <h4 class="mb-4" style="color: var(--color-destacado); font-weight: 600;">Reseñas de clientes</h4>
+                @foreach($producto->reviews as $review)
+                    <div class="card mb-4 shadow-sm border-0" style="background-color: var(--color-secundario);">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="fw-bold" style="color: var(--color-destacado);">
+                                    <i class="far fa-user me-1"></i>{{ $review->usuario->name }}
+                                </div>
+                                <div>
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i class="fa{{ $i <= $review->estrellas ? 's' : 'r' }} fa-star text-warning"></i>
+                                    @endfor
+                                </div>
+                            </div>
+                            <p class="mb-2" style="color: var(--color-texto);">{{ $review->comentario }}</p>
+                            <small class="text-muted">
+                                Publicado el {{ \Carbon\Carbon::parse($review->created_at)->format('d/m/Y') }}
+                            </small>
+                            @if($review->respuesta)
+                                <div class="respuesta-admin mt-3 p-3 rounded">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-user-shield me-2" style="color: var(--color-principal);"></i>
+                                        <strong style="color: var(--color-principal);">Respuesta del administrador:</strong>
+                                    </div>
+                                    <p class="mb-0" style="color: var(--color-texto);">{{ $review->respuesta }}</p>
+                                </div>
+                            @elseif(Auth::check() && Auth::user()->rol == 1)
+                                <form action="{{ route('reviews.responder', [$producto, $review]) }}" method="POST" class="mt-3">
+                                    @csrf
+                                    <div class="mb-2">
+                                        <textarea name="respuesta" class="form-control" rows="2" placeholder="Escribe tu respuesta..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Responder</button>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @else
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6 col-lg-5 col-xl-4">
+                <div class="alert alert-secondary" style="background-color: var(--color-fondo-secundario); color: var(--color-texto); border: none;">
+                    Este producto aún no tiene reseñas. ¡Sé el primero en opinar!
+                </div>
+            </div>
+        </div>
+    @endif
 
     <!-- Productos relacionados -->
     <section class="py-5">
