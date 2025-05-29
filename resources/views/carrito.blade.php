@@ -23,7 +23,7 @@
   <div class="row justify-content-center">
     <div class="col-lg-8">
 
-      <h3 class="mb-4 text-center color-destacado fw-bold">
+      <h3 class="mb-4 text-center fw-bold">
         <i class="fas fa-shopping-cart me-2"></i>Productos en el carrito
       </h3>
 
@@ -84,7 +84,7 @@
         </div>
 
       @else
-        <div class="alert alert-warning text-center" role="alert">
+        <div class="alert color-destacado alert-warning text-center" role="alert">
           No hay productos en el carrito.
         </div>
       @endif

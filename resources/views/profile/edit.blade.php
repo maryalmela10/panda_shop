@@ -17,7 +17,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
             </div>
         @endif
-        <h2 class="h2 mb-4 color-destacado"><i class="fas fa-user-edit me-2"></i>Editar perfil</h2>
+        <h2 class="h2 mb-4"><i class="fas fa-user-edit me-2"></i>Editar perfil</h2>
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="dashboard-card p-4 shadow-sm">

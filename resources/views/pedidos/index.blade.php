@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container py-5">
-    <h2 class="mb-4 color-destacado fw-bold">
+    <h2 class="mb-4 fw-bold">
         <i class="fas fa-shopping-bag me-2"></i>Mis pedidos
     </h2>
 

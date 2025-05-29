@@ -4,8 +4,6 @@
 
 @section('content')
     <div class="container py-5">
-        <h2 class="h2 mb-4">Panel de cliente</h2>
-
         {{-- Resumen visual del usuario --}}
         <div class="row mb-4">
             <div class="col-md-4">
