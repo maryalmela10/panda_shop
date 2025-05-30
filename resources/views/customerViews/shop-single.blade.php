@@ -3,6 +3,11 @@
 @section('title', 'Detalle de Producto')
 
 @section('content')
+    <div class="container">
+        <a href="{{ route('shop') }}" class="btn btn-outline-secondary my-3">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
     <div class="container py-2">
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -157,7 +162,7 @@
                                 </div>
                                 <div>
                                     @for ($i = 1; $i <= 5; $i++)
-                                        <i class="fa{{ $i <= $review->estrellas ? 's' : 'r' }} fa-star text-warning"></i>
+                                        <i class="fa{{ $i <= $review->estrellas ? 's' : 'r' }} fa-star text-orange-dark"></i>
                                     @endfor
                                 </div>
                             </div>

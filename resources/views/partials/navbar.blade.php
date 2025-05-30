@@ -16,7 +16,13 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">Sobre nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('shop') }}">Tienda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contacto</a></li>
+                    @auth
+                        @if(Auth::user()->rol != 1)
+                            <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contacto</a></li>
+                        @endif
+                    @else
+                        <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contacto</a></li>
+                    @endauth
                 </ul>
             </div>
             <div class="navbar align-self-center d-flex">
@@ -66,7 +72,7 @@
         </div>
     </div>
 </nav>
-@if (Route::currentRouteName() !== 'home')
+@if (Route::currentRouteName() !== 'home' && Route::currentRouteName() !== 'shop.product')
     <div class="container">
         <a href="{{ url()->previous() }}" class="btn btn-outline-secondary my-3">
             <i class="fas fa-arrow-left"></i> Volver
