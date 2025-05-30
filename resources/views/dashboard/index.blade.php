@@ -25,7 +25,7 @@
                 <div class="col-md-4">
                     <div class="dashboard-card">
                         <h4>Pedidos</h4>
-                        <p>{{ count($pedidos) }} pedidos activos</p>
+                        <p>{{ count($pedidos) }} pedidos</p>
                         <a href="{{ route('pedidos.index') }}" class="btn btn-success btn-sm mt-2">Ver pedidos</a>
                     </div>
                 </div>
@@ -58,7 +58,6 @@
                         <tr>
                             <th>Nº pedido</th>
                             <th>Fecha</th>
-                            <th>Estado</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -67,8 +66,7 @@
                             <tr>
                                 <td>{{ str_pad($pedido->id, 5, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($pedido->fecha_pedido)->format('d/m/Y') }}</td>
-                                <td>{{ ucfirst($pedido->estado ?? 'Pendiente') }}</td>
-                                <td>${{ number_format($pedido->productos->sum(fn($p) => $p->pivot->precio * $p->pivot->cantidad), 2) }}
+                                <td>${{ number_format($pedido->productos->sum(fn($p) => $p->pivot->precio * $p->pivot->cantidad + $pedido->coste_envio), 2) }}
                                 </td>
                             </tr>
                         @empty
