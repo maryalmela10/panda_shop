@@ -16,7 +16,13 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">Sobre nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('shop') }}">Tienda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contacto</a></li>
+                    @auth
+                        @if(Auth::user()->rol != 1)
+                            <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contacto</a></li>
+                        @endif
+                    @else
+                        <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contacto</a></li>
+                    @endauth
                 </ul>
             </div>
             <div class="navbar align-self-center d-flex">
