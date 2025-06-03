@@ -196,7 +196,7 @@
         <div class="row justify-content-center mt-4">
             <div class="col-md-6 col-lg-5 col-xl-4">
                 <div class="alert alert-secondary" style="background-color: var(--color-fondo-secundario); color: var(--color-texto); border: none;">
-                    Este producto aún no tiene reseñas. ¡Sé el primero en opinar!
+                    Este producto aún no tiene reseñas.
                 </div>
             </div>
         </div>
