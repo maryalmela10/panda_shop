@@ -66,7 +66,7 @@
                             <tr>
                                 <td>{{ str_pad($pedido->id, 5, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($pedido->fecha_pedido)->format('d/m/Y') }}</td>
-                                <td>${{ number_format($pedido->productos->sum(fn($p) => $p->pivot->precio * $p->pivot->cantidad + $pedido->coste_envio), 2) }}
+                                <td>${{ number_format($pedido->productos->sum(fn($p) => $p->pivot->precio_producto * $p->pivot->cantidad + $pedido->coste_envio), 2) }}
                                 </td>
                             </tr>
                         @empty

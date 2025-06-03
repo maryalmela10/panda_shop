@@ -32,7 +32,7 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['required', 'string', 'max:30'],
+            'telefono' => ['required', 'string', 'max:30', 'regex:/^\+?\d{9,15}$/'],
             'address' => ['required', 'string', 'max:255'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -40,7 +40,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
+            'telefono' => $request->telefono,
             'address' => $request->address,
             'password' => Hash::make($request->password),
         ]);
@@ -49,7 +49,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard.index', absolute: false))->with('success', 'Se te ha enviado un correo de verificación a tu email');;
+        return redirect(route('dashboard.index', absolute: false))->with('success', '¡Registro exitoso! Se te ha enviado un correo de verificación a tu email');;
 
     }
 }

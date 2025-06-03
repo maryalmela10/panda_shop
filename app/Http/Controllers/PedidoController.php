@@ -71,7 +71,7 @@ class PedidoController extends Controller
             // Asociar el producto al pedido
             $order->productos()->attach($item['id'], [
                 'cantidad' => $item['quantity'],
-                'precio' => $item['price'],
+                'precio_producto' => $item['price'],
             ]);
 
             // Actualizar el stock y aumentar las ventas del producto
@@ -107,7 +107,7 @@ class PedidoController extends Controller
 
         // Calcular total productos desde la relación en BD
         $totalProductos = $order->productos->sum(function ($producto) {
-            return $producto->pivot->precio * $producto->pivot->cantidad;
+            return $producto->pivot->precio_producto * $producto->pivot->cantidad;
         });
 
         return view('pedidos.resume', compact('order', 'totalProductos'));

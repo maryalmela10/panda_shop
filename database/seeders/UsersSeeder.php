@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Carbon\Carbon;
 
 
 class UsersSeeder extends Seeder
@@ -18,10 +19,10 @@ class UsersSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('1234'),
-            'phone' => '987654321',
+            'telefono' => '987654321',
             'address' => 'Calle admin',
             'rol' => 1,
-            'email_verified_at' => '2025-05-28 08:11:09',
+            'email_verified_at' => Carbon::now(),
         ]);
 
         User::factory()->count(5)->create();

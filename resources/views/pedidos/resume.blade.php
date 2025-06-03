@@ -41,7 +41,7 @@
                     <span class="text-muted">(x{{ $producto->pivot->cantidad }})</span>
                   </div>
                   <div class="color-destacado fw-bold">
-                    ${{ number_format($producto->pivot->precio * $producto->pivot->cantidad, 2) }}
+                    ${{ number_format($producto->pivot->precio_producto * $producto->pivot->cantidad, 2) }}
                   </div>
                 </li>
               @endforeach
