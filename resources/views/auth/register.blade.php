@@ -30,9 +30,9 @@
 
                             <!-- Teléfono -->
                             <div class="mb-3">
-                                <x-input-label for="phone" :value="__('Teléfono')" />
-                                <x-text-input id="phone" class="form-control" type="text" name="phone" :value="old('phone')" required autocomplete="tel" />
-                                <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+                                <x-input-label for="telefono" :value="__('Teléfono')" />
+                                <x-text-input id="telefono" class="form-control" type="text" name="telefono" :value="old('telefono')" required autocomplete="tel" />
+                                <x-input-error :messages="$errors->get('telefono')" class="mt-2 text-danger" />
                             </div>
 
                             <!-- Dirección -->

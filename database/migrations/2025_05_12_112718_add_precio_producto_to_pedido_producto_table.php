@@ -12,14 +12,14 @@ return new class extends Migration
     public function up()
 {
     Schema::table('pedido_producto', function (Blueprint $table) {
-        $table->decimal('precio', 8, 2);
+        $table->decimal('precio_producto', 8, 2);
     });
 }
 
 public function down()
 {
     Schema::table('pedido_producto', function (Blueprint $table) {
-        $table->dropColumn('precio');
+        $table->dropColumn('precio_producto');
     });
 }
 };

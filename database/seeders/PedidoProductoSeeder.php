@@ -14,19 +14,19 @@ class PedidoProductoSeeder extends Seeder
                 'pedido_id' => 1,
                 'producto_id' => 1, // Harina de trigo
                 'cantidad' => 3,
-                'precio' => 2.50,
+                'precio_producto' => 2.50,
             ],
             [
                 'pedido_id' => 1,
                 'producto_id' => 3, // Chocolate blanco Nestlé
                 'cantidad' => 5,
-                'precio' => 4.60,
+                'precio_producto' => 4.60,
             ],
             [
                 'pedido_id' => 1,
                 'producto_id' => 10, // Perlas plateadas
                 'cantidad' => 2,
-                'precio' => 2.60,
+                'precio_producto' => 2.60,
             ],
         ]);
     }

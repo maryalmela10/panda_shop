@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ProductosSeeder extends Seeder
 {
@@ -19,6 +20,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 83,
                 'categoria_id' => 1,
                 'num_ventas' => 12,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Harina integral ecológica',
@@ -29,6 +33,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 69,
                 'categoria_id' => 1,
                 'num_ventas' => 24,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Chocolate blanco Nestlé',
@@ -39,6 +46,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 54,
                 'categoria_id' => 2,
                 'num_ventas' => 36,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Colorante rojo en gel',
@@ -49,6 +59,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 74,
                 'categoria_id' => 3,
                 'num_ventas' => 45,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Perlitas de chocolate blanco Dr. Oetker',
@@ -59,6 +72,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 86,
                 'categoria_id' => 5,
                 'num_ventas' => 19,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Levadura Royal',
@@ -69,6 +85,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 76,
                 'categoria_id' => 6,
                 'num_ventas' => 32,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Preparado de tortitas americanas Mary Lee',
@@ -79,6 +98,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 42,
                 'categoria_id' => 7,
                 'num_ventas' => 15,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Sirope de chocolate Delimagic',
@@ -89,6 +111,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 0,
                 'categoria_id' => 5,
                 'num_ventas' => 27,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Perlitas de chocolate Dr. Oetker',
@@ -99,6 +124,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 38,
                 'categoria_id' => 5,
                 'num_ventas' => 34,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Caramelo líquido Delimagic',
@@ -109,6 +137,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 25,
                 'categoria_id' => 5,
                 'num_ventas' => 19,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Sirope de fresa Delimagic',
@@ -119,6 +150,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 31,
                 'categoria_id' => 5,
                 'num_ventas' => 22,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Preparado para flanes y natillas Flanin',
@@ -129,6 +163,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 50,
                 'categoria_id' => 7,
                 'num_ventas' => 28,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Preparado para crepes Delimagic',
@@ -139,6 +176,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 18,
                 'categoria_id' => 7,
                 'num_ventas' => 17,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Preparado para natillas caseras Royal',
@@ -149,6 +189,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 60,
                 'categoria_id' => 7,
                 'num_ventas' => 33,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Preparado para pastel fresco limón Royal',
@@ -159,6 +202,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 29,
                 'categoria_id' => 7,
                 'num_ventas' => 26,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Preparado para tarta de Oreo Royal',
@@ -169,6 +215,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 36,
                 'categoria_id' => 7,
                 'num_ventas' => 41,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
             [
                 'nombre' => 'Aroma de vainilla',
@@ -179,6 +228,9 @@ class ProductosSeeder extends Seeder
                 'stock' => 36,
                 'categoria_id' => 3,
                 'num_ventas' => 25,
+                'fecha_reposicion' => Carbon::now()->addMonth(),
+                'created_at' => Carbon::now(),
+                'updated_at' =>Carbon::now(),
             ],
         ]);
     }
