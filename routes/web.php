@@ -9,7 +9,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
-use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\ContactController;
 
 
@@ -70,7 +70,6 @@ Route::middleware(['auth'])
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        Route::put('/password/update', [PasswordController::class, 'update'])->name('password.update');
     });
 
 require __DIR__ . '/auth.php';

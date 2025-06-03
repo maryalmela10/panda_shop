@@ -57,3 +57,10 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
+
+Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+    ->name('password.reset');
+
+// Procesar restablecimiento (POST)
+Route::post('reset-password', [NewPasswordController::class, 'store'])
+    ->name('password.store'); // Cambia el nombre para evitar conflicto

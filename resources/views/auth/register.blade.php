@@ -46,14 +46,14 @@
                             <div class="mb-3">
                                 <x-input-label for="password" :value="__('Contraseña')" />
                                 <x-text-input id="password" class="form-control" type="password" name="password" required autocomplete="new-password" />
-                                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
                             </div>
 
                             <!-- Confirm Password -->
                             <div class="mb-3">
                                 <x-input-label for="password_confirmation" :value="__('Confirmar Contraseña')" />
                                 <x-text-input id="password_confirmation" class="form-control" type="password" name="password_confirmation" required autocomplete="new-password" />
-                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 text-danger" />
                             </div>
 
                             <div class="d-flex justify-content-between">
