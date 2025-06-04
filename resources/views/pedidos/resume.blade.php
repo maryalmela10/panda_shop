@@ -39,7 +39,7 @@
                                             <span class="text-muted">(x{{ $producto->pivot->cantidad }})</span>
                                         </div>
                                         <div class="color-destacado fw-bold">
-                                            ${{ number_format($producto->pivot->precio * $producto->pivot->cantidad, 2) }}
+                                            ${{ number_format($producto->pivot->precio_producto * $producto->pivot->cantidad, 2) }}
                                         </div>
                                     </li>
                                 @endforeach
@@ -55,7 +55,7 @@
                                 <i class="fas fa-map-marker-alt me-2"></i>Dirección de Envío
                             </h4>
                             <div class="bg-light rounded p-3">
-                                <span class="fw-semibold">{{ $order->direccion_envio }}</span>
+                                <span class="color-destacado fw-semibold">{{ $order->direccion_envio }}</span>
                             </div>
                         </div>
 

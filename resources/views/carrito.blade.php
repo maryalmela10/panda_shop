@@ -20,7 +20,7 @@
                 <img src="{{ asset('productos/' . $item['producto']->imagen) }}" alt="{{ $item['producto']->nombre }}" class="rounded" style="width: 70px; height: 70px; object-fit: cover;">
                 <div>
                   <h5 class="mb-1">{{ $item['producto']->nombre }}</h5>
-                  <small class="text-muted">Precio unitario: ${{ number_format($item['price'], 2) }}</small>
+                  <small class="text-muted"> unitario: ${{ number_format($item['price'], 2) }}</small>
                 </div>
               </div>
 
