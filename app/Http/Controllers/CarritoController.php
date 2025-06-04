@@ -12,11 +12,25 @@ class CarritoController extends Controller
         // Obtener el carrito desde la sesión
         $cart = session()->get('cart', []);
 
-        // Calcular el coste total
-        $totalCost = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+        // Array para guardar los productos 
+        $cartItems = [];
+        $totalCost = 0;
 
-        // Pasar los productos del carrito y el coste total a la vista
-        return view('carrito', compact('cart', 'totalCost'));
+        foreach ($cart as $item) {
+            $producto = Producto::find($item['id']);
+
+            if ($producto) {
+                $cartItems[] = [
+                    'producto' => $producto, 
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'], 
+                ];
+
+                $totalCost += $item['price'] * $item['quantity'];
+            }
+        }
+
+        return view('carrito', compact('cartItems', 'totalCost'));
     }
 
     /**

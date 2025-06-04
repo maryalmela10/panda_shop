@@ -3,22 +3,6 @@
 @section('title', 'Carrito de Compras')
 
 @section('content')
-
-{{-- Mensajes flash --}}
-@if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-    </div>
-@endif
-
-@if (session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ session('error') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-    </div>
-@endif
-
 <section class="container py-5">
   <div class="row justify-content-center">
     <div class="col-lg-8">
@@ -27,64 +11,55 @@
         <i class="fas fa-shopping-cart me-2"></i>Productos en el carrito
       </h3>
 
-      @if (count($cart) > 0)
-        <div class="list-group mb-4">
-          @foreach ($cart as $item)
-            <div class="list-group-item bg-light d-flex justify-content-between align-items-center">
-              <div>
-                <h5 class="mb-1 text-success">{{ $item['name'] }}</h5>
-                <small class="text-muted">Cantidad: {{ $item['quantity'] }} x ${{ number_format($item['price'], 2) }}</small>
+      @if (count($cartItems) > 0)
+        <div class="mb-4">
+          @foreach ($cartItems as $item)
+            <div class="cart-item shadow rounded-4 p-3 d-flex justify-content-between align-items-center flex-wrap">
+              {{-- Izquierda: Imagen y título --}}
+              <div class="d-flex align-items-center gap-3 flex-grow-1">
+                <img src="{{ asset('productos/' . $item['producto']->imagen) }}" alt="{{ $item['producto']->nombre }}" class="rounded" style="width: 70px; height: 70px; object-fit: cover;">
+                <div>
+                  <h5 class="mb-1">{{ $item['producto']->nombre }}</h5>
+                  <small class="text-muted">Precio unitario: ${{ number_format($item['price'], 2) }}</small>
+                </div>
               </div>
-              <div>
-                <a href="{{ route('cart.remove', $item['id']) }}" class="btn btn-sm btn-outline-danger">
-                  <i class="fa fa-trash"></i> Eliminar
+
+              {{-- Centro: Eliminar --}}
+              <div class="text-center px-3">
+                <a href="{{ route('cart.remove', $item['producto']->id) }}" class="btn btn-outline-danger">
+                  <i class="fa fa-trash"></i>
                 </a>
+              </div>
+
+              {{-- Derecha: Controles de cantidad --}}
+              <div class="d-flex align-items-center gap-2">
+                <a href="{{ route('cart.remove', $item['producto']->id) }}" class="btn btn-dark btn-sm">−</a>
+                <span class="px-2">{{ $item['quantity'] }}</span>
+                <a href="{{ route('cart.add', $item['producto']->id) }}" class="btn btn-dark btn-sm">+</a>
+                <strong class="ms-3">${{ number_format($item['price'] * $item['quantity'], 2) }}</strong>
               </div>
             </div>
           @endforeach
         </div>
 
-        {{-- Cálculo del precio de envío --}}
         @php
-            if ($totalCost < 50) {
-                $envio = 10;
-                $envioTexto = '$10.00';
-            } elseif ($totalCost < 100) {
-                $envio = 5;
-                $envioTexto = '$5.00';
-            } else {
-                $envio = 0;
-                $envioTexto = 'Gratis';
-            }
+            $envio = $totalCost < 50 ? 10 : ($totalCost < 100 ? 5 : 0);
+            $envioTexto = $envio === 0 ? 'Gratis' : '$' . number_format($envio, 2);
         @endphp
 
-        <div class="mb-3 d-flex flex-column align-items-end">
-          <div class="bg-light px-4 py-2 rounded mb-2" style="display: inline-block;">
-            <span class="fw-bold color-destacado">
-              <i class="fas fa-truck me-1"></i>
-              Precio de envío: <span class="fw-bold">{{ $envioTexto }}</span>
-            </span>
-          </div>
-          <div class="bg-light px-4 py-2 rounded mb-2" style="display: inline-block;">
-            <span class="fw-bold color-destacado">
-              <i class="fas fa-box me-1"></i>
-              Total productos: ${{ number_format($totalCost, 2) }}
-            </span>
-          </div>
+        <div class="dashboard-card text-end">
+          <p><strong><i class="fas fa-truck me-1"></i> Envío:</strong> {{ $envioTexto }}</p>
+          <p><strong><i class="fas fa-box me-1"></i> Total productos:</strong> ${{ number_format($totalCost, 2) }}</p>
+          <h5 class="fw-bold mt-3">Total con envío: ${{ number_format($totalCost + $envio, 2) }}</h5>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h4 class="color-destacado fw-bold mb-0">
-            Total con envío:
-            <span>${{ number_format($totalCost + $envio, 2) }}</span>
-          </h4>
-          <a href="{{ route('pedidos.create') }}" class="btn btn-success">
+        <div class="text-end mt-3">
+          <a href="{{ route('pedidos.create') }}" class="btn bg-success text-white fw-bold shadow-sm px-4 py-2">
             <i class="fas fa-check me-1"></i>Realizar Pedido
           </a>
         </div>
-
       @else
-        <div class="alert color-destacado alert-warning text-center" role="alert">
+        <div class="alert alert-warning text-center" role="alert">
           No hay productos en el carrito.
         </div>
       @endif
@@ -93,3 +68,4 @@
   </div>
 </section>
 @endsection
+

@@ -36,6 +36,10 @@ a.text-success:focus {
   color: var(--color-destacado);
 }
 
+.color-texto{
+  color: var(--color-texto);
+}
+
 /* ==========================================================================
    3. BOTONES PERSONALIZADOS
    ========================================================================== */

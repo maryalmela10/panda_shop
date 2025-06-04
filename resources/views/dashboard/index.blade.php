@@ -59,7 +59,7 @@
                             <th>Nº pedido</th>
                             <th>Fecha</th>
                             <th>Estado</th>
-                            <th>Total</th>
+                            <th>Pago</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,7 +68,7 @@
                                 <td>{{ str_pad($pedido->id, 5, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($pedido->fecha_pedido)->format('d/m/Y') }}</td>
                                 <td>{{ ucfirst($pedido->estado ?? 'Pendiente') }}</td>
-                                <td>${{ number_format($pedido->productos->sum(fn($p) => $p->pivot->precio * $p->pivot->cantidad), 2) }}
+                                <td>${{ number_format($pedido->total_pagado, 2) }}
                                 </td>
                             </tr>
                         @empty
