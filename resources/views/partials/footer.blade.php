@@ -1,15 +1,15 @@
 <footer class="bg-dark" id="tempaltemo_footer">
     <div class="container">
-        <div class="row">
-            <div class="col-md-4 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4 pt-5 mx-5">
                 <h2 class="h2 text-success border-bottom pb-3 border-light logo">Panda shop</h2>
                 <ul class="list-unstyled text-light footer-link-list">
-                    <li><i class="fas fa-map-marker-alt fa-fw"></i> C/ del Padre Claret, 8, Chamartín, 28002 Madrid</li>
+                    <li><i class="fas fa-map-marker-alt fa-fw"></i> <a class="text-decoration-none" href="https://www.google.com/maps?q=C/+del+Padre+Claret,+8,+28002+Madrid">C/ del Padre Claret, 8, Chamartín, 28002 Madrid</a></li>
                     <li><i class="fa fa-phone fa-fw"></i> <a class="text-decoration-none" href="tel:010-020-0340">722-204-388</a></li>
                     <li><i class="fa fa-envelope fa-fw"></i> <a class="text-decoration-none" href="mailto:info@company.com">info@panda.com</a></li>
                 </ul>
             </div>
-            <div class="col-md-4 pt-5">
+            {{-- <div class="col-md-4 pt-5">
                 <h2 class="h2 text-light border-bottom pb-3 border-light">Información útil</h2>
                 <ul class="list-unstyled text-light footer-link-list">
                     <li><a class="text-decoration-none" href="#">Envíos y recogida en tienda</a></li>
@@ -18,15 +18,20 @@
                     <li><a class="text-decoration-none" href="#">Avisos de stock</a></li>
                     <li><a class="text-decoration-none" href="#">Lista de deseos</a></li>
                 </ul>
-            </div>
-            <div class="col-md-4 pt-5">
+            </div> --}}
+            <div class="col-md-4 pt-5 mx-5">
                 <h2 class="h2 text-light border-bottom pb-3 border-light">Más información</h2>
                 <ul class="list-unstyled text-light footer-link-list">
                     <li><a class="text-decoration-none" href="/">Inicio</a></li>
                     <li><a class="text-decoration-none" href="/about">Sobre nosotros</a></li>
-                    <li><a class="text-decoration-none" href="#">Shop Locations</a></li>
-                    <li><a class="text-decoration-none" href="#">FAQs</a></li>
-                    <li><a class="text-decoration-none" href="/contact">Contact</a></li>
+                    @auth
+                        @if(Auth::user()->rol != 1)
+                            <li><a class="text-decoration-none" href="/contact">Contacta con nosotros</a></li>
+                        @endif
+                    @else
+                        <li><a class="text-decoration-none" href="/contact">Contacta con nosotros</a></li>
+                    @endauth
+
                 </ul>
             </div>
         </div>
@@ -38,25 +43,25 @@
             <div class="col-auto me-auto">
                 <ul class="list-inline text-left footer-icons">
                     <li class="list-inline-item border border-light rounded-circle text-center">
-                        <a class="text-light text-decoration-none" href="#"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                        <a class="text-light text-decoration-none" href="https://fb.com/templatemo"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
                     </li>
                     <li class="list-inline-item border border-light rounded-circle text-center">
-                        <a class="text-light text-decoration-none" href="#"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                        <a class="text-light text-decoration-none" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
                     </li>
                     <li class="list-inline-item border border-light rounded-circle text-center">
-                        <a class="text-light text-decoration-none" href="#"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                        <a class="text-light text-decoration-none" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
                     </li>
                     <li class="list-inline-item border border-light rounded-circle text-center">
-                        <a class="text-light text-decoration-none" href="#"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                        <a class="text-light text-decoration-none" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
                     </li>
                 </ul>
             </div>
-            <div class="col-auto">
+            {{-- <div class="col-auto">
                 <div class="input-group mb-2">
                     <input type="text" class="form-control bg-dark border-light" placeholder="Email address">
                     <div class="input-group-text btn-success text-light">Subscribe</div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
     <div class="w-100 bg-black py-3">

@@ -132,7 +132,7 @@ class PedidoController extends Controller
         foreach ($cart as $item) {
             $order->productos()->attach($item['id'], [
                 'cantidad' => $item['quantity'],
-                'precio' => $item['price'],
+                'precio_producto' => $item['price'],
             ]);
 
             $producto = Producto::find($item['id']);
@@ -165,7 +165,7 @@ class PedidoController extends Controller
 
         // Calcular total productos desde la relación en BD
         $totalProductos = $order->productos->sum(function ($producto) {
-            return $producto->pivot->precio * $producto->pivot->cantidad;
+            return $producto->pivot->precio_producto * $producto->pivot->cantidad;
         });
 
         return view('pedidos.resume', compact('order', 'totalProductos'));

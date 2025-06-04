@@ -24,11 +24,11 @@
             @error('address')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
         <div class="col-md-6">
-            <label for="phone" class="form-label color-destacado">Teléfono</label>
-            <input type="text" name="phone" id="phone"
-                class="form-control @error('phone') is-invalid @enderror"
-                value="{{ old('phone', $user->phone) }}" autocomplete="tel">
-            @error('phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            <label for="telefono" class="form-label color-destacado">Teléfono</label>
+            <input type="text" name="telefono" id="telefono"
+                class="form-control @error('telefono') is-invalid @enderror"
+                value="{{ old('telefono', $user->telefono) }}" autocomplete="tel">
+            @error('telefono')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
     </div>
     <div class="d-flex justify-content-end mt-4">

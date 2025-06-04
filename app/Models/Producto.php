@@ -11,8 +11,6 @@ class Producto extends Model
     use HasFactory;
     protected $table = 'productos';
 
-    public $timestamps = false;
-
     protected $fillable = [
         'nombre',
         'descripcion',
@@ -32,7 +30,7 @@ class Producto extends Model
     public function pedidos()
     {
         return $this->belongsToMany(Pedido::class, 'pedido_producto')
-                    ->withPivot('cantidad', 'precio');
+                    ->withPivot('cantidad', 'precio_producto');
     }
 
     public function reviews()

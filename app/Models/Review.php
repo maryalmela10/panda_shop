@@ -19,6 +19,10 @@ class Review extends Model
         'comentario',
     ];
 
+    protected $casts = [
+        'fecha' => 'datetime',
+    ];
+
     public function usuario()
     {
         return $this->belongsTo(User::class, 'usuario_id');

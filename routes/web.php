@@ -13,15 +13,21 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\ContactController;
 
 
-// Página de inicio pública
+// Páginas públicas
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-// Página pública de la tienda
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/shop/product/{producto}', [ProductoController::class, 'publicShow'])->name('shop.product');
 Route::view('/about', 'customerViews.about')->name('about');
-Route::view('/contact', 'customerViews.contact')->name('contact');
-Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+
+Route::middleware('notadmin')->group(function () {
+    Route::view('/contact', 'customerViews.contact')->name('contact');
+    Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+});
+
+Route::middleware('notadmin', 'auth', 'verified.custom')->group(function () {
+    Route::get('/productos/{producto}/review', [ReviewController::class, 'create'])->name('reviews.create');
+    Route::post('/productos/{producto}/review', [ReviewController::class, 'store'])->name('reviews.store');
+});
 
 // Carrito y pedidos (requieren login)
 Route::middleware(['auth', 'verified.custom'])->group(function () {
@@ -34,9 +40,9 @@ Route::middleware(['auth', 'verified.custom'])->group(function () {
     Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
     Route::get('/pedidos/{orderId}/resume', [PedidoController::class, 'resume'])->name('pedidos.resume');
 
-    Route::get('/productos/{producto}/review', [ReviewController::class, 'create'])->name('reviews.create');
-    Route::post('/productos/{producto}/review', [ReviewController::class, 'store'])->name('reviews.store');
-    });
+    Route::post('/productos/{producto}/reviews/{review}/responder', [ReviewController::class, 'responder'])
+    ->name('reviews.responder');
+});
 
 Route::middleware(['auth', 'verified.custom', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // Productos

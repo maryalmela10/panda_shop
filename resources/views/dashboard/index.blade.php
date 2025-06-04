@@ -25,7 +25,7 @@
                 <div class="col-md-4">
                     <div class="dashboard-card">
                         <h4>Pedidos</h4>
-                        <p>{{ count($pedidos) }} pedidos activos</p>
+                        <p>{{ count($pedidos) }} pedidos</p>
                         <a href="{{ route('pedidos.index') }}" class="btn btn-success btn-sm mt-2">Ver pedidos</a>
                     </div>
                 </div>

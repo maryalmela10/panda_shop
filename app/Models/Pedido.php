@@ -32,6 +32,6 @@ class Pedido extends Model
     public function productos()
     {
         return $this->belongsToMany(Producto::class, 'pedido_producto')
-                    ->withPivot('cantidad', 'precio'); // Relación muchos a muchos con pivot
+                    ->withPivot('cantidad', 'precio_producto'); // Relación muchos a muchos con pivot
     }
 }

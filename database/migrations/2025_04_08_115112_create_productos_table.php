@@ -23,10 +23,9 @@ return new class extends Migration
             $table->unsignedBigInteger('categoria_id');
             $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('cascade');
             $table->integer('num_ventas')->default(0);
-            $table->timestamp('fecha_reposicion')->nullable();
+            $table->date('fecha_reposicion')->nullable();
+            $table->timestamps();
         });
-
-        DB::statement('ALTER TABLE productos MODIFY fecha_reposicion TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
     }
 
     /**
