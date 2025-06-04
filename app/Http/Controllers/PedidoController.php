@@ -99,6 +99,7 @@ class PedidoController extends Controller
             $user->createOrGetStripeCustomer();
             $user->addPaymentMethod($request->payment_method);
             $user->charge($totalPagado * 100, $request->payment_method, [
+                'currency' => 'eur',
                 'return_url' => route('pedidos.resume', ['orderId' => 'dummy'])
             ]);
         }
