@@ -41,7 +41,7 @@
                                     </span>
                                 </span>
                                 <span class="color-destacado fw-bold ms-md-auto mt-2 mt-md-0 text-end">
-                                    <strong>${{ number_format($producto->precio * $producto->pivot->cantidad, 2) }}</strong>
+                                    <strong>{{ number_format($producto->precio * $producto->pivot->cantidad, 2) }}€</strong>
                                 </span>
                             </li>
                         @endforeach
@@ -51,20 +51,20 @@
                         <div class="bg-light px-4 py-2 rounded mb-2 d-inline-block w-50 text-center">
                             <span class="fw-bold color-destacado">
                                 <i class="fas fa-truck me-1"></i>
-                                Precio de envío: <span class="fw-bold">${{ number_format($pedido->coste_envio, 2) }}</span>
+                                Precio de envío: <span class="fw-bold">{{ number_format($pedido->coste_envio, 2) }}€</span>
                             </span>
                         </div>
                         <div class="bg-light px-4 py-2 rounded mb-2 d-inline-block w-50 text-center">
                             <span class="fw-bold color-destacado">
                                 <i class="fas fa-box me-1"></i>
-                                Total productos: ${{ number_format($totalPedido, 2) }}
+                                Total productos: {{ number_format($totalPedido, 2) }}€
                             </span>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <h4 class="color-destacado fw-bold mb-0">
                             Total con envío:
-                            <span>${{ number_format($totalPedido + $pedido->coste_envio, 2) }}</span>
+                            <span>{{ number_format($totalPedido + $pedido->coste_envio, 2) }}€</span>
                         </h4>
                     </div>
                 </div>

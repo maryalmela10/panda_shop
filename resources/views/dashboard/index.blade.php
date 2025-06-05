@@ -68,8 +68,7 @@
                                 <td>{{ str_pad($pedido->id, 5, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($pedido->fecha_pedido)->format('d/m/Y') }}</td>
                                 <td>{{ ucfirst($pedido->estado ?? 'Pendiente') }}</td>
-                                <td>${{ number_format($pedido->total_pagado, 2) }}
-                                </td>
+                                <td>{{ number_format($pedido->total_pagado, 2) }}€</td>
                             </tr>
                         @empty
                             <tr>
