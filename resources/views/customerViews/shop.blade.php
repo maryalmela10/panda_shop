@@ -103,7 +103,7 @@
                                     <a href="{{ route('shop.product', $product->id) }}"
                                         class="h3 text-decoration-none text-center">{{ $product->nombre }}</a>
                                     <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
-                                        <span class="fw-bold">${{ number_format($product->precio, 2) }}</span>
+                                        <span class="fw-bold">{{ number_format($product->precio, 2) }}€</span>
                                         <span>
                                             @php
                                                 $promedio = round($product->getReviewPromedio());

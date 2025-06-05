@@ -71,7 +71,7 @@
                                     @endfor
                                     <i class="text-muted fa fa-star"></i>
                                 </li>
-                                <li class="text-muted text-right">${{ $product->precio }}</li>
+                                <li class="text-muted text-right">{{ $product->precio }}€</li>
                             </ul>
                             <a href="{{ route('shop.product', $product->id) }}"
                                 class="h6 text-decoration-none text-dark d-block">{{ $product->nombre }}</a>

@@ -113,7 +113,7 @@
                                     <small class="text-muted">x{{ $item['quantity'] }}</small>
                                 </div>
                                 <div>
-                                    ${{ number_format($item['price'] * $item['quantity'], 2) }}
+                                    {{ number_format($item['price'] * $item['quantity'], 2) }}€
                                 </div>
                             </div>
                         @empty
@@ -126,8 +126,8 @@
                             $envioTexto = $envio === 0 ? 'Gratis' : '$' . number_format($envio, 2);
                         @endphp
                         <p><strong>Envío:</strong> {{ $envioTexto }}</p>
-                        <p><strong>Total productos:</strong> ${{ number_format($totalCost, 2) }}</p>
-                        <h5 class="fw-bold mt-3">Total con envío: ${{ number_format($totalCost + $envio, 2) }}</h5>
+                        <p><strong>Total productos:</strong> {{ number_format($totalCost, 2) }}€</p>
+                        <h5 class="fw-bold mt-3">Total con envío: {{ number_format($totalCost + $envio, 2) }}€</h5>
                     </div>
                 </div>
             </div>

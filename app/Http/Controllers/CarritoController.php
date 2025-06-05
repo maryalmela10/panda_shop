@@ -73,19 +73,27 @@ class CarritoController extends Controller
 
         // Verificar si el producto está en el carrito
         if (isset($cart[$productId])) {
-            // Si la cantidad es mayor que 1, solo disminuimos la cantidad
-            if ($cart[$productId]['quantity'] > 1) {
-                $cart[$productId]['quantity']--;
-            } else {
-                // Si la cantidad es 1, eliminamos el producto del carrito
-                unset($cart[$productId]);
-            }
-
+            unset($cart[$productId]);
+            
             // Actualizamos el carrito en la sesión
             session()->put('cart', $cart);
         }
 
         // Redirigir al carrito con un mensaje
         return redirect()->route('cart.index')->with('success', 'Producto actualizado en el carrito');
+    }
+
+    public function updateQuantity(Request $request, $id)
+    {
+        $quantity = max(1, (int) $request->input('quantity')); // mínimo 1
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity'] = $quantity;
+            session()->put('cart', $cart);
+        }
+
+        return redirect()->back()->with('success', 'Cantidad actualizada');
     }
 }

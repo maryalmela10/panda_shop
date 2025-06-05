@@ -39,13 +39,13 @@
                                             <span class="text-muted">(x{{ $producto->pivot->cantidad }})</span>
                                         </div>
                                         <div class="color-destacado fw-bold">
-                                            ${{ number_format($producto->pivot->precio_producto * $producto->pivot->cantidad, 2) }}
+                                            {{ number_format($producto->pivot->precio_producto * $producto->pivot->cantidad, 2) }}€
                                         </div>
                                     </li>
                                 @endforeach
                             </ul>
                             <p class="mt-3 fw-bold fs-5 text-end color-destacado ">
-                                Total productos: ${{ number_format($totalProductos, 2) }}
+                                Total productos: {{ number_format($totalProductos, 2) }}€
                             </p>
                         </div>
 
@@ -65,17 +65,17 @@
                                 <i class="fas fa-truck me-2"></i>Coste de Envío
                             </h4>
                             <div class="bg-light rounded p-3">
-                                <span class="color-destacado fw-bold">${{ number_format($order->coste_envio, 2) }}</span>
+                                <span class="color-destacado fw-bold">{{ number_format($order->coste_envio, 2) }}€</span>
                             </div>
                         </div>
 
                         <!-- Total del pedido -->
                         <div class="mb-4 d-flex justify-content-between align-items-center bg-light rounded p-3">
                             <h4 class="fw-bold color-destacado  mb-0">
-                                <i class="fas fa-dollar-sign me-2"></i>Total del pedido:
+                                <i class="fas fa-euro-sign me-2"></i>Total del pedido:
                             </h4>
                             <h4 class="fw-bold color-destacado  mb-0">
-                                ${{ number_format($totalProductos + $order->coste_envio, 2) }}
+                                {{ number_format($totalProductos + $order->coste_envio, 2) }}€
                             </h4>
                         </div>
                     </div>

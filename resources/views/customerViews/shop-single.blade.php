@@ -39,7 +39,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h1 class="h2">{{ $producto->nombre }}</h1>
-                        <p class="h3 py-2">${{ number_format($producto->precio, 2) }}</p>
+                        <p class="h3 py-2">{{ number_format($producto->precio, 2) }}€</p>
 
                         <p class="py-2">
                             @php
@@ -228,7 +228,7 @@
                                             <i class="text-muted fa fa-star"></i>
                                         @endfor
                                     </li>
-                                    <li class="text-muted text-right">${{ number_format($rel->precio, 2) }}</li>
+                                    <li class="text-muted text-right">{{ number_format($rel->precio, 2) }}€</li>
                                 </ul>
                                 <a href="{{ route('shop.product', ['producto' => $rel->id]) }}"
                                     class="h2 text-decoration-none text-dark">

@@ -30,7 +30,7 @@
                                     <tr style="border-bottom: 1px solid #f1f5f9;">
                                         <td style="padding: 8px 0;">{{ $item['name'] }}</td>
                                         <td align="center" style="padding: 8px 0;">{{ $item['quantity'] }}</td>
-                                        <td align="right" style="padding: 8px 0;">${{ number_format($item['price'], 2) }}</td>
+                                        <td align="right" style="padding: 8px 0;">{{ number_format($item['price'], 2) }}€</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -38,15 +38,15 @@
                             <table width="100%" style="margin-bottom: 24px;">
                                 <tr>
                                     <td align="right" style="padding: 4px 0; color: #4b5563;">Total productos:</td>
-                                    <td align="right" style="padding: 4px 0; color: #111827;"><strong>${{ number_format($totalCost, 2) }}</strong></td>
+                                    <td align="right" style="padding: 4px 0; color: #111827;"><strong>{{ number_format($totalCost, 2) }}€</strong></td>
                                 </tr>
                                 <tr>
                                     <td align="right" style="padding: 4px 0; color: #4b5563;">Coste de envío:</td>
-                                    <td align="right" style="padding: 4px 0; color: #111827;"><strong>${{ number_format($pedido->coste_envio, 2) }}</strong></td>
+                                    <td align="right" style="padding: 4px 0; color: #111827;"><strong>{{ number_format($pedido->coste_envio, 2) }}€</strong></td>
                                 </tr>
                                 <tr>
                                     <td align="right" style="padding: 8px 0; color: #319795; font-size: 16px;">Total pedido:</td>
-                                    <td align="right" style="padding: 8px 0; color: #319795; font-size: 16px;"><strong>${{ number_format($totalCost + $pedido->coste_envio, 2) }}</strong></td>
+                                    <td align="right" style="padding: 8px 0; color: #319795; font-size: 16px;"><strong>{{ number_format($totalCost + $pedido->coste_envio, 2) }}€</strong></td>
                                 </tr>
                             </table>
                             <div style="background: #f1f5f9; border-radius: 6px; padding: 12px 16px; margin-bottom: 24px;">
