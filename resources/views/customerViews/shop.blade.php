@@ -24,7 +24,7 @@
             {{-- Productos --}}
             <div class="col-lg-9">
                 {{-- Botones de administración --}}
-                @if(Auth::check() && Auth::user()->rol == 1)
+                @if (Auth::check() && Auth::user()->rol == 1)
                     <div class="d-flex justify-content-end mb-4 gap-2">
                         <a href="{{ route('admin.productos.create') }}" class="btn btn-success">
                             <i class="fas fa-plus"></i> Añadir producto
@@ -60,51 +60,22 @@
                 {{-- Productos grid --}}
                 <div class="row">
                     @foreach ($products as $product)
-                        <div class="col-md-4">
+                        <div class="col-md-4 ">
                             <div class="card mb-4 product-wap rounded-0">
                                 <div class="card rounded-0">
-                                    <img class="card-img rounded-0 img-fluid" src="{{ asset('productos/' . $product->imagen) }}"
-                                        alt="{{ $product->nombre }}">
-                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                        <ul class="list-unstyled">
-                                            @if(!Auth::check() || (Auth::check() && Auth::user()->rol == 1))
-                                                {{-- Solo mostrar el icono de ver producto --}}
-                                                <li>
-                                                    <a class="btn btn-success text-white mt-2"
-                                                        href="{{ route('shop.product', ['producto' => $product->id]) }}">
-                                                        <i class="far fa-eye"></i>
-                                                    </a>
-                                                </li>
-                                            @else
-                                                {{-- Usuario logueado y no admin: mostrar todos los iconos --}}
-                                                <li>
-                                                    <a class="btn btn-success text-white"
-                                                        href="{{ route('shop.product', ['producto' => $product->id]) }}">
-                                                        <i class="far fa-heart"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="btn btn-success text-white mt-2"
-                                                        href="{{ route('shop.product', ['producto' => $product->id]) }}">
-                                                        <i class="far fa-eye"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="btn btn-success text-white mt-2"
-                                                        href="{{ route('cart.add', $product->id) }}">
-                                                        <i class="fas fa-cart-plus"></i>
-                                                    </a>
-                                                </li>
-                                            @endif
-                                        </ul>
-                                    </div>
+                                    <a href="{{ route('shop.product', ['producto' => $product->id]) }}"
+                                        class="product-image-link">
+                                        <img class="card-img rounded-0 img-fluid product-hover-img"
+                                            src="{{ asset('productos/' . $product->imagen) }}"
+                                            alt="{{ $product->nombre }}">
+                                    </a>
                                 </div>
                                 <div class="card-body">
                                     <a href="{{ route('shop.product', $product->id) }}"
                                         class="h3 text-decoration-none text-center">{{ $product->nombre }}</a>
-                                    <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
-                                        <span class="fw-bold">{{ number_format($product->precio, 2) }}€</span>
-                                        <span>
+                                    <div class="text-center mb-2">
+                                        <div class="fw-bold mb-1">{{ number_format($product->precio, 2) }}€</div>
+                                        <div>
                                             @php
                                                 $promedio = round($product->getReviewPromedio());
                                             @endphp
@@ -112,9 +83,23 @@
                                                 <i class="fa{{ $i <= $promedio ? 's' : 'r' }} fa-star text-warning"></i>
                                             @endfor
                                             <span class="text-muted small ms-1">({{ $product->reviews->count() }})</span>
-                                        </span>
+                                        </div>
                                     </div>
 
+
+                                    {{-- Botón agregar al carrito (fuera de la imagen) solo si no es admin --}}
+                                    @php
+                                        $esAdmin = Auth::check() && Auth::user()->rol == 1;
+                                    @endphp
+
+                                    @if (!$esAdmin)
+                                        <div class="d-flex justify-content-center">
+                                            <a class="btn btn-success text-white mt-2"
+                                                href="{{ route('cart.add', $product->id) }}">
+                                                <i class="fas fa-cart-plus me-1"></i> Añadir al carrito
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

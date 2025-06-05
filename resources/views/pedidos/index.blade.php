@@ -46,6 +46,19 @@
                             </li>
                         @endforeach
                     </ul>
+                    {{-- Estado del pedido --}}
+                    <div class="mb-3">
+                        <span class="badge 
+                        @switch($pedido->estado)
+                            @case('pendiente') bg-warning text-white @break
+                            @case('confirmado') bg-primary text-white @break
+                            @case('cancelado') bg-danger text-white @break
+                            @default bg-warning text-dark
+                        @endswitch
+                        px-3 py-2 rounded-pill fw-semibold">
+                            Estado: {{ ucfirst($pedido->estado ?? 'Pendiente') }}
+                        </span>
+                    </div>
                     {{-- Bloque de totales igual que el carrito --}}
                     <div class="mb-3 d-flex flex-column align-items-end">
                         <div class="bg-light px-4 py-2 rounded mb-2 d-inline-block w-50 text-center">
