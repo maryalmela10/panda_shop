@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Mail\PedidoResumenMail;
 use Illuminate\Support\Facades\Mail;
+use Stripe\Stripe;
+use Stripe\PaymentIntent;
 
 class PedidoController extends Controller
 {
@@ -31,32 +33,45 @@ class PedidoController extends Controller
     }
     // Mostrar el formulario de pedido
     public function create()
-    {
-        $cart = session()->get('cart', []);
-        $cartWithProducts = [];
+{
+    $cart = session()->get('cart', []);
+    $cartWithProducts = [];
 
-        foreach ($cart as $item) {
-            $producto = Producto::find($item['id']);
-            if ($producto) {
-                $cartWithProducts[] = [
-                    'producto' => $producto,
-                    'price' => $item['price'],
-                    'quantity' => $item['quantity'],
-                ];
-            }
+    foreach ($cart as $item) {
+        $producto = Producto::find($item['id']);
+        if ($producto) {
+            $cartWithProducts[] = [
+                'producto' => $producto,
+                'price' => $item['price'],
+                'quantity' => $item['quantity'],
+            ];
         }
-
-        $totalCost = collect($cartWithProducts)->sum(fn($item) => $item['price'] * $item['quantity']);
-        $intent = auth()->user()->createSetupIntent();
-
-        return view('pedidos.create', [
-            'cart' => $cartWithProducts,
-            'totalCost' => $totalCost,
-            'intent' => $intent,
-            'stripePublicKey' => config('services.stripe.key')
-        ]);
     }
 
+    $totalCost = collect($cartWithProducts)->sum(fn($item) => $item['price'] * $item['quantity']);
+    $envio = $totalCost < 50 ? 10 : ($totalCost < 100 ? 5 : 0);
+    $totalPagado = $totalCost + $envio;
+
+    // Configurar Stripe
+    Stripe::setApiKey(config('services.stripe.secret'));
+
+    // Crear el PaymentIntent
+    $intent = PaymentIntent::create([
+        'amount' => $totalPagado * 100, // en céntimos
+        'currency' => 'eur',
+        'metadata' => [
+            'user_id' => auth()->id(),
+            'email' => auth()->user()->email,
+        ]
+    ]);
+
+    return view('pedidos.create', [
+        'cart' => $cartWithProducts,
+        'totalCost' => $totalCost,
+        'intent' => $intent,
+        'stripePublicKey' => config('services.stripe.key')
+    ]);
+}
 
     // Almacenar el pedido en la base de datos
     public function store(Request $request)
@@ -64,7 +79,7 @@ class PedidoController extends Controller
         $request->validate([
             'metodo_pago' => 'required',
             'direccion_envio' => 'required|string',
-            'payment_method' => 'required_if:metodo_pago,tarjeta',
+            'payment_method_id' => 'required_if:metodo_pago,tarjeta',
             'justificante_pago' => 'nullable|required_if:metodo_pago,transferencia|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'fecha_transferencia' => 'nullable|required_if:metodo_pago,transferencia|date',
         ], [
@@ -94,16 +109,6 @@ class PedidoController extends Controller
 
         $user = auth()->user();
         $totalPagado = $totalCost + $costeEnvio;
-
-        // Si es tarjeta, cobrar con Stripe
-        if ($request->metodo_pago === 'tarjeta') {
-            $user->createOrGetStripeCustomer();
-            $user->addPaymentMethod($request->payment_method);
-            $user->charge($totalPagado * 100, $request->payment_method, [
-                'currency' => 'eur',
-                'return_url' => route('pedidos.resume', ['orderId' => 'dummy'])
-            ]);
-        }
 
         // Crear el pedido
         $order = new Pedido();

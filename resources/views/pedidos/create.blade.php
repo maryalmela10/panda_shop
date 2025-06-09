@@ -178,11 +178,10 @@
             form.addEventListener("submit", async (event) => {
                 if (metodoSelect.value === "tarjeta") {
                     event.preventDefault();
-
                     const {
-                        setupIntent,
+                        paymentIntent,
                         error
-                    } = await stripe.confirmCardSetup(
+                    } = await stripe.confirmCardPayment(
                         "{{ $intent->client_secret }}", {
                             payment_method: {
                                 card: card,
@@ -198,11 +197,10 @@
                     } else {
                         const hiddenInput = document.createElement("input");
                         hiddenInput.type = "hidden";
-                        hiddenInput.name = "payment_method";
-                        hiddenInput.value = setupIntent.payment_method;
+                        hiddenInput.name = "payment_method_id";
+                        hiddenInput.value = paymentIntent.payment_method;
                         form.appendChild(hiddenInput);
 
-                        form.querySelector('button[type="submit"]').disabled = true;
                         form.submit();
                     }
                 }
