@@ -52,12 +52,14 @@
                         @switch($pedido->estado)
                             @case('pendiente') bg-warning text-white @break
                             @case('confirmado') bg-primary text-white @break
+                            @case('enviado') bg-purple text-white @break
+                            @case('entregado') bg-success text-white @break
                             @case('cancelado') bg-danger text-white @break
-                            @default bg-warning text-dark
+                            @default bg-secondary text-white
                         @endswitch
                         px-3 py-2 rounded-pill fw-semibold">
-                            Estado: {{ ucfirst($pedido->estado ?? 'Pendiente') }}
-                        </span>
+                        Estado: {{ ucfirst($pedido->estado ?? 'Pendiente') }}
+                    </span>
                     </div>
                     {{-- Bloque de totales igual que el carrito --}}
                     <div class="mb-3 d-flex flex-column align-items-end">

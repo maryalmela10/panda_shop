@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Admin\AnalyticsController;
 
 
 // Páginas públicas
@@ -59,6 +60,18 @@ Route::middleware(['auth', 'verified.custom', 'admin'])->prefix('admin')->name('
     Route::get('/categorias/{categoria}/edit', [CategoriaController::class, 'edit'])->name('categorias.edit');
     Route::put('/categorias/{categoria}/update', [CategoriaController::class, 'update'])->name('categorias.update');
     Route::delete('/categorias/{categoria}', [CategoriaController::class, 'destroy'])->name('categorias.destroy');
+
+    //Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
+
+    //Pedidos admin
+    Route::get('/pedidos', [PedidoController::class, 'index_admin'])->name('pedidos.index');
+    Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
+    Route::put('/pedidos/{id}', [PedidoController::class, 'update'])->name('pedidos.update');
+
+    // Analíticas de ventas (Stripe)
+    Route::get('/ventas', [AnalyticsController::class, 'index'])->name('ventas');
+
 });
 
 

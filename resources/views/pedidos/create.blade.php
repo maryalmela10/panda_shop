@@ -40,8 +40,6 @@
                                         de crédito/débito</option>
                                     <option value="transferencia"
                                         {{ old('metodo_pago') == 'transferencia' ? 'selected' : '' }}>Transferencia</option>
-                                    <option value="paypal" {{ old('metodo_pago') == 'paypal' ? 'selected' : '' }}>PayPal
-                                    </option>
                                     <option value="contra_reembolso"
                                         {{ old('metodo_pago') == 'contra_reembolso' ? 'selected' : '' }}>Contra reembolso
                                     </option>
@@ -69,11 +67,6 @@
                                     <label class="form-label">Sube el justificante de pago</label>
                                     <input type="file" name="justificante_pago" class="form-control">
                                 </div>
-                            </div>
-
-                            {{-- Contenedor para PayPal --}}
-                            <div id="paypal-container" class="d-none mb-4">
-                                <div class="alert alert-info">Serás redirigido a PayPal al confirmar el pedido.</div>
                             </div>
 
                             {{-- Contenedor para pago contra reembolso --}}
@@ -135,17 +128,18 @@
     </div>
     </div>
     </div>
+@endsection
+@push('scripts')
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const metodoSelect = document.getElementById("metodo_pago");
             const stripeContainer = document.getElementById("stripe-container");
             const transferenciaContainer = document.getElementById("transferencia-container");
-            const paypalContainer = document.getElementById("paypal-container");
             const reembolsoContainer = document.getElementById("reembolso-container");
             const form = document.getElementById("payment-form");
 
-            const stripe = Stripe("{{ env('STRIPE_KEY') }}");
+            const stripe = Stripe("{{ $stripePublicKey }}");
             const elements = stripe.elements();
 
             const card = elements.create("card", {
@@ -158,11 +152,9 @@
                 errorDiv.textContent = event.error ? event.error.message : '';
             });
 
-            // Mostrar u ocultar contenedores según método de pago
             function actualizarVisibilidadMetodos(metodo) {
                 stripeContainer.classList.toggle("d-none", metodo !== "tarjeta");
                 transferenciaContainer.classList.toggle("d-none", metodo !== "transferencia");
-                paypalContainer?.classList.toggle("d-none", metodo !== "paypal");
                 reembolsoContainer?.classList.toggle("d-none", metodo !== "contra_reembolso");
             }
 
@@ -171,22 +163,18 @@
                 if (alert) alert.remove();
             }
 
-            // Al cambiar el método de pago
             metodoSelect.addEventListener("change", () => {
                 limpiarErrores();
                 actualizarVisibilidadMetodos(metodoSelect.value);
             });
 
-            // Ocultar errores al escribir en cualquier input, textarea o select
             document.querySelectorAll('input, textarea, select').forEach(el => {
                 el.addEventListener('input', limpiarErrores);
                 el.addEventListener('change', limpiarErrores);
             });
 
-            // Inicializar visibilidad por si había errores
             actualizarVisibilidadMetodos(metodoSelect.value);
 
-            // Enviar formulario con Stripe si es tarjeta
             form.addEventListener("submit", async (event) => {
                 if (metodoSelect.value === "tarjeta") {
                     event.preventDefault();
@@ -208,7 +196,6 @@
                     if (error) {
                         document.getElementById("card-errors").textContent = error.message;
                     } else {
-                        // Insertar el payment_method generado en el formulario
                         const hiddenInput = document.createElement("input");
                         hiddenInput.type = "hidden";
                         hiddenInput.name = "payment_method";
@@ -222,4 +209,4 @@
             });
         });
     </script>
-@endsection
+@endpush

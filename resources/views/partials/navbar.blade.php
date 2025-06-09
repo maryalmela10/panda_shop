@@ -12,12 +12,13 @@
 
         <div class="collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
             <div class="flex-fill">
-                <ul class="nav navbar-nav d-flex gap-1 justify-content-center mx-lg-auto align-items-center nav-menu-destacado">
+                <ul
+                    class="nav navbar-nav d-flex gap-1 justify-content-center mx-lg-auto align-items-center nav-menu-destacado">
                     <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">Sobre nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('shop') }}">Tienda</a></li>
                     @auth
-                        @if(Auth::user()->rol != 1)
+                        @if (Auth::user()->rol != 1)
                             <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contacto</a></li>
                         @endif
                     @else
@@ -27,10 +28,11 @@
             </div>
             <div class="navbar align-self-center d-flex">
                 @auth
-                    @if(Auth::user()->rol != 1)
+                    @if (Auth::user()->rol != 1)
                         <a class="nav-icon position-relative text-decoration-none" href="{{ route('cart.index') }}">
                             <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                            <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+                            <span
+                                class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
                                 {{ $carritoCantidad }}</span>
                         </a>
                     @endif
@@ -50,8 +52,15 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                         @auth
-                            <li><a class="dropdown-item" href="{{ route('dashboard.index') }}">Mi cuenta</a></li>
-                            @if(Auth::user()->rol != 1)
+                            <li>
+                                @if (Auth::user()->rol == 1)
+                                    <a class="dropdown-item" href="{{ route('admin.dashboard') }}">Panel de
+                                        administración</a>
+                                @else
+                                    <a class="dropdown-item" href="{{ route('dashboard.index') }}">Mi cuenta</a>
+                                @endif
+                            </li>
+                            @if (Auth::user()->rol != 1)
                                 <li><a class="dropdown-item" href="{{ route('pedidos.index') }}">Mis pedidos</a></li>
                             @endif
                             <li><a class="dropdown-item" href="{{ route('dashboard.profile') }}">Editar perfil</a></li>

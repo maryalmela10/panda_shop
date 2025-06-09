@@ -52,7 +52,8 @@ class PedidoController extends Controller
         return view('pedidos.create', [
             'cart' => $cartWithProducts,
             'totalCost' => $totalCost,
-            'intent' => $intent
+            'intent' => $intent,
+            'stripePublicKey' => config('services.stripe.key')
         ]);
     }
 
@@ -158,7 +159,6 @@ class PedidoController extends Controller
             ]);
     }
 
-
     // Mostrar la confirmación del pedido
     public function resume($orderId)
     {
@@ -170,5 +170,41 @@ class PedidoController extends Controller
         });
 
         return view('pedidos.resume', compact('order', 'totalProductos'));
+    }
+
+    //ADMIN
+
+    public function index_admin(Request $request)
+    {
+        $query = Pedido::with('usuario');
+
+        if ($request->filled('busqueda')) {
+            $busqueda = $request->busqueda;
+            $query->where('id', $busqueda)
+                ->orWhereHas('usuario', fn($q) => $q->where('name', 'like', "%$busqueda%"))
+                ->orWhereDate('fecha_pedido', $busqueda);
+        }
+
+        $pedidos = $query->orderByDesc('fecha_pedido')->paginate(10);
+        return view('admin.index', compact('pedidos'));
+    }
+
+    public function show($id)
+    {
+        $pedido = Pedido::with(['usuario', 'productos'])->findOrFail($id);
+        return view('admin.show', compact('pedido'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $pedido = Pedido::findOrFail($id);
+        $pedido->estado = $request->input('estado');
+        $pedido->save();
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->back()->with('success', 'Estado actualizado correctamente.');
     }
 }

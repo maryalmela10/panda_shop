@@ -28,4 +28,18 @@ class DashboardController extends Controller
 
         return view('dashboard.index', compact('pedidos', 'carritoCantidad'));
     }
+
+    public function admin()
+    {
+        $ventasHoy = Pedido::whereDate('fecha_pedido', today())->sum('total_pagado');
+        $ventasSemana = Pedido::whereBetween('fecha_pedido', [now()->startOfWeek(), now()->endOfWeek()])->sum('total_pagado');
+        $ventasMes = Pedido::whereMonth('fecha_pedido', now()->month)->sum('total_pagado');
+
+        $pedidos = Pedido::with('usuario')
+            ->orderByDesc('fecha_pedido')
+            ->take(10)
+            ->get();
+
+        return view('admin.dashboard', compact('ventasHoy', 'ventasSemana', 'ventasMes', 'pedidos'));
+    }
 }
