@@ -34,45 +34,45 @@ class PedidoController extends Controller
     }
     // Mostrar el formulario de pedido
     public function create()
-{
-    $cart = session()->get('cart', []);
-    $cartWithProducts = [];
+    {
+        $cart = session()->get('cart', []);
+        $cartWithProducts = [];
 
-    foreach ($cart as $item) {
-        $producto = Producto::find($item['id']);
-        if ($producto) {
-            $cartWithProducts[] = [
-                'producto' => $producto,
-                'price' => $item['price'],
-                'quantity' => $item['quantity'],
-            ];
+        foreach ($cart as $item) {
+            $producto = Producto::find($item['id']);
+            if ($producto) {
+                $cartWithProducts[] = [
+                    'producto' => $producto,
+                    'price' => $item['price'],
+                    'quantity' => $item['quantity'],
+                ];
+            }
         }
+
+        $totalCost = collect($cartWithProducts)->sum(fn($item) => $item['price'] * $item['quantity']);
+        $envio = $totalCost < 50 ? 10 : ($totalCost < 100 ? 5 : 0);
+        $totalPagado = $totalCost + $envio;
+
+        // Configurar Stripe
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        // Crear el PaymentIntent
+        $intent = PaymentIntent::create([
+            'amount' => $totalPagado * 100, // en céntimos
+            'currency' => 'eur',
+            'metadata' => [
+                'user_id' => auth()->id(),
+                'email' => auth()->user()->email,
+            ]
+        ]);
+
+        return view('pedidos.create', [
+            'cart' => $cartWithProducts,
+            'totalCost' => $totalCost,
+            'intent' => $intent,
+            'stripePublicKey' => config('services.stripe.key')
+        ]);
     }
-
-    $totalCost = collect($cartWithProducts)->sum(fn($item) => $item['price'] * $item['quantity']);
-    $envio = $totalCost < 50 ? 10 : ($totalCost < 100 ? 5 : 0);
-    $totalPagado = $totalCost + $envio;
-
-    // Configurar Stripe
-    Stripe::setApiKey(config('services.stripe.secret'));
-
-    // Crear el PaymentIntent
-    $intent = PaymentIntent::create([
-        'amount' => $totalPagado * 100, // en céntimos
-        'currency' => 'eur',
-        'metadata' => [
-            'user_id' => auth()->id(),
-            'email' => auth()->user()->email,
-        ]
-    ]);
-
-    return view('pedidos.create', [
-        'cart' => $cartWithProducts,
-        'totalCost' => $totalCost,
-        'intent' => $intent,
-        'stripePublicKey' => config('services.stripe.key')
-    ]);
-}
 
     // Almacenar el pedido en la base de datos
     public function store(Request $request)
@@ -94,95 +94,78 @@ class PedidoController extends Controller
                 function ($attribute, $value, $fail) {
                     $fecha = Carbon::parse($value);
                     if ($fecha->lt(now()->subDays(5)) || $fecha->gt(now())) {
-                        $fail('La fecha de transferencia debe ser de hace 5 días máximo.');
+                        $fail('La fecha de transferencia debe estar entre hoy y hace 5 días.');
                     }
                 },
             ],
         ], [
-            'metodo_pago.required' => 'Por favor, selecciona un método de pago.',
-            'direccion_envio.required' => 'La dirección de envío es obligatoria.',
+            'direccion_envio.regex' => 'La dirección debe tener el formato: C/NombreCalle, número (ejemplo: C/Alcalá, 12).',
             'payment_method.required_if' => 'Debes introducir los datos de tu tarjeta.',
             'justificante_pago.required_if' => 'Debes subir el justificante de pago para transferencias.',
             'justificante_pago.file' => 'El justificante debe ser un archivo válido.',
             'justificante_pago.mimes' => 'Solo se permiten archivos PDF, JPG, JPEG o PNG.',
             'justificante_pago.max' => 'El justificante no debe pesar más de 2MB.',
-            'fecha_transferencia.required_if' => 'Debes indicar la fecha en la que realizaste la transferencia.',
-            'fecha_transferencia.date' => 'La fecha de transferencia debe tener un formato válido.',
-            'direccion_envio.regex' => 'La dirección debe tener el formato: C/NombreCalle, número (ejemplo: C/Alcalá, 12).',
         ]);
 
-        // Obtener el carrito de la sesión
         $cart = session('cart', []);
-
-        // Calcular el coste total de los productos
-        $totalCost = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
-
-        // Calcular coste de envío según total de productos
-        $costeEnvio = match (true) {
-            $totalCost >= 100 => 0,
-            $totalCost >= 50 => 5,
-            default => 10,
-        };
-
         $user = auth()->user();
+
+        $totalCost = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+        $costeEnvio = $totalCost >= 100 ? 0 : ($totalCost >= 50 ? 5 : 10);
         $totalPagado = $totalCost + $costeEnvio;
 
-        // Crear el pedido
-        $order = new Pedido();
-        $order->usuario_id = $user->id;
-        $order->metodo_pago = $request->metodo_pago;
-        $order->coste_envio = $costeEnvio;
-        $order->direccion_envio = $request->direccion_envio;
-        $order->fecha_pedido = now();
-        $order->total_pagado = $totalPagado;
+        // Crear y rellenar el pedido
+        $pedido = new Pedido();
+        $pedido->fill([
+            'usuario_id' => $user->id,
+            'metodo_pago' => $request->metodo_pago,
+            'coste_envio' => $costeEnvio,
+            'direccion_envio' => $request->direccion_envio,
+            'fecha_pedido' => now(),
+            'total_pagado' => $totalPagado,
+        ]);
 
+        // Si es transferencia, manejar justificante y fecha
         if ($request->metodo_pago === 'transferencia') {
             if ($request->hasFile('justificante_pago')) {
                 $archivo = $request->file('justificante_pago');
-                $nombreArchivo = hash('sha256', time() . $archivo->getClientOriginalName()) . '.' . $archivo->getClientOriginalExtension();
-                $archivo->move(public_path('justificantes'), $nombreArchivo);
-                $order->justificante_pago = 'justificantes/' . $nombreArchivo;
+                $nombre = hash('sha256', time() . $archivo->getClientOriginalName()) . '.' . $archivo->getClientOriginalExtension();
+                $archivo->move(public_path('justificantes'), $nombre);
+                $pedido->justificante_pago = 'justificantes/' . $nombre;
             }
 
-            $fechaElegida = Carbon::parse($request->fecha_transferencia);
-
-            if ($fechaElegida->lt(Carbon::now()->subDays(5))) {
-                return back()->withErrors(['fecha_transferencia' => 'La fecha de transferencia no puede ser más antigua que hace 5 días.'])->withInput();
-            }
-
-            $order->fecha_transferencia = $request->fecha_transferencia;
-            $order->estado = 'pendiente'; // Esperando confirmación
+            $pedido->fecha_transferencia = $request->fecha_transferencia;
+            $pedido->estado = 'pendiente'; // A la espera de verificación
         }
-        $order->save();
 
-        // Asociar productos y actualizar stock/ventas
+        $pedido->save();
+
+        // Asociar productos y actualizar stock
         foreach ($cart as $item) {
-            $order->productos()->attach($item['id'], [
+            $pedido->productos()->attach($item['id'], [
                 'cantidad' => $item['quantity'],
                 'precio_producto' => $item['price'],
             ]);
 
-            $producto = Producto::find($item['id']);
-            if ($producto) {
-                $producto->stock = max(0, $producto->stock - $item['quantity']);
-                $producto->num_ventas += $item['quantity'];
-                $producto->save();
-            }
+            Producto::where('id', $item['id'])->update([
+                'stock' => DB::raw("GREATEST(stock - {$item['quantity']}, 0)"),
+                'num_ventas' => DB::raw("num_ventas + {$item['quantity']}")
+            ]);
         }
 
-        // Enviar resumen por correo
-        Mail::to($user->email)->send(new PedidoResumenMail($order, $cart, $totalCost));
+        // Enviar email
+        Mail::to($user->email)->send(new PedidoResumenMail($pedido, $cart, $totalCost));
 
-        // Limpiar carrito
+        // Vaciar carrito
         session()->forget('cart');
 
-        // Redirigir con resumen
-        return redirect()->route('pedidos.resume', ['orderId' => $order->id])
+        return redirect()->route('pedidos.resume', ['orderId' => $pedido->id])
             ->with([
                 'totalCost' => $totalCost,
-                'success' => 'Se te ha enviado un resumen del pedido a tu correo'
+                'success' => 'Se te ha enviado un resumen del pedido a tu correo.'
             ]);
     }
+
 
     // Mostrar la confirmación del pedido
     public function resume($orderId)
