@@ -16,6 +16,10 @@ class Pedido extends Model
         'coste_envio',
         'direccion_envio',
         'fecha_pedido',
+        'estado',
+        'total_pagado',
+        'fecha_transferencia',
+        'justificante_pago'
     ];
 
     protected $casts = [
@@ -32,6 +36,6 @@ class Pedido extends Model
     public function productos()
     {
         return $this->belongsToMany(Producto::class, 'pedido_producto')
-                    ->withPivot('cantidad', 'precio_producto'); // Relación muchos a muchos con pivot
+            ->withPivot('cantidad', 'precio_producto'); // Relación muchos a muchos con pivot
     }
 }
