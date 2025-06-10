@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Pedido;
 use App\Models\Producto;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use App\Mail\PedidoResumenMail;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 
@@ -17,48 +16,40 @@ class PedidoController extends Controller
 {
     public function index()
     {
-        // Asegurarse de que el usuario está autenticado
         $usuario = auth()->user();
 
-        if (!$usuario) {
-            abort(403, 'Debes iniciar sesión para ver tus pedidos.');
-        }
+        abort_unless($usuario, 403, 'Debes iniciar sesión para ver tus pedidos.');
 
-        // Obtener pedidos del usuario con detalles relacionados
         $pedidos = Pedido::where('usuario_id', $usuario->id)
             ->with(['productos', 'productos.categoria'])
-            ->orderBy('id', 'desc')
+            ->latest('id')
             ->paginate(10);
 
         return view('pedidos.index', compact('pedidos'));
     }
-    // Mostrar el formulario de pedido
+
     public function create()
     {
-        $cart = session()->get('cart', []);
-        $cartWithProducts = [];
-
-        foreach ($cart as $item) {
+        $cart = session('cart', []);
+        $cartWithProducts = collect($cart)->map(function ($item) {
             $producto = Producto::find($item['id']);
             if ($producto) {
-                $cartWithProducts[] = [
+                return [
                     'producto' => $producto,
                     'price' => $item['price'],
                     'quantity' => $item['quantity'],
                 ];
             }
-        }
+            return null;
+        })->filter();
 
-        $totalCost = collect($cartWithProducts)->sum(fn($item) => $item['price'] * $item['quantity']);
+        $totalCost = $cartWithProducts->sum(fn($item) => $item['price'] * $item['quantity']);
         $envio = $totalCost < 50 ? 10 : ($totalCost < 100 ? 5 : 0);
         $totalPagado = $totalCost + $envio;
 
-        // Configurar Stripe
         Stripe::setApiKey(config('services.stripe.secret'));
-
-        // Crear el PaymentIntent
         $intent = PaymentIntent::create([
-            'amount' => $totalPagado * 100, // en céntimos
+            'amount' => $totalPagado * 100,
             'currency' => 'eur',
             'metadata' => [
                 'user_id' => auth()->id(),
@@ -74,29 +65,24 @@ class PedidoController extends Controller
         ]);
     }
 
-    // Almacenar el pedido en la base de datos
     public function store(Request $request)
     {
         $request->validate([
             'metodo_pago' => 'required',
             'direccion_envio' => [
-                'required',
-                'string',
-                'min:10',
+                'required', 'string', 'min:10',
                 'regex:/^C\/[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+,\s*\d+$/'
             ],
             'payment_method_id' => 'required_if:metodo_pago,tarjeta',
             'justificante_pago' => 'nullable|required_if:metodo_pago,transferencia|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'fecha_transferencia' => [
-                'nullable',
-                'required_if:metodo_pago,transferencia',
-                'date',
+                'nullable', 'required_if:metodo_pago,transferencia', 'date',
                 function ($attribute, $value, $fail) {
                     $fecha = Carbon::parse($value);
                     if ($fecha->lt(now()->subDays(5)) || $fecha->gt(now())) {
                         $fail('La fecha de transferencia debe estar entre hoy y hace 5 días.');
                     }
-                },
+                }
             ],
         ], [
             'direccion_envio.regex' => 'La dirección debe tener el formato: C/NombreCalle, número (ejemplo: C/Alcalá, 12).',
@@ -114,9 +100,7 @@ class PedidoController extends Controller
         $costeEnvio = $totalCost >= 100 ? 0 : ($totalCost >= 50 ? 5 : 10);
         $totalPagado = $totalCost + $costeEnvio;
 
-        // Crear y rellenar el pedido
-        $pedido = new Pedido();
-        $pedido->fill([
+        $pedido = new Pedido([
             'usuario_id' => $user->id,
             'metodo_pago' => $request->metodo_pago,
             'coste_envio' => $costeEnvio,
@@ -125,7 +109,6 @@ class PedidoController extends Controller
             'total_pagado' => $totalPagado,
         ]);
 
-        // Si es transferencia, manejar justificante y fecha
         if ($request->metodo_pago === 'transferencia') {
             if ($request->hasFile('justificante_pago')) {
                 $archivo = $request->file('justificante_pago');
@@ -135,12 +118,15 @@ class PedidoController extends Controller
             }
 
             $pedido->fecha_transferencia = $request->fecha_transferencia;
-            $pedido->estado = 'pendiente'; // A la espera de verificación
+            $pedido->estado = 'pendiente';
+        } elseif ($request->metodo_pago === 'tarjeta') {
+            $pedido->estado = 'confirmado';
+        } else {
+            $pedido->estado = 'pendiente';
         }
 
         $pedido->save();
 
-        // Asociar productos y actualizar stock
         foreach ($cart as $item) {
             $pedido->productos()->attach($item['id'], [
                 'cantidad' => $item['quantity'],
@@ -153,34 +139,27 @@ class PedidoController extends Controller
             ]);
         }
 
-        // Enviar email
         Mail::to($user->email)->send(new PedidoResumenMail($pedido, $cart, $totalCost));
-
-        // Vaciar carrito
         session()->forget('cart');
 
-        return redirect()->route('pedidos.resume', ['orderId' => $pedido->id])
+        return redirect()->route('pedidos.resume', $pedido->id)
             ->with([
                 'totalCost' => $totalCost,
                 'success' => 'Se te ha enviado un resumen del pedido a tu correo.'
             ]);
     }
 
-
-    // Mostrar la confirmación del pedido
     public function resume($orderId)
     {
         $order = Pedido::with('productos')->findOrFail($orderId);
-
-        // Calcular total productos desde la relación en BD
-        $totalProductos = $order->productos->sum(function ($producto) {
-            return $producto->pivot->precio_producto * $producto->pivot->cantidad;
-        });
+        $totalProductos = $order->productos->sum(fn($producto) =>
+            $producto->pivot->precio_producto * $producto->pivot->cantidad
+        );
 
         return view('pedidos.resume', compact('order', 'totalProductos'));
     }
 
-    //ADMIN
+    // ADMIN
 
     public function index_admin(Request $request)
     {
@@ -193,7 +172,7 @@ class PedidoController extends Controller
                 ->orWhereDate('fecha_pedido', $busqueda);
         }
 
-        $pedidos = $query->orderByDesc('fecha_pedido')->paginate(10);
+        $pedidos = $query->latest('fecha_pedido')->paginate(10);
         return view('admin.index', compact('pedidos'));
     }
 
@@ -209,10 +188,8 @@ class PedidoController extends Controller
         $pedido->estado = $request->input('estado');
         $pedido->save();
 
-        if ($request->ajax()) {
-            return response()->json(['success' => true]);
-        }
-
-        return redirect()->back()->with('success', 'Estado actualizado correctamente.');
+        return $request->ajax()
+            ? response()->json(['success' => true])
+            : redirect()->back()->with('success', 'Estado actualizado correctamente.');
     }
 }
