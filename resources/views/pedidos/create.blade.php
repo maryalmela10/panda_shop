@@ -63,6 +63,7 @@
                                     <input type="date" name="fecha_transferencia" class="form-control">
                                 </div>
 
+
                                 <div class="mb-3">
                                     <label class="form-label">Sube el justificante de pago</label>
                                     <input type="file" name="justificante_pago" class="form-control">
@@ -81,6 +82,7 @@
                                 </label>
                                 <textarea name="direccion_envio" id="direccion_envio" rows="3" class="form-control" required>{{ old('direccion_envio') }}</textarea>
                             </div>
+
 
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-success px-4 fw-bold">

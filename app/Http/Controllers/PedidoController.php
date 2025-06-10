@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Mail\PedidoResumenMail;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
@@ -78,10 +79,25 @@ class PedidoController extends Controller
     {
         $request->validate([
             'metodo_pago' => 'required',
-            'direccion_envio' => 'required|string',
+            'direccion_envio' => [
+                'required',
+                'string',
+                'min:10',
+                'regex:/^C\/[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+,\s*\d+$/'
+            ],
             'payment_method_id' => 'required_if:metodo_pago,tarjeta',
             'justificante_pago' => 'nullable|required_if:metodo_pago,transferencia|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'fecha_transferencia' => 'nullable|required_if:metodo_pago,transferencia|date',
+            'fecha_transferencia' => [
+                'nullable',
+                'required_if:metodo_pago,transferencia',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $fecha = Carbon::parse($value);
+                    if ($fecha->lt(now()->subDays(5)) || $fecha->gt(now())) {
+                        $fail('La fecha de transferencia debe ser de hace 5 días máximo.');
+                    }
+                },
+            ],
         ], [
             'metodo_pago.required' => 'Por favor, selecciona un método de pago.',
             'direccion_envio.required' => 'La dirección de envío es obligatoria.',
@@ -92,6 +108,7 @@ class PedidoController extends Controller
             'justificante_pago.max' => 'El justificante no debe pesar más de 2MB.',
             'fecha_transferencia.required_if' => 'Debes indicar la fecha en la que realizaste la transferencia.',
             'fecha_transferencia.date' => 'La fecha de transferencia debe tener un formato válido.',
+            'direccion_envio.regex' => 'La dirección debe tener el formato: C/NombreCalle, número (ejemplo: C/Alcalá, 12).',
         ]);
 
         // Obtener el carrito de la sesión
@@ -126,12 +143,15 @@ class PedidoController extends Controller
                 $archivo->move(public_path('justificantes'), $nombreArchivo);
                 $order->justificante_pago = 'justificantes/' . $nombreArchivo;
             }
+
+            $fechaElegida = Carbon::parse($request->fecha_transferencia);
+
+            if ($fechaElegida->lt(Carbon::now()->subDays(5))) {
+                return back()->withErrors(['fecha_transferencia' => 'La fecha de transferencia no puede ser más antigua que hace 5 días.'])->withInput();
+            }
+
             $order->fecha_transferencia = $request->fecha_transferencia;
             $order->estado = 'pendiente'; // Esperando confirmación
-        } elseif ($request->metodo_pago === 'tarjeta') {
-            $order->estado = 'confirmado'; // Pagado directamente
-        } else {
-            $order->estado = 'pendiente'; // PayPal / contra-reembolso
         }
         $order->save();
 

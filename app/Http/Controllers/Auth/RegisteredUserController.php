@@ -33,8 +33,11 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'telefono' => ['required', 'string', 'max:30', 'regex:/^\+?\d{9,15}$/'],
-            'address' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'min:10', 'regex:/^C\/[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+,\s*\d+$/'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'address.required' => 'La dirección de envío es obligatoria.',
+            'address.regex' => 'La dirección debe tener el formato: C/NombreCalle, número (ejemplo: C/Alcalá, 12).',
         ]);
 
         $user = User::create([

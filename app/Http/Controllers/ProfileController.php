@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
@@ -27,22 +29,52 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
+        // Validación adicional para address y telefono
+        $validator = Validator::make($request->all(), [
+            'address' => [
+                'nullable',
+                'string',
+                'regex:/^C\/[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+,\s*\d+$/'
+            ],
+            'telefono' => [
+                'nullable',
+                'regex:/^\d{9}$/'
+            ],
+        ], [
+            'address.regex' => 'La dirección debe tener el formato: C/NombreCalle, número (ejemplo: C/Alcalá, 12).',
+            'telefono.regex' => 'El teléfono debe tener 9 dígitos numéricos.',
+        ]);
+
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Validación estándar definida en ProfileUpdateRequest
         $validated = $request->validated();
+
+        $emailChanged = $validated['email'] !== $user->email;
 
         $user->fill([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'address' => $validated['address'] ?? null,
-            'telefono' => $validated['telefono'] ?? null,
+            'address' => $request->input('address'),
+            'telefono' => $request->input('telefono'),
         ]);
 
-        if ($user->isDirty('email')) {
+        if ($emailChanged) {
             $user->email_verified_at = null;
         }
 
         $user->save();
 
-        return Redirect::route('dashboard.profile')->with('success', 'Perfil editado con exito');
+        // Enviar correo de verificación si se cambió el email
+        if ($emailChanged) {
+            $user->sendEmailVerificationNotification();
+        }
+
+        return Redirect::route('dashboard.profile')->with('success', 'Perfil editado con éxito. Si cambiaste tu correo, revisa tu bandeja para verificarlo.');
     }
 
 
