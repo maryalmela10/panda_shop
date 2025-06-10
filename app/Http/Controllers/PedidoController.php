@@ -70,13 +70,17 @@ class PedidoController extends Controller
         $request->validate([
             'metodo_pago' => 'required',
             'direccion_envio' => [
-                'required', 'string', 'min:10',
+                'required',
+                'string',
+                'min:10',
                 'regex:/^C\/[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+,\s*\d+$/'
             ],
             'payment_method_id' => 'required_if:metodo_pago,tarjeta',
             'justificante_pago' => 'nullable|required_if:metodo_pago,transferencia|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'fecha_transferencia' => [
-                'nullable', 'required_if:metodo_pago,transferencia', 'date',
+                'nullable',
+                'required_if:metodo_pago,transferencia',
+                'date',
                 function ($attribute, $value, $fail) {
                     $fecha = Carbon::parse($value);
                     if ($fecha->lt(now()->subDays(5)) || $fecha->gt(now())) {
@@ -152,7 +156,8 @@ class PedidoController extends Controller
     public function resume($orderId)
     {
         $order = Pedido::with('productos')->findOrFail($orderId);
-        $totalProductos = $order->productos->sum(fn($producto) =>
+        $totalProductos = $order->productos->sum(
+            fn($producto) =>
             $producto->pivot->precio_producto * $producto->pivot->cantidad
         );
 
@@ -167,9 +172,17 @@ class PedidoController extends Controller
 
         if ($request->filled('busqueda')) {
             $busqueda = $request->busqueda;
+
             $query->where('id', $busqueda)
-                ->orWhereHas('usuario', fn($q) => $q->where('name', 'like', "%$busqueda%"))
-                ->orWhereDate('fecha_pedido', $busqueda);
+                ->orWhereHas('usuario', fn($q) => $q->where('name', 'like', "%$busqueda%"));
+
+            // Intentar convertir la fecha si es válida en formato d/m/Y
+            try {
+                $fecha = \Carbon\Carbon::createFromFormat('d/m/Y', $busqueda)->format('Y-m-d');
+                $query->orWhereDate('fecha_pedido', $fecha);
+            } catch (\Exception $e) {
+                // No hacer nada si no es una fecha válida
+            }
         }
 
         $pedidos = $query->latest('fecha_pedido')->paginate(10);

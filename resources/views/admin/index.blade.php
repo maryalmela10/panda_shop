@@ -80,7 +80,7 @@
 
                 {{-- Paginación --}}
                 <div class="mt-3">
-                    {{ $pedidos->withQueryString()->links() }}
+                    {{ $pedidos->withQueryString()->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </div>
