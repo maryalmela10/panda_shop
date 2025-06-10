@@ -81,7 +81,7 @@
         </div>
     </div>
 </nav>
-@if (Route::currentRouteName() !== 'home' && Route::currentRouteName() !== 'shop.product')
+@if (Route::currentRouteName() !== 'home' && Route::currentRouteName() !== 'shop.product' && Route::currentRouteName() !== 'admin.pedidos.show')
     <div class="container">
         <a href="{{ url()->previous() }}" class="btn btn-outline-secondary my-3">
             <i class="fas fa-arrow-left"></i> Volver

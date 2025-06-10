@@ -52,8 +52,7 @@
                         <td>€ {{ number_format($pedido->total_pagado, 2) }}</td>
                         <td>{{ $pedido->fecha_pedido->format('d/m/Y') }}</td>
                         <td>
-                            <a href="{{ route('admin.pedidos.show', $pedido->id) }}" class="btn btn-sm btn-outline-primary"
-                                target="_blank">
+                            <a href="{{ route('admin.pedidos.show', $pedido->id) }}" class="btn btn-sm btn-outline-primary">
                                 Ver
                             </a>
                         </td>

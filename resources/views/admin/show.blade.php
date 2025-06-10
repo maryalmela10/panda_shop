@@ -2,6 +2,11 @@
 @section('title', 'Detalle del Pedido')
 
 @section('content')
+    <div class="container">
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary my-3">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
 <div class="container py-5">
     <div class="card shadow rounded-3 border-0">
         <div class="card-header bg-light d-flex justify-content-between align-items-center">
