@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified.custom'])->group(function () {
     Route::get('/cart/remove/{productId}', [CarritoController::class, 'removeFromCart'])->name('cart.remove');
     Route::post('/cart/update/{id}', [CarritoController::class, 'updateQuantity'])->name('cart.updateQuantity');
 
+    Route::post('/pedidos/validar', [PedidoController::class, 'validar'])->name('pedidos.validar');
     Route::get('/pedidos/create', [PedidoController::class, 'create'])->name('pedidos.create');
     Route::get('/mis-pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
     Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');

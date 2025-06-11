@@ -132,81 +132,124 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const metodoSelect = document.getElementById("metodo_pago");
-            const stripeContainer = document.getElementById("stripe-container");
-            const transferenciaContainer = document.getElementById("transferencia-container");
-            const reembolsoContainer = document.getElementById("reembolso-container");
-            const form = document.getElementById("payment-form");
+ <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        alertify.set('notifier','delay', 8);
+        const metodoSelect = document.getElementById("metodo_pago");
+        const stripeContainer = document.getElementById("stripe-container");
+        const transferenciaContainer = document.getElementById("transferencia-container");
+        const reembolsoContainer = document.getElementById("reembolso-container");
+        const form = document.getElementById("payment-form");
 
-            const stripe = Stripe("{{ $stripePublicKey }}");
-            const elements = stripe.elements();
+        const stripe = Stripe("{{ $stripePublicKey }}");
+        const elements = stripe.elements();
+        const card = elements.create("card", {
+            hidePostalCode: true
+        });
+        card.mount("#card-element");
 
-            const card = elements.create("card", {
-                hidePostalCode: true
-            });
-            card.mount("#card-element");
+        card.on("change", (event) => {
+            const errorDiv = document.getElementById("card-errors");
+            errorDiv.textContent = event.error ? event.error.message : '';
+        });
 
-            card.on("change", (event) => {
-                const errorDiv = document.getElementById("card-errors");
-                errorDiv.textContent = event.error ? event.error.message : '';
-            });
+        function actualizarVisibilidadMetodos(metodo) {
+            stripeContainer.classList.toggle("d-none", metodo !== "tarjeta");
+            transferenciaContainer.classList.toggle("d-none", metodo !== "transferencia");
+            reembolsoContainer?.classList.toggle("d-none", metodo !== "contra_reembolso");
+        }
 
-            function actualizarVisibilidadMetodos(metodo) {
-                stripeContainer.classList.toggle("d-none", metodo !== "tarjeta");
-                transferenciaContainer.classList.toggle("d-none", metodo !== "transferencia");
-                reembolsoContainer?.classList.toggle("d-none", metodo !== "contra_reembolso");
-            }
+        function limpiarErroresAjax() {
+            document.querySelectorAll('[id^="error-"]').forEach(el => el.textContent = '');
+        }
 
-            function limpiarErrores() {
-                const alert = document.querySelector('.alert-danger');
-                if (alert) alert.remove();
-            }
+        function limpiarErroresGenerales() {
+            const alert = document.querySelector('.alert-danger');
+            if (alert) alert.remove();
+        }
 
-            metodoSelect.addEventListener("change", () => {
-                limpiarErrores();
-                actualizarVisibilidadMetodos(metodoSelect.value);
-            });
-
-            document.querySelectorAll('input, textarea, select').forEach(el => {
-                el.addEventListener('input', limpiarErrores);
-                el.addEventListener('change', limpiarErrores);
-            });
-
+        metodoSelect.addEventListener("change", () => {
+            limpiarErroresGenerales();
             actualizarVisibilidadMetodos(metodoSelect.value);
+        });
 
-            form.addEventListener("submit", async (event) => {
-                if (metodoSelect.value === "tarjeta") {
-                    event.preventDefault();
-                    const {
-                        paymentIntent,
-                        error
-                    } = await stripe.confirmCardPayment(
-                        "{{ $intent->client_secret }}", {
-                            payment_method: {
-                                card: card,
-                                billing_details: {
-                                    name: "{{ auth()->user()->name }}"
+        document.querySelectorAll('input, textarea, select').forEach(el => {
+            el.addEventListener('input', limpiarErroresGenerales);
+            el.addEventListener('change', limpiarErroresGenerales);
+        });
+
+        actualizarVisibilidadMetodos(metodoSelect.value);
+
+        form.addEventListener("submit", async (event) => {
+            const metodo = metodoSelect.value;
+
+            if (metodo === "tarjeta" || metodo === "transferencia") {
+                event.preventDefault();
+                limpiarErroresAjax();
+
+                const formData = new FormData(form);
+                try {
+                    const response = await fetch("{{ route('pedidos.validar') }}", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                            "X-Requested-With": "XMLHttpRequest"
+                        },
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok && data.errors) {
+                for (const campo in data.errors) {
+                    const mensajes = data.errors[campo];
+                    mensajes.forEach(msg => alertify.error(msg));
+                }
+                return;
+            }
+
+                    // validación pasada
+                    if (metodo === "tarjeta") {
+                        const { paymentIntent, error } = await stripe.confirmCardPayment(
+                            "{{ $intent->client_secret }}",
+                            {
+                                payment_method: {
+                                    card: card,
+                                    billing_details: {
+                                        name: "{{ auth()->user()->name }}"
+                                    }
                                 }
                             }
+                        );
+
+                        if (error) {
+                            alertify.error(error.message);
+                        } else {
+                            const hiddenInput = document.createElement("input");
+                            hiddenInput.type = "hidden";
+                            hiddenInput.name = "payment_method_id";
+                            hiddenInput.value = paymentIntent.payment_method;
+                            form.appendChild(hiddenInput);
+                            form.submit();
                         }
-                    );
-
-                    if (error) {
-                        document.getElementById("card-errors").textContent = error.message;
                     } else {
-                        const hiddenInput = document.createElement("input");
-                        hiddenInput.type = "hidden";
-                        hiddenInput.name = "payment_method_id";
-                        hiddenInput.value = paymentIntent.payment_method;
-                        form.appendChild(hiddenInput);
-
-                        form.submit();
+                        form.submit(); // transferencia
                     }
+
+                } catch (err) {
+                    console.error("Error inesperado:", err);
+                    alertify.error("Algo salió mal. Intenta de nuevo.");
                 }
-            });
+
+            } else {
+                // Contra reembolso → no validar por AJAX
+                limpiarErroresAjax();
+            }
         });
-    </script>
+    });
+</script>
 @endpush
+

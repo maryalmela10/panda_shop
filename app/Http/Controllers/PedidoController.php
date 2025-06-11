@@ -65,21 +65,31 @@ class PedidoController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function validar(Request $request)
     {
-        $request->validate([
+        $rules = [
             'metodo_pago' => 'required',
             'direccion_envio' => [
                 'required',
                 'string',
                 'min:10',
-                'regex:/^C\/[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+,\s*\d+$/'
+                'regex:/^(Calle|Avenida|Avda\.?|Plaza|Paseo|Pza\.?|Camino|Carretera)\s+[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+,\s*\d+,\s*\d{5}$/'
             ],
-            'payment_method_id' => 'required_if:metodo_pago,tarjeta',
-            'justificante_pago' => 'nullable|required_if:metodo_pago,transferencia|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'fecha_transferencia' => [
-                'nullable',
-                'required_if:metodo_pago,transferencia',
+        ];
+
+        $messages = [
+            'direccion_envio.regex' => 'La dirección debe tener el formato: TipoVía Nombre, número, código postal (ej: Calle Alcalá, 12, 28027).',
+            'payment_method_id.required_if' => 'Debes introducir los datos de tu tarjeta.',
+            'justificante_pago.required_if' => 'Debes subir el justificante de pago para transferencias.',
+            'justificante_pago.file' => 'El justificante debe ser un archivo válido.',
+            'justificante_pago.mimes' => 'Solo se permiten archivos PDF, JPG, JPEG o PNG.',
+            'justificante_pago.max' => 'El justificante no debe pesar más de 2MB.',
+        ];
+
+        if ($request->metodo_pago === 'transferencia') {
+            $rules['justificante_pago'] = 'required|file|mimes:pdf,jpg,jpeg,png|max:2048';
+            $rules['fecha_transferencia'] = [
+                'required',
                 'date',
                 function ($attribute, $value, $fail) {
                     $fecha = Carbon::parse($value);
@@ -87,15 +97,48 @@ class PedidoController extends Controller
                         $fail('La fecha de transferencia debe estar entre hoy y hace 5 días.');
                     }
                 }
+            ];
+        }
+
+        $request->validate($rules, $messages); 
+
+        return response()->json(['success' => true]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate(
+            [
+                'metodo_pago' => 'required',
+                'direccion_envio' => [
+                    'required',
+                    'string',
+                    'min:10',
+                    'regex:/^(Calle|Avenida|Avda\.?|Plaza|Paseo|Pza\.?|Camino|Carretera)\s+[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+,\s*\d+,\s*\d{5}$/'
+                ],
+                'payment_method_id' => 'required_if:metodo_pago,tarjeta',
+                'justificante_pago' => 'nullable|required_if:metodo_pago,transferencia|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'fecha_transferencia' => [
+                    'nullable',
+                    'required_if:metodo_pago,transferencia',
+                    'date',
+                    function ($attribute, $value, $fail) {
+                        $fecha = Carbon::parse($value);
+                        if ($fecha->lt(now()->subDays(5)) || $fecha->gt(now())) {
+                            $fail('La fecha de transferencia debe estar entre hoy y hace 5 días.');
+                        }
+                    }
+                ],
             ],
-        ], [
-            'direccion_envio.regex' => 'La dirección debe tener el formato: C/NombreCalle, número (ejemplo: C/Alcalá, 12).',
-            'payment_method.required_if' => 'Debes introducir los datos de tu tarjeta.',
-            'justificante_pago.required_if' => 'Debes subir el justificante de pago para transferencias.',
-            'justificante_pago.file' => 'El justificante debe ser un archivo válido.',
-            'justificante_pago.mimes' => 'Solo se permiten archivos PDF, JPG, JPEG o PNG.',
-            'justificante_pago.max' => 'El justificante no debe pesar más de 2MB.',
-        ]);
+            [
+                'direccion_envio.regex' => 'La dirección debe tener el formato: TipoVía Nombre, número, código postal (ej: Calle Alcalá, 12, 28027).',
+                'payment_method_id.required_if' => 'Debes introducir los datos de tu tarjeta.',
+                'justificante_pago.required_if' => 'Debes subir el justificante de pago para transferencias.',
+                'justificante_pago.file' => 'El justificante debe ser un archivo válido.',
+                'justificante_pago.mimes' => 'Solo se permiten archivos PDF, JPG, JPEG o PNG.',
+                'justificante_pago.max' => 'El justificante no debe pesar más de 2MB.',
+            ]
+        );
 
         $cart = session('cart', []);
         $user = auth()->user();
