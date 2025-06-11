@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
-    public function create(Producto $producto)
-    {
-        return view('reviews.create', compact('producto'));
-    }
-
     public function store(Request $request, Producto $producto)
     {
         $request->validate([

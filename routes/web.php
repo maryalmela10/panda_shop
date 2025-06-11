@@ -26,7 +26,6 @@ Route::middleware('notadmin')->group(function () {
 });
 
 Route::middleware('notadmin', 'auth', 'verified.custom')->group(function () {
-    Route::get('/productos/{producto}/review', [ReviewController::class, 'create'])->name('reviews.create');
     Route::post('/productos/{producto}/review', [ReviewController::class, 'store'])->name('reviews.store');
 });
 
