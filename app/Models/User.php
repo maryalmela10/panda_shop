@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Cashier\Billable;
-use App\Notifications\CustomVerifyEmail;
+use App\Mail\CustomVerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
