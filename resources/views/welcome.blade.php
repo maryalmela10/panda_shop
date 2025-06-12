@@ -17,8 +17,6 @@
         </div>
     @endif
 
-    @include('partials.search-modal')
-
     @include('partials.hero-carousel')
 
     <section class="container py-5">
